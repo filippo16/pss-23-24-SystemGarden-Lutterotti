@@ -21,3 +21,50 @@ L'utente potrà:
 ### Requisti non funzionali
 - Integrazione di telecamere nell'Area-Verde.
 - Output sonori.
+
+
+# Analisi e modello del dominio
+
+Ogni Area-Verde possiede:
+- Dei Settori, quindi una o più valvole da aprire e chiudere a seconda della schedule prevista.
+
+
+```mermaid
+classDiagram
+
+
+class GreenArea {
+    +adjustSchedule()
+}
+<<interface>> GreenArea
+
+class Sector {
+    +irrigate()
+    +stop()
+    +getValveStatus()
+}
+<<interface>> Sector
+
+class Schedule {
+    +getNextRunTime()
+}
+<<interface>> Schedule
+
+class SmartAdvisor {
+    +checkWeather()
+} 
+<<interface>> SmartAdvisor
+
+class Sensor {
+    +readData()
+}
+<<interface>> Sensor
+
+GreenArea --* Sector
+Sector *-- Schedule
+SmartAdvisor --* GreenArea
+Sensor --* GreenArea
+
+
+
+```
