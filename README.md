@@ -27,18 +27,28 @@ Il software, denominato **SystemGarden**, mira alla realizzazione di un sistema 
 
 ### Definizione dei termini
 
--   **Area Verde (GreenArea)**: rappresenta un giardino o un gruppo di piante da irrigare. Ad ogni area sono associabili settori, sensori e un advisor.
--   **Settore (Sector)**: zona di irrigazione controllata da una valvola, con possibilità di programmazione temporale.
--   **Sensore (Sensor)**: dispositivo (simulato) che rileva dati ambientali come temperatura o umidità.
--   **Schedule**: programmazione oraria per l'irrigazione automatica di un settore.
--   **SmartAdvisor**: componente che analizza i dati e fornisce raccomandazioni sulla necessità di irrigazione.
--   **WeatherService**: servizio che fornisce dati meteo simulati quando non sono disponibili sensori fisici.
+- **Area-Verde (GreenArea)**: rappresenta un giardino o un gruppo di piante da irrigare. Ad ogni area sono associabili settori e sensori.
+- **Settore (Sector)**: zona di irrigazione controllata da una valvola, con possibilità di programmazione temporale.
+- **Sensore (Sensor)**: dispositivo (simulato) che rileva dati ambientali come temperatura o umidità.
+- **Schedule**: programmazione oraria per l'irrigazione automatica di un settore.
+- **SmartAdvisor**: componente opzionale che analizza i dati e fornisce raccomandazioni sulla necessità di irrigazione.
+- **WeatherService**: servizio che fornisce dati meteo simulati quando non sono disponibili sensori fisici.
 
 
 # Analisi e modello del dominio
 
-Ogni Area-Verde possiede:
-- Dei Settori, quindi una o più valvole da aprire e chiudere a seconda della schedule prevista.
+Il sistema SystemGarden si basa su un modello del dominio che riflette la struttura reale di un impianto di irrigazione. L'entità centrale è l'**Area Verde**, che rappresenta uno spazio fisico da irrigare (un giardino o un gruppo di piante). Ogni area può contenere più **Settori**, ciascuno corrisponde ad una zona controllata da una valvola. I settori possono essere attivati manualmente o automaticamente secondo una **Programmazione** (Schedule).
+
+Per il monitoraggio delle condizioni ambientali, ogni area può essere dotata di **Sensori** che rilevano temperatura e umidità. 
+
+------ **PARTE DA TOGLIERE**
+Opzionalmente, questi dati vengono utilizzati da un **Advisor Intelligente** per calcolare raccomandazioni sull'irrigazione. In assenza di sensori fisici, l'advisor può utilizzare dati meteo simulati forniti dal **WeatherService**.
+--
+
+### Principali sfide
+
+- **Creare un'interfaccia semplice e intuitiva**: garantire all'utente un'esperienza chiara e immediata nella gestione dei sistemi.
+- **Gestire correttamente le entità legate ai sistemi di irrigazione**: considerando anche località e fuso orario per la programmazione.
 
 
 ```mermaid
