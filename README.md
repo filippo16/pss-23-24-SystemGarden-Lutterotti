@@ -41,52 +41,144 @@ Il sistema SystemGarden si basa su un modello del dominio che riflette la strutt
 
 Per il monitoraggio delle condizioni ambientali, ogni area può essere dotata di **Sensori** che rilevano temperatura e umidità. 
 
------- **PARTE DA TOGLIERE**
-Opzionalmente, questi dati vengono utilizzati da un **Advisor Intelligente** per calcolare raccomandazioni sull'irrigazione. In assenza di sensori fisici, l'advisor può utilizzare dati meteo simulati forniti dal **WeatherService**.
---
-
 ### Principali sfide
 
 - **Creare un'interfaccia semplice e intuitiva**: garantire all'utente un'esperienza chiara e immediata nella gestione dei sistemi.
 - **Gestire correttamente le entità legate ai sistemi di irrigazione**: considerando anche località e fuso orario per la programmazione.
+- **Sistema di messaggistica**: garantire un buona comprensione del messaggio.
 
 
 ```mermaid
 classDiagram
 
-
 class GreenArea {
-    +adjustSchedule()
+    +irrigateAll()
+    +stopAll()
 }
 <<interface>> GreenArea
 
 class Sector {
     +irrigate()
     +stop()
-    +getValveStatus()
 }
 <<interface>> Sector
 
 class Schedule {
     +getNextRunTime()
+    +getStartTime()
+    +getDuration() 
 }
 <<interface>> Schedule
-
-class SmartAdvisor {
-    +checkWeather()
-} 
-<<interface>> SmartAdvisor
 
 class Sensor {
     +readData()
 }
 <<interface>> Sensor
 
-GreenArea --* Sector
+class Camera {
+    +view()
+    +isActive()
+}
+<<interface>> Camera
+
+class Location {
+    +getCity()
+    +getCountry()
+    +getTimezone()
+    +getLocalTime()
+}
+<<interface>> Location
+
+GreenArea *-- Sector
+GreenArea *-- Sensor
+GreenArea *-- Camera
+GreenArea *-- Location
 Sector *-- Schedule
-SmartAdvisor --* GreenArea
-Sensor --* GreenArea
+
+```
 
 
+# Design
 
+In questo capitolo si descrivono le strategie messe in campo per soddisfare i requisiti identificati nell'analisi.
+
+## Architettura
+
+L'architettura adottata segue le regole del pattern **MVC** (Model-View-Controller). In questo caso il modello si sviluppa partendo da `GreenArea`. Da qui si accede a tutto lo stato applicativo del modello.
+
+`GreenArea` è un'interfaccia che viene implementata da `GreenAreaImpl`. In questo modo si può astrarre dall'implementazione dell'area verde e lavorare solo con il contratto d'uso definito. È perciò possibile, con futuri aggiornamenti, implementare diverse versioni di GreenArea.
+
+Sono state modellate diverse entità associate a GreenArea:
+- **Sector**: rappresenta una zona irrigabile con propria valvola e programmazione
+- **Sensor**: dispositivo per la lettura di dati ambientali (temperatura, umidità)
+- **Camera**: telecamera per il monitoraggio visivo dell'area
+- **Location**: informazioni sulla località per il calcolo del fuso orario
+
+Allo stato attuale, `Camera` fornisce funzionalità di visualizzazione della.
+
+`Schedule` è associato a `Sector` e gestisce la programmazione automatica dell'irrigazione, calcolando il prossimo orario di avvio.
+
+L'interfaccia grafica viene gestita nella parte della "view". Seguendo i principi del pattern MVC, la "view", a seguito di input dell'utente, contatterà il "controller" per ottenere in risposta informazioni generate da GreenArea (modello). ---forse dovrò scrivere come è formata la view---
+
+```
+classDiagram
+    class Controller {
+        <<interface>>
+    }
+
+    class View {
+        <<interface>>
+    }
+
+    class GreenArea {
+        <<interface>>
+        +addSensor(Sensor)
+        +addSector(Sector)
+        +addCamera(Camera)
+    }
+
+    class GreenAreaImpl {
+    }
+
+    class Sector {
+        <<interface>>
+        +irrigate(double)
+        +stop()
+    }
+
+    class Sensor {
+        <<interface>>
+        +readData(): double
+    }
+
+    class Schedule {
+        <<interface>>
+        +getNextRunTime(): LocalDateTime
+        +getDuration(): int
+    }
+
+    class Camera {
+        <<interface>>
+        +view()
+        +getName(): String
+        +getLocation(): String
+    }
+
+    class Location {
+        <<interface>>
+        +getCity(): String
+        +getCountry(): String
+        +getLocalTime(): LocalTime
+    }
+
+    Controller *-- View
+    Controller *-- GreenArea
+
+    GreenAreaImpl --|> GreenArea
+    GreenAreaImpl *-- Sensor
+    GreenAreaImpl *-- Sector
+    GreenAreaImpl *-- Camera
+    GreenAreaImpl *-- Location
+    
+    Sector *-- Schedule
 ```
