@@ -104,7 +104,7 @@ In questo capitolo si descrivono le strategie messe in campo per soddisfare i re
 
 ## Architettura
 
-L'architettura adottata segue le regole del pattern **MVC** (Model-View-Controller). In questo caso il modello si sviluppa partendo da `GreenArea`. Da qui si accede a tutto lo stato applicativo del modello.
+L'architettura adottata segue le regole del pattern **MVC** (Model-View-Controller). In questo caso il modello si sviluppa partendo da GreenArea. Da qui si accede a tutto lo stato applicativo del modello.
 
 `GreenArea` è un'interfaccia che viene implementata da `GreenAreaImpl`. In questo modo si può astrarre dall'implementazione dell'area verde e lavorare solo con il contratto d'uso definito. È perciò possibile, con futuri aggiornamenti, implementare diverse versioni di GreenArea.
 
