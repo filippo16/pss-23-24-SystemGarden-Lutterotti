@@ -1,6 +1,7 @@
 package it.unibo.systemgarden.view.api;
 
 import it.unibo.systemgarden.model.api.GreenArea;
+import it.unibo.systemgarden.controller.api.Controller;
 
 import java.util.List;
 
@@ -19,4 +20,6 @@ public interface View {
      * @param areas list of green areas
      */
     void updateGreenAreas( List<GreenArea> areas );
+
+    void setController( Controller controller );
 }
