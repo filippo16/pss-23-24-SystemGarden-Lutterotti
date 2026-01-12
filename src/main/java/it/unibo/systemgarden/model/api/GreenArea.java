@@ -1,8 +1,10 @@
 package it.unibo.systemgarden.model.api;
 
+import java.util.List;
+
 /**
  * Interface for a green area (garden or plant group).
- * A green area represents a single irrigation system.
+ * A green area represents a single irrigation system with multiple sectors.
  */
 public interface GreenArea {
 
@@ -20,4 +22,33 @@ public interface GreenArea {
      * @return the city where this area is located
      */
     String getCity();
+
+    /**
+     * @return list of sectors in this area
+     */
+    List<Sector> getSectors();
+
+    /**
+     * Adds a sector to this area.
+     * 
+     * @param sector the sector to add
+     */
+    void addSector( Sector sector );
+
+    /**
+     * Removes a sector from this area.
+     * 
+     * @param sector the sector to remove
+     */
+    void removeSector( Sector sector );
+
+    /**
+     * Starts irrigation for all sectors.
+     */
+    void irrigateAll();
+
+    /**
+     * Stops irrigation for all sectors.
+     */
+    void stopAll();
 }
