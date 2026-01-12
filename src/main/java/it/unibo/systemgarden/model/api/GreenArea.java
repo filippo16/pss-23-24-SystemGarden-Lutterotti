@@ -33,14 +33,14 @@ public interface GreenArea {
      * 
      * @param sector the sector to add
      */
-    void addSector(Sector sector);
+    void addSector( Sector sector );
 
     /**
      * Removes a sector from this area.
      * 
      * @param sector the sector to remove
      */
-    void removeSector(Sector sector);
+    void removeSector( Sector sector );
 
     /**
      * Starts irrigation for all sectors.

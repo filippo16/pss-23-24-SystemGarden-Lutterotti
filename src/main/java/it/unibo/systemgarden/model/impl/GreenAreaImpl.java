@@ -47,29 +47,29 @@ public class GreenAreaImpl implements GreenArea {
 
     @Override
     public List<Sector> getSectors() {
-        return new ArrayList<>(this.sectors);
+        return new ArrayList<>( this.sectors );
     }
 
     @Override
-    public void addSector(final Sector sector) {
-        if (!sectors.contains(sector)) {
-            sectors.add(sector);
+    public void addSector( final Sector sector ) {
+        if ( !sectors.contains( sector ) ) {
+            sectors.add( sector );
         }
     }
 
     @Override
-    public void removeSector(final Sector sector) {
+    public void removeSector( final Sector sector ) {
         sector.stop();
-        sectors.remove(sector);
+        sectors.remove( sector );
     }
 
     @Override
     public void irrigateAll() {
-        sectors.forEach(Sector::irrigate);
+        sectors.forEach( Sector::irrigate );
     }
 
     @Override
     public void stopAll() {
-        sectors.forEach(Sector::stop);
+        sectors.forEach( Sector::stop );
     }
 }
