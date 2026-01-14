@@ -17,6 +17,7 @@ import java.util.List;
 public class ViewImpl implements View {
 
     private static final String FXML_PATH = "/fxml/MainView.fxml";
+    private static final String CSS_PATH = "/css/style.css";
     private static final int WINDOW_WIDTH = 900;
     private static final int WINDOW_HEIGHT = 700;
 
@@ -38,11 +39,16 @@ public class ViewImpl implements View {
         try {
             final FXMLLoader loader = new FXMLLoader(getClass().getResource(FXML_PATH));
             final Parent root = loader.load();
-
-            this.mainHandler = loader.getController(); // Get the controller instance from FXMLLoader (fx:controller)
-
             final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+            
+            this.mainHandler = loader.getController(); // Get the controller instance from FXMLLoader (fx:controller)
+            this.mainHandler.setMainScene(scene);
 
+            // Load CSS
+            final var cssUrl = getClass().getResource(CSS_PATH);
+            if (cssUrl != null) {
+                scene.getStylesheets().add(cssUrl.toExternalForm());
+            }
 
             primaryStage.setTitle("SystemGarden - Gestione Aree Verdi");
             primaryStage.setScene(scene);

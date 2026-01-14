@@ -1,6 +1,7 @@
 package it.unibo.systemgarden.view.impl;
 
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import it.unibo.systemgarden.view.utils.DialogHelper;
 
 
@@ -10,9 +11,15 @@ import it.unibo.systemgarden.view.utils.DialogHelper;
  */
 public class MainViewHandler {
 
+    private Scene mainScene;
+
+    public void setMainScene(final Scene mainScene) {
+        this.mainScene = mainScene;
+    }
+
     @FXML
     private void onAddAreaClicked() {
-        final String[] result = DialogHelper.showAddAreaDialog();
+        final String[] result = DialogHelper.showAddAreaDialog(mainScene);
         
         if (result != null) {
             System.out.println("New Area - Name: " + result[0] + ", City: " + result[1]);
