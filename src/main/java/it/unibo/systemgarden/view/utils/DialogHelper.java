@@ -24,7 +24,7 @@ public final class DialogHelper {
      */
     public static String[] showAddAreaDialog() {
         try {
-            final FXMLLoader loader = new FXMLLoader( DialogHelper.class.getResource("/fxml-systemgarden/AddAreaDialog.fxml") );
+            final FXMLLoader loader = new FXMLLoader( DialogHelper.class.getResource("/fxml/dialog/AddAreaDialog.fxml") );
             final Parent root = loader.load();
             final String title = "+ Nuova Area Verde";
 
@@ -32,12 +32,12 @@ public final class DialogHelper {
             stage.setTitle( title );
             stage.initStyle( StageStyle.UTILITY ); // Utilty style for simple dialogs
             stage.setScene( new Scene( root ) );
+            
+            final AddAreaDialogController controller = loader.getController();
+            controller.setStage( stage );
 
             stage.showAndWait();
 
-            final AddAreaDialogController controller = loader.getController();
-            controller.setStage( stage );
-            
             return controller.getResult();
 
         } catch (IOException e) {
