@@ -1,7 +1,6 @@
 package it.unibo.systemgarden.view.impl;
 
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import it.unibo.systemgarden.view.utils.DialogHelper;
 
 

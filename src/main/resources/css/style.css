@@ -1,3 +1,23 @@
+/* BASE STYLE */
+.root {
+    -fx-background-color: #1a1a2e;
+}
+
+
+/* HEADER - MAINVIEW */
+.header {
+    -fx-background-color: #16213e;
+    -fx-border-color: #0f3460;
+    -fx-border-width: 0 0 1 0;
+}
+
+.app-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #4ecca3;
+}
+
+
 /* DIALOG */
 .dialog-root {
   -fx-background-color: #f7f7f7;
