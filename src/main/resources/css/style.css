@@ -1,0 +1,30 @@
+/* DIALOG */
+.dialog-root {
+  -fx-background-color: #f7f7f7;
+  -fx-padding: 14;
+}
+
+
+.dialog-title {
+  -fx-font-size: 16px;
+  -fx-font-weight: bold;
+}
+
+
+.dialog-root .text-field {
+  -fx-background-radius: 8;
+  -fx-border-radius: 8;
+  -fx-border-color: #cbd5e1;
+}
+
+/* BUTTONS */
+.btn-primary {
+  -fx-background-color: #2563eb;
+  -fx-text-fill: white;
+  -fx-background-radius: 8;
+}
+
+.btn-secondary {
+  -fx-background-color: #e5e7eb;
+  -fx-background-radius: 8;
+}
