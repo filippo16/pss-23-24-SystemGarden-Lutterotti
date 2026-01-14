@@ -49,7 +49,7 @@ public class ViewImpl implements View {
             primaryStage.show();
 
         } catch (IOException e) {
-            System.err.println("Error loading FXML: " + e.getMessage());
+            System.err.println("Error in show view method: " + e.getMessage());
             e.printStackTrace();
         }
     }
