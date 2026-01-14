@@ -10,9 +10,11 @@
 
     <!-- Header -->
     <top>
-        <HBox>
+        <!-- Horizontal box - Parent -> Region -->
+        <HBox> 
             <Label text="SystemGarden" />
-            <Region HBox.hgrow="ALWAYS"/>
+            <!-- Separatore -->
+            <Region HBox.hgrow="ALWAYS"/> 
             <Button text="+ Nuova Area" onAction="#onAddAreaClicked"/>
         </HBox>
     </top>

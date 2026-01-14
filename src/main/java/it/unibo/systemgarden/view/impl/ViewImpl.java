@@ -54,6 +54,10 @@ public class ViewImpl implements View {
         }
     }
 
+    private void showAreaDialog() {
+        // Implementation for showing area dialog
+    }
+
     @Override
     public void updateGreenAreas(final List<GreenArea> areas) {
       
