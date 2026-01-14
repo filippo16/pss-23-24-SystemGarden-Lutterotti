@@ -40,14 +40,14 @@ public class ViewImpl implements View {
             final FXMLLoader loader = new FXMLLoader(getClass().getResource(FXML_PATH));
             final Parent root = loader.load();
             final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+            final String css = getClass().getResource(CSS_PATH).toExternalForm();
             
             this.mainHandler = loader.getController(); // Get the controller instance from FXMLLoader (fx:controller)
-            this.mainHandler.setMainScene(scene);
+            this.mainHandler.setCssStylesheet(css);
 
-            // Load CSS
-            final var cssUrl = getClass().getResource(CSS_PATH);
-            if (cssUrl != null) {
-                scene.getStylesheets().add(cssUrl.toExternalForm());
+
+            if (css != null) {
+                scene.getStylesheets().add(css);
             }
 
             primaryStage.setTitle("SystemGarden - Gestione Aree Verdi");

@@ -11,15 +11,15 @@ import it.unibo.systemgarden.view.utils.DialogHelper;
  */
 public class MainViewHandler {
 
-    private Scene mainScene;
+    private String css;
 
-    public void setMainScene(final Scene mainScene) {
-        this.mainScene = mainScene;
+    public void setCssStylesheet(final String css) {
+        this.css = css;
     }
 
     @FXML
     private void onAddAreaClicked() {
-        final String[] result = DialogHelper.showAddAreaDialog(mainScene);
+        final String[] result = DialogHelper.showAddAreaDialog(css);
         
         if (result != null) {
             System.out.println("New Area - Name: " + result[0] + ", City: " + result[1]);

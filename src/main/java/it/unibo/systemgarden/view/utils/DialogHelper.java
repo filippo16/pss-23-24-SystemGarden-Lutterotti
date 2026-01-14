@@ -22,17 +22,17 @@ public final class DialogHelper {
      * 
      * @return [name, city] or null if cancelled
      */
-    public static String[] showAddAreaDialog(Scene parentScene) {
+    public static String[] showAddAreaDialog(String css) {
         try {
             final FXMLLoader loader = new FXMLLoader( DialogHelper.class.getResource("/fxml/dialog/AddAreaDialog.fxml") );
             final Parent root = loader.load();
             final String title = "+ Nuova Area Verde";
             final Scene dialogScene = new Scene( root );
 
-            if (parentScene != null) {
-                dialogScene.getStylesheets().setAll(parentScene.getStylesheets());
+            if (css != null) {
+                dialogScene.getStylesheets().setAll(css);
             }
-            
+
             final Stage stage = new Stage();
             stage.setTitle( title );
             stage.initStyle( StageStyle.UTILITY ); // Utilty style for simple dialogs
