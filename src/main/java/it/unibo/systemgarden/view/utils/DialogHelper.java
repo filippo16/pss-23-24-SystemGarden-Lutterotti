@@ -36,6 +36,8 @@ public final class DialogHelper {
             stage.showAndWait();
 
             final AddAreaDialogController controller = loader.getController();
+            controller.setStage( stage );
+            
             return controller.getResult();
 
         } catch (IOException e) {

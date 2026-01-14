@@ -17,6 +17,7 @@ public class AddAreaDialogController {
     private TextField cityField;
 
     private String[] result;
+    private Stage stage;
 
     @FXML
     private void onCreate() {
@@ -43,7 +44,10 @@ public class AddAreaDialogController {
     }
 
     private void closeDialog() {
-        final Stage stage = (Stage) nameField.getScene().getWindow();
         stage.close();
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 }
