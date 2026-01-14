@@ -1,6 +1,7 @@
 package it.unibo.systemgarden.view.impl;
 
 import javafx.fxml.FXML;
+import it.unibo.systemgarden.view.utils.DialogHelper;
 
 
 /**
@@ -11,7 +12,14 @@ public class MainViewHandler {
 
     @FXML
     private void onAddAreaClicked() {
-        System.out.println("Add Area button clicked");
+        final String[] result = DialogHelper.showAddAreaDialog();
+        
+        if (result != null) {
+            System.out.println("New Area - Name: " + result[0] + ", City: " + result[1]);
+        } else {
+            System.out.println("Add Area dialog was cancelled.");
+        }
+
     }
 
    
