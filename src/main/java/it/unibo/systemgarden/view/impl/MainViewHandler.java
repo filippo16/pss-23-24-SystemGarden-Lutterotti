@@ -2,8 +2,6 @@ package it.unibo.systemgarden.view.impl;
 
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -11,6 +9,7 @@ import javafx.scene.layout.*;
 import it.unibo.systemgarden.controller.api.Controller;
 import it.unibo.systemgarden.model.api.GreenArea;
 import it.unibo.systemgarden.view.utils.DialogHelper;
+import it.unibo.systemgarden.view.utils.CardGenerator;
 
 
 /**
@@ -27,6 +26,8 @@ public class MainViewHandler {
     private String css;
 
     private Controller controller;
+
+    private CardGenerator cardGenerator = new CardGenerator();
 
     public void setCssStylesheet(final String css) {
         this.css = css;
@@ -49,7 +50,7 @@ public class MainViewHandler {
 
 
     public void addAreaCard(final GreenArea area) {
-        final VBox card = createAreaCard(area);
+        final VBox card = cardGenerator.createAreaCard(controller, area);
         card.setId(area.getId());
         areasContainer.getChildren().add(card);
     }
@@ -63,39 +64,10 @@ public class MainViewHandler {
     
         for (int i = 0; i < children.size(); i++) {
             if (area.getId().equals(children.get(i).getId())) {
-                children.set(i, createAreaCard( area ));  // ← Sostituisce direttamente!
+                children.set(i, cardGenerator.createAreaCard(controller, area));  // ← Sostituisce direttamente!
                 break;
             }
         }
     }
 
-    private VBox createAreaCard(final GreenArea area) {
-        final VBox card = new VBox(10);
-        card.getStyleClass().add("area-card");
-        card.setPadding(new Insets(15));
-
-        // Structure
-        final HBox header = new HBox(10);
-        header.setAlignment(Pos.CENTER_LEFT);
-
-        final Label nameLabel = new Label(area.getName());
-        nameLabel.getStyleClass().add("area-name");
-
-        final Label cityLabel = new Label("(" + area.getCity() + ")");
-        cityLabel.setStyle("-fx-text-fill: #666666;");
-
-        final Region spacer = new Region();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
-
-        final Button deleteBtn = new Button("X");
-        deleteBtn.getStyleClass().add("danger-button");
-        deleteBtn.setOnAction(e -> {
-            controller.removeGreenArea( area.getId() );
-        });
-
-        header.getChildren().addAll(nameLabel, cityLabel, spacer, deleteBtn);
-
-        card.getChildren().addAll(header);
-        return card;
-    }
 }
