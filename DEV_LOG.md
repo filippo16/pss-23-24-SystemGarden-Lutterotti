@@ -30,7 +30,7 @@ La progettazione mi ha permesso di avere un'idea chiara fin dall'inizio, ho avut
 
 **Aspetti positivi**
 - Nonostante alcune difficoltà iniziale, lo sviluppo e integrazione degli fxml nel progetto mi ha permesso di suddividere e leggere al meglio il codice scritto. 
-- La separazione dei Controller dei FXML (Dialog in questo caso) che erano interpellati dall'Helper Generale secondo me hanno dato una maggiore leggibilità al codice.
+- La separazione dei Controller dei FXML (Dialog in questo caso) che venivano generati tramite l'Helper Generale secondo me hanno dato una maggiore leggibilità al codice.
 
 **Difficoltà**
-- All'inizio ho avuto difficoltà a capire come procedere con la struttura del progetto, nonostante lo studio della documentazione ho dovuto verificare online alcune tipologie di layout.
+- All'inizio ho avuto difficoltà a capire come procedere con la struttura della view, nonostante lo studio della documentazione.
