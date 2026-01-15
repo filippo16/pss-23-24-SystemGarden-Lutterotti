@@ -1,5 +1,7 @@
 package it.unibo.systemgarden.model.api;
 
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.List;
 
 /**
@@ -41,4 +43,10 @@ public interface GreenArea {
      * @param sector the sector to remove
      */
     void removeSector( Sector sector );
+
+    ZoneId getTimezone();
+
+    LocalTime getLocalTime();
+
+    void checkSchedules();
 }

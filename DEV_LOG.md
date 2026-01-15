@@ -1,6 +1,6 @@
 # Dev Log
 
-## 02.11.2025 – 06.12.2025 (ca. 12 ORE)
+## 02.01.2026 – 06.01.2026 (ca. 12 ORE)
 **Attività**
 - Progettazione generale del sistema: analisi del dominio e design architetturale.
 
@@ -13,7 +13,7 @@
 - Durante la fase di design ho avuto difficoltà a distinguere la produzione software dal ciclo completo di un’applicazione in un contesto aziendale. In particolare, tendevo a includere anche aspetti legati alla realizzazione fisica dell’impianto di irrigazione (valvole, pompa) e alla parte HMI, rendendo meno chiaro il confine tra sistema software e sistema fisico.
 
 
-## 09.12.2025 – 13.12.2025 (ca. 12 ORE)
+## 09.12.2026 – 13.12.2026 (ca. 12 ORE)
 **Attività**
 - Creazione repository GitHub.
 - Rifinitura progettazione. 
@@ -23,13 +23,14 @@
 La progettazione mi ha permesso di avere un'idea chiara fin dall'inizio, ho avuto comnuque qualche piccola difficoltà a capire come procedere con la struttura del progetto. 
 
 
-## 14.01.2026 – ORA (ca. 9 ORE)
+## 14.01.2026 – 15.01.2026 (ca. 17 ORE)
 **Attività**
 - Sviluppo della view mediante utilizzo di FXML e JavaFX.
+- Sviluppo schedule con controllo del fuso orario
 
 **Aspetti positivi**
 - Nonostante alcune difficoltà iniziale, lo sviluppo e integrazione degli fxml nel progetto mi ha permesso di suddividere e leggere al meglio il codice scritto. 
-- La separazione dei Controller dei FXML (Dialog in questo caso) che erano interpellati dall'Helper Generale secondo me hanno dato una maggiore leggibilità al codice.
+- La separazione dei Controller dei FXML (Dialog in questo caso) che venivano generati tramite l'Helper Generale secondo me hanno dato una maggiore leggibilità al codice.
 
 **Difficoltà**
-- All'inizio ho avuto difficoltà a capire come procedere con la struttura del progetto, nonostante lo studio della documentazione ho dovuto verificare online alcune tipologie di layout.
+- All'inizio ho avuto difficoltà a capire come procedere con la struttura della view, nonostante lo studio della documentazione.

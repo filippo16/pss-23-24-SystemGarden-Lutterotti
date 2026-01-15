@@ -30,4 +30,6 @@ public interface Sector {
      * Stops irrigation.
      */
     void stop();
+
+    Schedule getSchedule();
 }

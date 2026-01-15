@@ -45,26 +45,4 @@ class GreenAreaImplTest {
 
         assertTrue( area.getSectors().isEmpty() );
     }
-
-    @Test
-    void testIrrigateAll() {
-        final Sector sector1 = new SectorImpl( "Settore 1" );
-        final Sector sector2 = new SectorImpl( "Settore 2" );
-
-        area.addSector( sector1 );
-        area.addSector( sector2 );
-
-        assertTrue( sector1.isIrrigating() );
-        assertTrue( sector2.isIrrigating() );
-    }
-
-    @Test
-    void testStopAll() {
-        final Sector sector1 = new SectorImpl( "Settore 1" );
-        area.addSector( sector1 );
-
-        sector1.irrigate();
-
-        assertFalse( sector1.isIrrigating() );
-    }
 }

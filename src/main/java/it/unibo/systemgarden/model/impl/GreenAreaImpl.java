@@ -1,8 +1,11 @@
 package it.unibo.systemgarden.model.impl;
 
 import it.unibo.systemgarden.model.api.GreenArea;
+import it.unibo.systemgarden.model.api.Schedule;
 import it.unibo.systemgarden.model.api.Sector;
 
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -16,6 +19,7 @@ public class GreenAreaImpl implements GreenArea {
     private final String name;
     private final String city;
     private final List<Sector> sectors;
+    private final ZoneId timezone;
 
     /**
      * Creates a new green area.
@@ -27,8 +31,24 @@ public class GreenAreaImpl implements GreenArea {
         this.id = "AREA-" + new Random().nextInt( 100000 );
         this.name = name;
         this.city = city;
+        this.timezone = resolveTimezone(city);  
         this.sectors = new ArrayList<>();
     }
+
+    private ZoneId resolveTimezone(String city) {
+
+        return switch (city.toLowerCase()) {
+
+            case "roma", "milano", "bologna", "cesena", "arco" -> ZoneId.of("Europe/Rome");
+
+            case "london", "londra" -> ZoneId.of("Europe/London");
+
+            case "new york" -> ZoneId.of("America/New_York");
+
+            default -> ZoneId.of("Europe/Rome");
+        };
+    }
+
 
     @Override
     public String getId() {
@@ -61,5 +81,34 @@ public class GreenAreaImpl implements GreenArea {
     public void removeSector( final Sector sector ) {
         sector.stop();
         sectors.remove( sector );
+    }
+
+    @Override
+    public ZoneId getTimezone() {
+        return timezone;
+    }
+
+    @Override
+    public LocalTime getLocalTime() {
+        return LocalTime.now( timezone );
+    }
+
+    @Override
+    public void checkSchedules() {
+        for (Sector sector : sectors) {
+            Schedule schedule = sector.getSchedule();
+            
+            if (schedule != null) {
+
+                if (schedule.shouldStartNow(timezone) && !sector.isIrrigating()) {
+                    sector.irrigate();
+                }
+
+                if (schedule.shouldStopNow(timezone) && sector.isIrrigating()) {
+                    sector.stop();
+                }
+
+            }
+        }
     }
 }
