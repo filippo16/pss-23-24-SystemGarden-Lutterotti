@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17" 
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="it.unibo.systemgarden.view.impl.MainViewHandler"
+            styleClass="root">
+
+    <!-- Header -->
+    <top>
+        <!-- Horizontal box - Parent -> Region -->
+        <HBox styleClass="header" spacing="15" alignment="CENTER_LEFT">
+            <padding><Insets topRightBottomLeft="15"/></padding>
+            <Label text="SystemGarden" styleClass="app-title"/>
+            <!-- Separatore -->
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button text="+ Nuova Area" styleClass="btn-primary" onAction="#onAddAreaClicked"/>
+        </HBox>
+    </top>
+
+    <!-- Main Content for GreenArea -->
+    <center>
+        <ScrollPane fitToWidth="true" styleClass="content-scroll">
+            <VBox fx:id="areasContainer" spacing="15" styleClass="content">
+                <padding><Insets topRightBottomLeft="20"/></padding>
+            </VBox>
+        </ScrollPane>
+    </center>
+
+</BorderPane>

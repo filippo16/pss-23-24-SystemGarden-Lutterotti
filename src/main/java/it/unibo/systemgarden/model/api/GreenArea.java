@@ -41,14 +41,4 @@ public interface GreenArea {
      * @param sector the sector to remove
      */
     void removeSector( Sector sector );
-
-    /**
-     * Starts irrigation for all sectors.
-     */
-    void irrigateAll();
-
-    /**
-     * Stops irrigation for all sectors.
-     */
-    void stopAll();
 }

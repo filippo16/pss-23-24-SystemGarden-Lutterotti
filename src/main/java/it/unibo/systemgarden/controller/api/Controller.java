@@ -26,7 +26,7 @@ public interface Controller {
      * @param city the city
      * @return the created green area
      */
-    GreenArea createGreenArea( String name, String city );
+    void createGreenArea( String name, String city );
     /**
      * Removes a green area.
      * 
@@ -62,4 +62,20 @@ public interface Controller {
      * @param sectorId the sector ID
      */
     void removeSectorFromArea( String areaId, String sectorId );
+
+    /**
+     * Starts irrigation for a specific sector.
+     *
+     * @param areaId the area ID
+     * @param sectorId the sector ID
+     */
+    void irrigateSector( String areaId, String sectorId );
+
+    /**
+     * Stops irrigation for a specific sector.
+     *
+     * @param areaId the area ID
+     * @param sectorId the sector ID
+     */
+    void stopSector( String areaId, String sectorId );
 }
