@@ -62,14 +62,4 @@ public class GreenAreaImpl implements GreenArea {
         sector.stop();
         sectors.remove( sector );
     }
-
-    @Override
-    public void irrigateAll() {
-        sectors.forEach( Sector::irrigate );
-    }
-
-    @Override
-    public void stopAll() {
-        sectors.forEach( Sector::stop );
-    }
 }
