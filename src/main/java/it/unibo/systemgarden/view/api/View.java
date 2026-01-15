@@ -22,4 +22,6 @@ public interface View {
     void updateGreenAreas( List<GreenArea> areas );
 
     void setController( Controller controller );
+    
+    void addAreaCard( GreenArea area );
 }

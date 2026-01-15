@@ -26,7 +26,7 @@ public interface Controller {
      * @param city the city
      * @return the created green area
      */
-    GreenArea createGreenArea( String name, String city );
+    void createGreenArea( String name, String city );
     /**
      * Removes a green area.
      * 

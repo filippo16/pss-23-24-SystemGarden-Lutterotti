@@ -24,7 +24,7 @@ public class ViewImpl implements View {
     private final Stage primaryStage;
     private MainViewHandler mainHandler;
     private Controller controller;
-
+    // CARD SEPARATE MA NON FXML 
 
     public ViewImpl(final Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -44,6 +44,7 @@ public class ViewImpl implements View {
             
             this.mainHandler = loader.getController(); // Get the controller instance from FXMLLoader (fx:controller)
             this.mainHandler.setCssStylesheet(css);
+            this.mainHandler.setController(controller);
 
 
             if (css != null) {
@@ -60,12 +61,12 @@ public class ViewImpl implements View {
         }
     }
 
-    private void showAreaDialog() {
-        // Implementation for showing area dialog
+    public void addAreaCard(final GreenArea area) {
+        mainHandler.addAreaCard(area);
     }
 
     @Override
     public void updateGreenAreas(final List<GreenArea> areas) {
-      
+        //mainHandler.updateGreenAreas(areas);
     }
 }

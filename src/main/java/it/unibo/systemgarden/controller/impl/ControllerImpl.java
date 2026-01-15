@@ -45,12 +45,14 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public GreenArea createGreenArea( final String name, final String city ) {
+    public void createGreenArea( final String name, final String city ) {
         final GreenArea area = new GreenAreaImpl( name, city );
-        greenAreas.put( area.getId(), area );
-        updateView();
-        System.out.println( "[Controller] Created area: " + name );
-        return area;
+        if( area != null ) {
+            greenAreas.put( area.getId(), area );
+            view.addAreaCard( area );
+            System.out.println( "[Controller] Created area: " + name );
+        }
+        
     }
 
     @Override
@@ -58,7 +60,7 @@ public class ControllerImpl implements Controller {
         final GreenArea area = greenAreas.remove( areaId );
         if ( area != null ) {
             area.stopAll();
-            updateView();
+
             System.out.println( "[Controller] Removed area: " + area.getName() );
         }
     }
@@ -78,8 +80,7 @@ public class ControllerImpl implements Controller {
         final GreenArea area = greenAreas.get( areaId );
         if ( area != null ) {
             final Sector sector = new SectorImpl( sectorName );
-            area.addSector( sector );
-            updateView();
+            area.addSector( sector ); 
             System.out.println( "[Controller] Added sector: " + sectorName );
         }
     }
