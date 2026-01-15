@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Implementation of the Controller interface.
@@ -19,6 +22,9 @@ public class ControllerImpl implements Controller {
 
     private final View view;
     private final Map<String, GreenArea> greenAreas;
+    private ScheduledExecutorService scheduler;
+
+
 
     /**
      * Creates a new controller.
@@ -32,14 +38,17 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void start() {
-        System.out.println( "[Controller] System started" );
-
+        scheduler = Executors.newSingleThreadScheduledExecutor();
+        scheduler.scheduleAtFixedRate(this::checkAllSchedules, 0, 30, TimeUnit.SECONDS);
         view.show();
     }
 
     @Override
     public void stop() {
         System.out.println( "[Controller] System stopped" );
+        if (scheduler != null && !scheduler.isShutdown()) {
+            scheduler.shutdown();
+        }
     }
 
     @Override
@@ -114,5 +123,9 @@ public class ControllerImpl implements Controller {
             area.getSectors().stream().filter(s -> s.getId().equals( sectorId )).findFirst().ifPresent( Sector::stop );
             view.refreshAreaCard( area );
         }
+    }
+
+    private void checkAllSchedules() {
+        greenAreas.values().forEach( GreenArea::checkSchedules );
     }
 }
