@@ -49,22 +49,31 @@ public class MainViewHandler {
 
     }
 
-
+    /**
+    * Adds a new area card to the Areas Container in the main view.
+    */
     public void addAreaCard(final GreenArea area) {
         final VBox card = cardGenerator.createAreaCard( controller, area );
         areasContainer.getChildren().add(card);
     }
 
+    /**
+    * Removes an area card from the Areas Container in the main view.
+    */
     public void removeAreaCard(final GreenArea area) {
         areasContainer.getChildren().removeIf( node -> node.getId().equals( area.getId() ) );
     }
 
+
+    /**    
+    * Refreshes an existing area card in the Areas Container in the main view.
+    */
     public void refreshAreaCard(final GreenArea area) {
         ObservableList<Node> children = areasContainer.getChildren();
     
         for (int i = 0; i < children.size(); i++) {
             if (area.getId().equals(children.get(i).getId())) {
-                children.set(i, cardGenerator.createAreaCard( controller, area )); 
+                children.set( i, cardGenerator.createAreaCard( controller, area ) ); 
                 break;
             }
         }

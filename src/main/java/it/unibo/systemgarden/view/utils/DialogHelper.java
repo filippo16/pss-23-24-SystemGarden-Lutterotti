@@ -14,8 +14,8 @@ import javafx.stage.StageStyle;
  */
 public final class DialogHelper {
 
-    private DialogHelper() {
-    }
+    private static final String FXML_PATH_AREA_DIALOG = "fxml/dialog/AddAreaDialog.fxml";
+    private static final String FXML_PATH_SECTOR_DIALOG = "fxml/dialog/AddSectorDialog.fxml";
 
     /**
      * Shows the Add Area dialog.
@@ -24,7 +24,7 @@ public final class DialogHelper {
     */
     public static String[] showAddAreaDialog(String css) {
         try {
-            final FXMLLoader loader = new FXMLLoader( ClassLoader.getSystemResource("fxml/dialog/AddAreaDialog.fxml") );
+            final FXMLLoader loader = new FXMLLoader( ClassLoader.getSystemResource( FXML_PATH_AREA_DIALOG ) );
             final Parent root = loader.load();
             final String title = "+ Nuova Area Verde";
             final Stage stage = createDialogStage(title, root, css);
@@ -43,7 +43,7 @@ public final class DialogHelper {
 
     public static String showAddSectorDialog(String css) {
         try  {
-            final FXMLLoader loader = new FXMLLoader( ClassLoader.getSystemResource("fxml/dialog/AddSectorDialog.fxml") );
+            final FXMLLoader loader = new FXMLLoader( ClassLoader.getSystemResource( FXML_PATH_SECTOR_DIALOG ) );
             final Parent root = loader.load();
 
             final Stage dialog = createDialogStage( "Nuovo Settore", root, css );

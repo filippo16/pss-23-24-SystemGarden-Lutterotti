@@ -15,8 +15,8 @@ import java.io.IOException;
  */
 public class ViewImpl implements View {
 
-    private static final String FXML_PATH = "/fxml/MainView.fxml";
-    private static final String CSS_PATH = "/css/style.css";
+    private static final String FXML_PATH = "fxml/MainView.fxml";
+    private static final String CSS_PATH = "css/style.css";
     private static final int WINDOW_WIDTH = 900;
     private static final int WINDOW_HEIGHT = 700;
 
@@ -36,10 +36,10 @@ public class ViewImpl implements View {
     @Override
     public void show() {
         try {
-            final FXMLLoader loader = new FXMLLoader(getClass().getResource(FXML_PATH));
+            final FXMLLoader loader = new FXMLLoader( ClassLoader.getSystemResource(FXML_PATH) );
             final Parent root = loader.load();
-            final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-            final String css = getClass().getResource(CSS_PATH).toExternalForm();
+            final Scene scene = new Scene( root, WINDOW_WIDTH, WINDOW_HEIGHT );
+            final String css = ClassLoader.getSystemResource( CSS_PATH ).toExternalForm();
             
             this.mainHandler = loader.getController(); // Get the controller instance from FXMLLoader (fx:controller)
             this.mainHandler.setCssStylesheet(css);
