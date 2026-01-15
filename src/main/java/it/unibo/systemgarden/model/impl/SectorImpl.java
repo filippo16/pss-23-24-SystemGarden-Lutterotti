@@ -1,7 +1,10 @@
 package it.unibo.systemgarden.model.impl;
 
+import it.unibo.systemgarden.model.api.Schedule;
 import it.unibo.systemgarden.model.api.Sector;
 
+import java.time.LocalTime;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -12,6 +15,7 @@ public class SectorImpl implements Sector {
     private final String id;
     private final String name;
     private boolean irrigating;
+    private Schedule schedule;
 
     /**
      * Creates a new sector.
@@ -21,6 +25,7 @@ public class SectorImpl implements Sector {
     public SectorImpl( final String name ) {
         this.id = "SECT-" + new Random().nextInt( 100000 );
         this.name = name;
+        this.schedule = new ScheduleImpl(LocalTime.of(6, 0), 30, List.of(1, 3, 5));
         this.irrigating = false;
     }
 
@@ -47,5 +52,10 @@ public class SectorImpl implements Sector {
     @Override
     public void stop() {
         this.irrigating = false;
+    }
+
+    @Override
+    public Schedule getSchedule() {
+        return this.schedule;
     }
 }
