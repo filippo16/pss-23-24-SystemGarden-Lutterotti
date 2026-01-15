@@ -42,12 +42,10 @@ public class SectorImpl implements Sector {
     @Override
     public void irrigate() {
         this.irrigating = true;
-        System.out.println("[Sector] " + name + " - Irrigation started");
     }
 
     @Override
     public void stop() {
         this.irrigating = false;
-        System.out.println("[Sector] " + name + " - Irrigation stopped");
     }
 }

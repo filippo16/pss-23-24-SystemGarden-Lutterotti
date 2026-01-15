@@ -52,7 +52,6 @@ public class MainViewHandler {
 
     public void addAreaCard(final GreenArea area) {
         final VBox card = cardGenerator.createAreaCard( controller, area );
-        card.setId(area.getId());
         areasContainer.getChildren().add(card);
     }
 

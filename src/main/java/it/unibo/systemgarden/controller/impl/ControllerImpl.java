@@ -39,14 +39,13 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void stop() {
-        // Stop all irrigations
-        greenAreas.values().forEach( GreenArea::stopAll );
         System.out.println( "[Controller] System stopped" );
     }
 
     @Override
     public void createGreenArea( final String name, final String city ) {
         final GreenArea area = new GreenAreaImpl( name, city );
+
         if( area != null ) {
             greenAreas.put( area.getId(), area );
             view.addAreaCard( area );
@@ -58,9 +57,9 @@ public class ControllerImpl implements Controller {
     @Override
     public void removeGreenArea(final String areaId) {
         final GreenArea area = greenAreas.remove( areaId );
-        if ( area != null ) {
-            area.stopAll();
 
+        if ( area != null ) {
+            view.removeAreaCard( area );
             System.out.println( "[Controller] Removed area: " + area.getName() );
         }
     }
@@ -78,9 +77,11 @@ public class ControllerImpl implements Controller {
     @Override
     public void addSectorToArea( final String areaId, final String sectorName ) {
         final GreenArea area = greenAreas.get( areaId );
+
         if ( area != null ) {
             final Sector sector = new SectorImpl( sectorName );
             area.addSector( sector ); 
+            view.refreshAreaCard( area );
             System.out.println( "[Controller] Added sector: " + sectorName );
         }
     }
@@ -88,21 +89,30 @@ public class ControllerImpl implements Controller {
     @Override
     public void removeSectorFromArea( final String areaId, final String sectorId ) {
         final GreenArea area = greenAreas.get( areaId );
+
         if ( area != null ) {
-            area.getSectors().stream()
-                    .filter(s -> s.getId().equals( sectorId ))
-                    .findFirst()
-                    .ifPresent( area::removeSector );
-            updateView();
+            area.getSectors().stream().filter(s -> s.getId().equals( sectorId )).findFirst().ifPresent( area::removeSector );
+            view.refreshAreaCard( area );
         }
     }
 
-    /**
-     * Updates the view with current data.
-     */
-    private void updateView() {
-        if ( view != null ) {
-            view.updateGreenAreas( getGreenAreas() );
+    @Override
+    public void irrigateSector( final String areaId, final String sectorId ) {
+        final GreenArea area = greenAreas.get( areaId );
+
+        if ( area != null ) {
+            area.getSectors().stream().filter(s -> s.getId().equals( sectorId )).findFirst().ifPresent( Sector::irrigate );
+            view.refreshAreaCard( area );
+        }
+    }
+
+    @Override
+    public void stopSector( final String areaId, final String sectorId ) {
+        final GreenArea area = greenAreas.get( areaId );
+
+        if ( area != null ) {
+            area.getSectors().stream().filter(s -> s.getId().equals( sectorId )).findFirst().ifPresent( Sector::stop );
+            view.refreshAreaCard( area );
         }
     }
 }

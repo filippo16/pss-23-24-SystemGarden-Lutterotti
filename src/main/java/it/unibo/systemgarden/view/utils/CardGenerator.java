@@ -18,6 +18,7 @@ public class CardGenerator {
 
     public VBox createAreaCard(Controller controller, final GreenArea area) {
         final VBox card = new VBox(10);
+        card.setId(area.getId());
         card.getStyleClass().add("area-card");
         card.setPadding(new Insets(15));
 
