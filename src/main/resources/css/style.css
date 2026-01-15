@@ -1,20 +1,25 @@
 /* BASE STYLE */
 .root {
-    -fx-background-color: #1a1a2e;
+  -fx-background-color: #1a1a2e;
+}
+
+.content-scroll {
+  -fx-background: transparent;
+  -fx-background-color: transparent;
 }
 
 
 /* HEADER - MAINVIEW */
 .header {
-    -fx-background-color: #16213e;
-    -fx-border-color: #0f3460;
-    -fx-border-width: 0 0 1 0;
+  -fx-background-color: #16213e;
+  -fx-border-color: #0f3460;
+  -fx-border-width: 0 0 1 0;
 }
 
 .app-title {
-    -fx-font-size: 24px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #4ecca3;
+  -fx-font-size: 24px;
+  -fx-font-weight: bold;
+  -fx-text-fill: #4ecca3;
 }
 
 
@@ -47,4 +52,31 @@
 .btn-secondary {
   -fx-background-color: #e5e7eb;
   -fx-background-radius: 8;
+}
+
+.success-button {
+  -fx-background-color: #28a745;
+  -fx-text-fill: white;
+  -fx-background-radius: 8;
+}
+
+.danger-button {
+  -fx-background-color: #dc3545;
+  -fx-text-fill: white;
+  -fx-background-radius: 8;
+}
+
+/* GREEN AREA CARD */
+.area-card {
+  -fx-background-color: #16213e;
+  -fx-background-radius: 10px;
+  -fx-border-color: #0f3460;
+  -fx-border-radius: 10px;
+  -fx-border-width: 1px;
+}
+
+.area-name {
+  -fx-font-size: 18px;
+  -fx-font-weight: bold;
+  -fx-text-fill: white;
 }

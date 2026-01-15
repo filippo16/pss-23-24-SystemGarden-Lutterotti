@@ -21,4 +21,13 @@
         </HBox>
     </top>
 
+    <!-- Main Content for GreenArea -->
+    <center>
+        <ScrollPane fitToWidth="true" styleClass="content-scroll">
+            <VBox fx:id="areasContainer" spacing="15" styleClass="content">
+                <padding><Insets topRightBottomLeft="20"/></padding>
+            </VBox>
+        </ScrollPane>
+    </center>
+
 </BorderPane>
