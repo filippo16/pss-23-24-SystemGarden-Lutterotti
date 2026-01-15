@@ -110,15 +110,12 @@ L'architettura adottata segue le regole del pattern **MVC** (Model-View-Controll
 
 Sono state modellate diverse entità associate a GreenArea:
 - **Sector**: rappresenta una zona irrigabile con propria valvola e programmazione
+- **Schedule**: gestice la programmazione di avvio e spegnimento impianto automatico
 - **Sensor**: dispositivo per la lettura di dati ambientali (temperatura, umidità)
 - **Camera**: telecamera per il monitoraggio visivo dell'area
 - **Location**: informazioni sulla località per il calcolo del fuso orario
 
-Allo stato attuale, `Camera` fornisce funzionalità di visualizzazione della.
-
-`Schedule` è associato a `Sector` e gestisce la programmazione automatica dell'irrigazione, calcolando il prossimo orario di avvio.
-
-L'interfaccia grafica viene gestita nella parte della "view". Seguendo i principi del pattern MVC, la "view", a seguito di input dell'utente, contatterà il "controller" per ottenere in risposta informazioni generate da GreenArea (modello). ---forse dovrò scrivere come è formata la view---
+L'interfaccia grafica viene gestita nella parte della "view". Seguendo i principi del pattern MVC, la "view", a seguito di input dell'utente, contatterà il "controller" per ottenere in risposta informazioni generate dal modello.
 
 ```
 classDiagram
@@ -182,3 +179,5 @@ classDiagram
     
     Sector *-- Schedule
 ```
+
+## Design dettagliato
