@@ -1,6 +1,7 @@
 package it.unibo.systemgarden.model.impl;
 
 import it.unibo.systemgarden.model.api.GreenArea;
+import it.unibo.systemgarden.model.api.Schedule;
 import it.unibo.systemgarden.model.api.Sector;
 
 import java.time.LocalTime;
@@ -83,11 +84,31 @@ public class GreenAreaImpl implements GreenArea {
     }
 
     @Override
-        public ZoneId getTimezone() {
+    public ZoneId getTimezone() {
         return timezone;
     }
+
     @Override
-        public LocalTime getLocalTime() {
-        return LocalTime.now(timezone);
+    public LocalTime getLocalTime() {
+        return LocalTime.now( timezone );
+    }
+
+    @Override
+    public void checkSchedules() {
+        for (Sector sector : sectors) {
+            Schedule schedule = sector.getSchedule();
+            
+            if (schedule != null) {
+
+                if (schedule.shouldStartNow(timezone) && !sector.isIrrigating()) {
+                    sector.irrigate();
+                }
+
+                if (schedule.shouldStopNow(timezone) && sector.isIrrigating()) {
+                    sector.stop();
+                }
+
+            }
+        }
     }
 }

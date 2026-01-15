@@ -1,6 +1,7 @@
 package it.unibo.systemgarden.model.api;
 
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.List;
 
 public interface Schedule {
@@ -11,5 +12,7 @@ public interface Schedule {
 
     List<Integer> getActiveDays();
 
-    void getNextRunTime();   
+    boolean shouldStartNow(ZoneId timezone);
+    
+    boolean shouldStopNow(ZoneId timezone);
 }

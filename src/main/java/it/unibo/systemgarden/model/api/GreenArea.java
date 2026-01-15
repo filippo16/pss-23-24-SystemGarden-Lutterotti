@@ -47,4 +47,6 @@ public interface GreenArea {
     ZoneId getTimezone();
 
     LocalTime getLocalTime();
+
+    void checkSchedules();
 }

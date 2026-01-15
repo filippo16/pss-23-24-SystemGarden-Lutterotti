@@ -2,7 +2,9 @@ package it.unibo.systemgarden.model.impl;
 
 import it.unibo.systemgarden.model.api.Schedule;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,9 +36,24 @@ public class ScheduleImpl implements Schedule {
         return new ArrayList<>(this.activeDays);
     }
 
-    @Override
-    public void getNextRunTime() {
-       
+    public boolean shouldStartNow(ZoneId timezone) {
+        
+        LocalDateTime now = LocalDateTime.now(timezone);
+        int today = now.getDayOfWeek().getValue();  // 1=Mon, 7=Sun
+        
+        if (!activeDays.contains(today)) return false;
+        
+        LocalTime nowTime = now.toLocalTime();
+        
+        return activeDays.contains(today) && nowTime.isAfter(startTime);
+    }
+
+    public boolean shouldStopNow(ZoneId timezone) {
+        
+        LocalTime endTime = startTime.plusMinutes(duration);
+        LocalTime nowTime = LocalTime.now(timezone);
+        
+        return nowTime.isAfter(endTime);
     }
 
     /**
