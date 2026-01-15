@@ -3,10 +3,16 @@ package it.unibo.systemgarden.view.utils;
 import it.unibo.systemgarden.controller.api.Controller;
 import it.unibo.systemgarden.model.api.GreenArea;
 import it.unibo.systemgarden.model.api.Sector;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.util.Duration;
+
+import java.time.format.DateTimeFormatter;
 
 public class CardGenerator {
 
@@ -36,6 +42,26 @@ public class CardGenerator {
         final Label cityLabel = new Label("(" + area.getCity() + ")");
         cityLabel.setStyle("-fx-text-fill: #666666;");
 
+        // Add clock
+        final DateTimeFormatter clockFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        final Label clockLabel = new Label(area.getLocalTime().format(clockFormatter));
+        clockLabel.getStyleClass().add("clock-label");
+
+        final Timeline clockTimeline = new Timeline(
+            new KeyFrame(Duration.seconds(1), e -> 
+                clockLabel.setText(area.getLocalTime().format(clockFormatter))
+            )
+        );
+        clockTimeline.setCycleCount(Animation.INDEFINITE);
+        clockTimeline.play();
+
+        // Stop the timer when the card is removed from the scene
+        card.sceneProperty().addListener((obs, oldScene, newScene) -> {
+            if (newScene == null) {
+                clockTimeline.stop();
+            }
+        });
+
         final Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
@@ -45,7 +71,7 @@ public class CardGenerator {
             controller.removeGreenArea( area.getId() );
         });
 
-        header.getChildren().addAll(nameLabel, cityLabel, spacer, deleteBtn);
+        header.getChildren().addAll(nameLabel, cityLabel, spacer, clockLabel, deleteBtn);
 
         final VBox sectorsSection = createSectorsSection(controller, area);
 
