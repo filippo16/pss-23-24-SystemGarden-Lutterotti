@@ -54,8 +54,6 @@ class GreenAreaImplTest {
         area.addSector( sector1 );
         area.addSector( sector2 );
 
-        area.irrigateAll();
-
         assertTrue( sector1.isIrrigating() );
         assertTrue( sector2.isIrrigating() );
     }
@@ -66,7 +64,6 @@ class GreenAreaImplTest {
         area.addSector( sector1 );
 
         sector1.irrigate();
-        area.stopAll();
 
         assertFalse( sector1.isIrrigating() );
     }

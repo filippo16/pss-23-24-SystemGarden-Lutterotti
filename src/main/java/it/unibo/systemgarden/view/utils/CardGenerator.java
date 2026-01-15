@@ -16,6 +16,10 @@ public class CardGenerator {
         this.css = css;
     }
 
+
+    /**
+     * Creates a card that representing a GreenArea.
+    */
     public VBox createAreaCard(Controller controller, final GreenArea area) {
         final VBox card = new VBox(10);
         card.setId(area.getId());
@@ -49,7 +53,10 @@ public class CardGenerator {
         return card;
     }
 
-     private VBox createSectorsSection(Controller controller, final GreenArea area) {
+    /**
+     * Creates the sectors section for a GreenArea card.
+    */
+    private VBox createSectorsSection(Controller controller, final GreenArea area) {
         final VBox box = new VBox(5);
 
         final HBox titleRow = new HBox(10);
@@ -58,7 +65,8 @@ public class CardGenerator {
         final Label title = new Label("Settori");
         title.getStyleClass().add("section-label");
 
-        final Button addBtn = new Button("+");
+        final Button addBtn = new Button("Aggiungi Settore");
+        addBtn.getStyleClass().add("btn-primary");
         addBtn.setOnAction(e -> {
             final String result = DialogHelper.showAddSectorDialog(css);
             if (result != null) {
@@ -77,12 +85,14 @@ public class CardGenerator {
             final Label sectorLabel = new Label(status + " " + sector.getName());
             sectorLabel.setPrefWidth(150);
 
-            final Button startBtn = new Button(">");
+            final Button startBtn = new Button("Avvia");
+            startBtn.getStyleClass().add("btn-secondary");
             startBtn.setOnAction(e -> {
                 controller.irrigateSector(area.getId(), sector.getId());
             });
 
-            final Button stopBtn = new Button("||");
+            final Button stopBtn = new Button("Ferma");
+            stopBtn.getStyleClass().add("btn-secondary");
             stopBtn.setOnAction(e -> {
                 controller.stopSector(area.getId(), sector.getId());
             });

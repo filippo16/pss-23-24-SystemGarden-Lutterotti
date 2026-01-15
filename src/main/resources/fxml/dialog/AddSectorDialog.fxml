@@ -7,16 +7,18 @@
 <VBox xmlns="http://javafx.com/javafx/17" 
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="it.unibo.systemgarden.view.dialog.AddSectorDialogController"
-      spacing="10" prefWidth="280">
+      spacing="10" prefWidth="280" styleClass="dialog-root">
     
     <padding><Insets topRightBottomLeft="20"/></padding>
-    
+
+    <Label text="Crea un nuovo Settore" styleClass="dialog-title" />
+
     <Label text="Nome Settore:" />
     <TextField fx:id="nameField" promptText="Es: Prato Nord"/>
     
     <HBox spacing="10" alignment="CENTER_RIGHT">
-        <Button text="Annulla" onAction="#onCancel"/>
-        <Button text="Aggiungi" onAction="#onAdd"/>
+        <Button text="Annulla" onAction="#onCancel" styleClass="btn-secondary"/>
+        <Button text="Aggiungi" onAction="#onAdd" styleClass="btn-primary"/>
     </HBox>
     
 </VBox>
