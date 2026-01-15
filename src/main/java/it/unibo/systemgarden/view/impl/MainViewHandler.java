@@ -27,10 +27,11 @@ public class MainViewHandler {
 
     private Controller controller;
 
-    private CardGenerator cardGenerator = new CardGenerator();
+    private CardGenerator cardGenerator;
 
     public void setCssStylesheet(final String css) {
         this.css = css;
+        this.cardGenerator = new CardGenerator(css);
     }
 
     public void setController(final Controller controller) {
@@ -50,7 +51,7 @@ public class MainViewHandler {
 
 
     public void addAreaCard(final GreenArea area) {
-        final VBox card = cardGenerator.createAreaCard(controller, area);
+        final VBox card = cardGenerator.createAreaCard( controller, area );
         card.setId(area.getId());
         areasContainer.getChildren().add(card);
     }
@@ -64,10 +65,12 @@ public class MainViewHandler {
     
         for (int i = 0; i < children.size(); i++) {
             if (area.getId().equals(children.get(i).getId())) {
-                children.set(i, cardGenerator.createAreaCard(controller, area));  // ← Sostituisce direttamente!
+                children.set(i, cardGenerator.createAreaCard( controller, area )); 
                 break;
             }
         }
     }
+
+
 
 }
