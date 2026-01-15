@@ -15,13 +15,19 @@ public interface View {
      */
     void show();
 
-    /**
-     * Updates the display with the current green areas.
-     * @param areas list of green areas
-     */
-    void updateGreenAreas( List<GreenArea> areas );
-
     void setController( Controller controller );
-    
+
+    /**
+     * Add a card view for the specified green area.
+     * @param area the green area to add
+     */
     void addAreaCard( GreenArea area );
+
+    /**
+     * Remove the card view for the specified green area.
+     * @param area the green area to remove
+     */
+    void removeAreaCard( GreenArea area );
+
+    void refreshAreaCard( GreenArea area );
 }

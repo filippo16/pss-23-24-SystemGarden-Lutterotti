@@ -1,13 +1,12 @@
 package it.unibo.systemgarden.view.impl;
 
-import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-
-import java.util.List;
 
 import it.unibo.systemgarden.controller.api.Controller;
 import it.unibo.systemgarden.model.api.GreenArea;
@@ -51,7 +50,23 @@ public class MainViewHandler {
 
     public void addAreaCard(final GreenArea area) {
         final VBox card = createAreaCard(area);
+        card.setId(area.getId());
         areasContainer.getChildren().add(card);
+    }
+
+    public void removeAreaCard(final GreenArea area) {
+        areasContainer.getChildren().removeIf( node -> node.getId().equals( area.getId() ) );
+    }
+
+    public void refreshAreaCard(final GreenArea area) {
+        ObservableList<Node> children = areasContainer.getChildren();
+    
+        for (int i = 0; i < children.size(); i++) {
+            if (area.getId().equals(children.get(i).getId())) {
+                children.set(i, createAreaCard( area ));  // ← Sostituisce direttamente!
+                break;
+            }
+        }
     }
 
     private VBox createAreaCard(final GreenArea area) {
@@ -75,36 +90,12 @@ public class MainViewHandler {
         final Button deleteBtn = new Button("X");
         deleteBtn.getStyleClass().add("danger-button");
         deleteBtn.setOnAction(e -> {
-
+            controller.removeGreenArea( area.getId() );
         });
 
         header.getChildren().addAll(nameLabel, cityLabel, spacer, deleteBtn);
 
-
-        // Area controls (irrigate all / stop all)
-        final HBox controls = new HBox(10);
-
-        final Button irrigateBtn = new Button("Irriga Tutto");
-        irrigateBtn.getStyleClass().add("success-button");
-        irrigateBtn.setOnAction(e -> {
-            area.irrigateAll();
-
-        });
-
-        final Button stopBtn = new Button("Ferma Tutto");
-        stopBtn.getStyleClass().add("danger-button");
-        stopBtn.setOnAction(e -> {
-            area.stopAll();
-
-        });
-
-        controls.getChildren().addAll(irrigateBtn, stopBtn);
-
-        card.getChildren().addAll(header, controls);
+        card.getChildren().addAll(header);
         return card;
     }
-
-    
-
-
 }

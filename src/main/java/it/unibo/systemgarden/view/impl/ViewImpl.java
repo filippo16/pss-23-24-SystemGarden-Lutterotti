@@ -24,7 +24,7 @@ public class ViewImpl implements View {
     private final Stage primaryStage;
     private MainViewHandler mainHandler;
     private Controller controller;
-    // CARD SEPARATE MA NON FXML 
+     
 
     public ViewImpl(final Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -61,12 +61,18 @@ public class ViewImpl implements View {
         }
     }
 
-    public void addAreaCard(final GreenArea area) {
-        mainHandler.addAreaCard(area);
+    @Override
+    public void addAreaCard( final GreenArea area ) {
+        mainHandler.addAreaCard( area );
     }
 
     @Override
-    public void updateGreenAreas(final List<GreenArea> areas) {
-        //mainHandler.updateGreenAreas(areas);
+    public void removeAreaCard( final GreenArea area ) {
+        mainHandler.removeAreaCard( area );
+    }
+
+    @Override
+    public void refreshAreaCard( final GreenArea area ) {
+        mainHandler.refreshAreaCard( area );
     }
 }
