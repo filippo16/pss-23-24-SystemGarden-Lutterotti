@@ -1,6 +1,6 @@
 # Dev Log
 
-## 02.11.2025 – 06.12.2025 (caa. 12 ORE)
+## 02.11.2025 – 06.12.2025 (ca. 12 ORE)
 **Attività**
 - Progettazione generale del sistema: analisi del dominio e design architetturale.
 
@@ -13,7 +13,7 @@
 - Durante la fase di design ho avuto difficoltà a distinguere la produzione software dal ciclo completo di un’applicazione in un contesto aziendale. In particolare, tendevo a includere anche aspetti legati alla realizzazione fisica dell’impianto di irrigazione (valvole, pompa) e alla parte HMI, rendendo meno chiaro il confine tra sistema software e sistema fisico.
 
 
-## 09.12.2025 – 13.12.2025 (ca. 12 ORE) da rivedere
+## 09.12.2025 – 13.12.2025 (ca. 12 ORE)
 **Attività**
 - Creazione repository GitHub.
 - Rifinitura progettazione. 
