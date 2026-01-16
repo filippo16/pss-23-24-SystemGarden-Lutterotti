@@ -2,8 +2,11 @@ package it.unibo.systemgarden.view.utils;
 
 import it.unibo.systemgarden.controller.api.Controller;
 import it.unibo.systemgarden.model.api.GreenArea;
+import it.unibo.systemgarden.model.api.Schedule;
 import it.unibo.systemgarden.model.api.Sector;
 import it.unibo.systemgarden.view.dialog.AddSectorDialogController;
+import it.unibo.systemgarden.view.dialog.EditScheduleDialogController;
+import it.unibo.systemgarden.view.dialog.ScheduleData;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -13,11 +16,15 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
 
+import java.time.DayOfWeek;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class CardGenerator {
 
     private static final String FXML_PATH_SECTOR_DIALOG = "fxml/dialog/AddSectorDialog.fxml";
+    private static final String FXML_PATH_SCHEDULE_DIALOG = "fxml/dialog/EditScheduleDialog.fxml";
 
     private String css;
 
@@ -107,6 +114,9 @@ public class CardGenerator {
         box.getChildren().add(titleRow);
 
         for (final Sector sector : area.getSectors()) {
+            final VBox sectorBox = new VBox(3);
+            sectorBox.getStyleClass().add("sector-item");
+            
             final HBox row = new HBox(10);
             row.setAlignment(Pos.CENTER_LEFT);
 
@@ -126,16 +136,72 @@ public class CardGenerator {
                 controller.stopSector(area.getId(), sector.getId());
             });
 
+            final Button scheduleBtn = new Button("Orari");
+            scheduleBtn.getStyleClass().add("btn-secondary");
+            scheduleBtn.setOnAction(e -> {
+                final ScheduleData result = DialogHelper.<ScheduleData, EditScheduleDialogController>showDialog( 
+                    FXML_PATH_SCHEDULE_DIALOG, "Modifica Programmazione", css
+                );
+
+                if (result != null) {
+                    controller.updateSectorSchedule(area.getId(), sector.getId(), result.startTime(), result.duration(), result.activeDays());
+                }
+            });
+
             final Button deleteBtn = new Button("X");
             deleteBtn.getStyleClass().add("danger-button");
             deleteBtn.setOnAction(e -> {
                 controller.removeSectorFromArea(area.getId(), sector.getId());
             });
 
-            row.getChildren().addAll(sectorLabel, startBtn, stopBtn, deleteBtn);
-            box.getChildren().add(row);
+            row.getChildren().addAll(sectorLabel, startBtn, stopBtn, scheduleBtn, deleteBtn);
+            
+            // Schedule info label
+            final Label scheduleInfoLabel = new Label(formatScheduleInfo(sector.getSchedule()));
+            scheduleInfoLabel.setStyle("-fx-text-fill: #888888; -fx-font-size: 11px;");
+            
+            sectorBox.getChildren().addAll(row, scheduleInfoLabel);
+            box.getChildren().add(sectorBox);
         }
 
         return box;
+    }
+
+    /**
+     * Formats the schedule information for display.
+     */
+    private String formatScheduleInfo(final Schedule schedule) {
+        if (schedule == null) {
+            return "Nessuna programmazione";
+        }
+        
+        final String time = schedule.getStartTime().format(DateTimeFormatter.ofPattern("HH:mm"));
+        final String duration = schedule.getDuration() + " min";
+        final String days = formatDays(schedule.getActiveDays());
+        
+        return "⏰ " + time + " | " + duration + " | " + days;
+    }
+
+    /**
+     * Formats the list of active days.
+     */
+    private String formatDays(final List<Integer> days) {
+        if (days == null || days.isEmpty()) {
+            return "Nessun giorno";
+        }
+        
+        return days.stream()
+            .sorted()
+            .map(d -> switch (d) {
+                case 1 -> "Lun";
+                case 2 -> "Mar";
+                case 3 -> "Mer";
+                case 4 -> "Gio";
+                case 5 -> "Ven";
+                case 6 -> "Sab";
+                case 7 -> "Dom";
+                default -> "";
+            })
+            .collect(Collectors.joining(", "));
     }
 }
