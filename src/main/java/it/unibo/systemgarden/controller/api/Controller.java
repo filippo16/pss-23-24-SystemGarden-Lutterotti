@@ -2,6 +2,7 @@ package it.unibo.systemgarden.controller.api;
 
 import it.unibo.systemgarden.model.api.GreenArea;
 
+import java.time.LocalTime;
 import java.util.List;
 
 /**
@@ -78,4 +79,7 @@ public interface Controller {
      * @param sectorId the sector ID
      */
     void stopSector( String areaId, String sectorId );
+
+ 
+    void updateSectorSchedule( String areaId, String sectorId, LocalTime startTime, int duration, List<Integer> activeDays );
 }

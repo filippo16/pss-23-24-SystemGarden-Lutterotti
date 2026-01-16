@@ -39,4 +39,6 @@ public interface Schedule {
      * @return true if irrigation should stop now
      */
     boolean shouldStopNow( ZoneId timezone );
+
+    void update( LocalTime startTime, int duration, List<Integer> activeDays );
 }
