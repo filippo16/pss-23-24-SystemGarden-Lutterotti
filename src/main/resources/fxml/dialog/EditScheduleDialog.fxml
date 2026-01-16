@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17" 
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="it.unibo.systemgarden.view.dialog.EditScheduleDialogController"
+      spacing="10" prefWidth="320" styleClass="dialog-root">
+    
+    <padding><Insets topRightBottomLeft="20"/></padding>
+
+    <Label text="Modifica Programmazione" styleClass="dialog-title" />
+
+    <!-- Time Selection -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="Ora:"/>
+        <Spinner fx:id="hourSpinner" prefWidth="70"/>
+        <Label text=":"/>
+        <Spinner fx:id="minuteSpinner" prefWidth="70"/>
+    </HBox>
+    
+    <!-- Duration -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="Durata (min):"/>
+        <Spinner fx:id="durationSpinner" prefWidth="100"/>
+    </HBox>
+
+
+    <!-- Days Selection -->
+    <VBox spacing="5">
+        <Label text="Giorni attivi:"/>
+        <HBox spacing="5">
+            <CheckBox fx:id="mondayCheck" text="Lun"/>
+            <CheckBox fx:id="tuesdayCheck" text="Mar"/>
+            <CheckBox fx:id="wednesdayCheck" text="Mer"/>
+            <CheckBox fx:id="thursdayCheck" text="Gio"/>
+            <CheckBox fx:id="fridayCheck" text="Ven"/>
+            <CheckBox fx:id="saturdayCheck" text="Sab"/>
+            <CheckBox fx:id="sundayCheck" text="Dom"/>
+        </HBox>
+    </VBox>
+    
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Annulla" onAction="#onCancel" styleClass="btn-secondary"/>
+        <Button text="Salva" onAction="#onSave" styleClass="btn-primary"/>
+    </HBox>
+    
+</VBox>
