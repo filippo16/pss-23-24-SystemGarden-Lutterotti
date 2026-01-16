@@ -42,17 +42,17 @@ public class CardGenerator {
         final Label nameLabel = new Label(area.getName());
         nameLabel.getStyleClass().add("area-name");
 
-        final Label cityLabel = new Label("(" + area.getCity() + ")");
+        final Label cityLabel = new Label("(" + area.getLocation().getCity() + ")");
         cityLabel.setStyle("-fx-text-fill: #666666;");
 
         // Add clock
         final DateTimeFormatter clockFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-        final Label clockLabel = new Label(area.getLocalTime().format(clockFormatter));
+        final Label clockLabel = new Label(area.getLocation().getLocalTime().format(clockFormatter));
         clockLabel.getStyleClass().add("clock-label");
 
         final Timeline clockTimeline = new Timeline(
             new KeyFrame(Duration.seconds(1), e -> 
-                clockLabel.setText(area.getLocalTime().format(clockFormatter))
+                clockLabel.setText(area.getLocation().getLocalTime().format(clockFormatter))
             )
         );
         clockTimeline.setCycleCount(Animation.INDEFINITE);

@@ -1,7 +1,5 @@
 package it.unibo.systemgarden.model.api;
 
-import java.time.LocalTime;
-import java.time.ZoneId;
 import java.util.List;
 
 /**
@@ -21,9 +19,9 @@ public interface GreenArea {
     String getName();
 
     /**
-     * @return the city where this area is located
+     * @return the location of this area
      */
-    String getCity();
+    Location getLocation();
 
     /**
      * @return list of sectors in this area
@@ -44,9 +42,8 @@ public interface GreenArea {
      */
     void removeSector( Sector sector );
 
-    ZoneId getTimezone();
-
-    LocalTime getLocalTime();
-
+    /**
+     * Checks all sector schedules and starts/stops irrigation as needed.
+     */
     void checkSchedules();
 }
