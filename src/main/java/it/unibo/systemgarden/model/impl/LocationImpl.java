@@ -32,7 +32,7 @@ public class LocationImpl implements Location {
     private ZoneId resolveTimezone(final String city) {
         return switch (city.toLowerCase()) {
             case "roma", "milano", "bologna", "cesena", "arco" -> ZoneId.of("Europe/Rome");
-            case "london", "londra" -> ZoneId.of("Europe/London");
+            case "londra" -> ZoneId.of("Europe/London");
             case "new york" -> ZoneId.of("America/New_York");
             default -> ZoneId.of("Europe/Rome");
         };

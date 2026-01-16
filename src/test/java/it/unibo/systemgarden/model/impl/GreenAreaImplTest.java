@@ -24,7 +24,7 @@ class GreenAreaImplTest {
         assertNotNull( area.getId() );
         assertTrue( area.getId().startsWith( "AREA-" ) );
         assertEquals( "Giardino Nord", area.getName() );
-        assertEquals( "Bologna", area.getCity() );
+        assertEquals( "Bologna", area.getLocation().getCity() );
         assertTrue( area.getSectors().isEmpty() );
     }
 
