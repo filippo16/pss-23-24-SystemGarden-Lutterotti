@@ -3,6 +3,7 @@ package it.unibo.systemgarden.view.utils;
 import it.unibo.systemgarden.controller.api.Controller;
 import it.unibo.systemgarden.model.api.GreenArea;
 import it.unibo.systemgarden.model.api.Sector;
+import it.unibo.systemgarden.view.dialog.AddSectorDialogController;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -15,6 +16,8 @@ import javafx.util.Duration;
 import java.time.format.DateTimeFormatter;
 
 public class CardGenerator {
+
+    private static final String FXML_PATH_SECTOR_DIALOG = "fxml/dialog/AddSectorDialog.fxml";
 
     private String css;
 
@@ -94,7 +97,7 @@ public class CardGenerator {
         final Button addBtn = new Button("Aggiungi Settore");
         addBtn.getStyleClass().add("btn-primary");
         addBtn.setOnAction(e -> {
-            final String result = DialogHelper.showAddSectorDialog(css);
+            final String result = DialogHelper.<String, AddSectorDialogController>showDialog(FXML_PATH_SECTOR_DIALOG, "Nuovo Settore", css);
             if (result != null) {
                 controller.addSectorToArea(area.getId(), result);
             } 

@@ -1,5 +1,6 @@
 package it.unibo.systemgarden.view.dialog;
 
+import it.unibo.systemgarden.view.api.DialogController;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -8,7 +9,7 @@ import javafx.stage.Stage;
  * Controller for AddAreaDialog.
  * Contains the methods of the dialog (Create GreenArea)
  */
-public class AddAreaDialogController {
+public class AddAreaDialogController implements DialogController<String[]> {
 
     @FXML
     private TextField nameField;

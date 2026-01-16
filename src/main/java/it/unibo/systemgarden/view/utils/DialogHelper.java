@@ -1,7 +1,6 @@
 package it.unibo.systemgarden.view.utils;
 
-import it.unibo.systemgarden.view.dialog.AddAreaDialogController;
-import it.unibo.systemgarden.view.dialog.AddSectorDialogController;
+import it.unibo.systemgarden.view.api.DialogController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -14,51 +13,30 @@ import javafx.stage.StageStyle;
  */
 public final class DialogHelper {
 
-    private static final String FXML_PATH_AREA_DIALOG = "fxml/dialog/AddAreaDialog.fxml";
-    private static final String FXML_PATH_SECTOR_DIALOG = "fxml/dialog/AddSectorDialog.fxml";
-
     /**
-     * Shows the Add Area dialog.
-     * 
-     * @return [name, city] or null if cancelled
+     * Shows a custom dialog.
+     * @param <R> the result type
+     * @param <C> the controller type
+     * @param fxmlPath the path to the FXML file for the dialog
+     * @param title the title of the dialog window
+     * @param css the CSS stylesheet to apply to the dialog
+     * @return the result from the dialog controller
     */
-    public static String[] showAddAreaDialog(String css) {
+    public static<R, C extends DialogController<R>> R showDialog( final String fxmlPath, final String title, final String css ) {
         try {
-            final FXMLLoader loader = new FXMLLoader( ClassLoader.getSystemResource( FXML_PATH_AREA_DIALOG ) );
-            final Parent root = loader.load();
-            final String title = "+ Nuova Area Verde";
-            final Stage stage = createDialogStage(title, root, css);
-
-            
-            final AddAreaDialogController controller = loader.getController();
-            controller.setStage( stage );
-
-            stage.showAndWait();
-
-            return controller.getResult();
-        } catch (Exception e) {
-            throw new RuntimeException("Error showing Add Area Dialog: " + e.getMessage(), e);
-        }
-    }
-
-    public static String showAddSectorDialog(String css) {
-        try  {
-            final FXMLLoader loader = new FXMLLoader( ClassLoader.getSystemResource( FXML_PATH_SECTOR_DIALOG ) );
+            final FXMLLoader loader = new FXMLLoader( ClassLoader.getSystemResource( fxmlPath ) );
             final Parent root = loader.load();
 
-            final Stage dialog = createDialogStage( "Nuovo Settore", root, css );
-            final AddSectorDialogController controller = loader.getController();
+            final Stage dialog = createDialogStage( title, root, css );
+            final C controller = loader.getController();
             controller.setStage( dialog );
 
             dialog.showAndWait();
 
             return controller.getResult();
         } catch (Exception e) {
-
-            throw new RuntimeException( "Error showing Add Sector Dialog: " + e.getMessage(), e );
-
+            throw new RuntimeException( "Error showing dialog: " + e.getMessage(), e );
         }
-
     }
     
     private static Stage createDialogStage( final String title, final Parent root, final String css ) {

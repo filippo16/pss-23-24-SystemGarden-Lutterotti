@@ -1,5 +1,6 @@
 package it.unibo.systemgarden.view.dialog;
 
+import it.unibo.systemgarden.view.api.DialogController;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -8,7 +9,7 @@ import javafx.stage.Stage;
  * Controller for AddSectorDialog.
  * Contains the methods of the dialog (Create Sector)
  */
-public class AddSectorDialogController {
+public class AddSectorDialogController implements DialogController<String> {
 
     @FXML
     private TextField nameField;

@@ -9,6 +9,7 @@ import javafx.scene.layout.*;
 import it.unibo.systemgarden.controller.api.Controller;
 import it.unibo.systemgarden.model.api.GreenArea;
 import it.unibo.systemgarden.view.utils.DialogHelper;
+import it.unibo.systemgarden.view.dialog.AddAreaDialogController;
 import it.unibo.systemgarden.view.utils.CardGenerator;
 
 
@@ -17,6 +18,9 @@ import it.unibo.systemgarden.view.utils.CardGenerator;
  * Manages the methods called in the view for buttons and other components. 
  */
 public class MainViewHandler {
+
+    private static final String FXML_PATH_AREA_DIALOG = "fxml/dialog/AddAreaDialog.fxml";
+
     @FXML
     private VBox areasContainer;
 
@@ -40,7 +44,7 @@ public class MainViewHandler {
 
     @FXML
     private void onAddAreaClicked() {
-        final String[] result = DialogHelper.showAddAreaDialog(css);
+        final String[] result = DialogHelper.<String[], AddAreaDialogController>showDialog(FXML_PATH_AREA_DIALOG, "+ Nuova Area Verde", css);
         
         if(result != null) {
             controller.createGreenArea(result[0], result[1]);
