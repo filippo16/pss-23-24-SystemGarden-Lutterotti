@@ -99,7 +99,9 @@ public class CardGenerator {
         final Button addBtn = new Button("Aggiungi Settore");
         addBtn.getStyleClass().add("btn-primary");
         addBtn.setOnAction(e -> {
-            final String result = DialogHelper.<String, AddSectorDialogController>showDialog(FXML_PATH_SECTOR_DIALOG, "Nuovo Settore", css);
+            final String result = DialogHelper.<String, AddSectorDialogController>showDialog(FXML_PATH_SECTOR_DIALOG, "Nuovo Settore", 
+            css, null);
+
             if (result != null) {
                 controller.addSectorToArea(area.getId(), result);
             } 
@@ -135,7 +137,9 @@ public class CardGenerator {
             scheduleBtn.getStyleClass().add("btn-secondary");
             scheduleBtn.setOnAction(e -> {
                 final ScheduleData result = DialogHelper.<ScheduleData, EditScheduleDialogController>showDialog( 
-                    FXML_PATH_SCHEDULE_DIALOG, "Modifica Programmazione", css
+                    FXML_PATH_SCHEDULE_DIALOG, "Modifica Programmazione", css, controllerInit -> {
+                        controllerInit.initData( sector.getSchedule() );
+                    }
                 );
 
                 if (result != null) {
