@@ -1,11 +1,10 @@
 package it.unibo.systemgarden.model.impl;
 
 import it.unibo.systemgarden.model.api.GreenArea;
+import it.unibo.systemgarden.model.api.Location;
 import it.unibo.systemgarden.model.api.Schedule;
 import it.unibo.systemgarden.model.api.Sector;
 
-import java.time.LocalTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -17,9 +16,8 @@ public class GreenAreaImpl implements GreenArea {
 
     private final String id;
     private final String name;
-    private final String city;
+    private final Location location;
     private final List<Sector> sectors;
-    private final ZoneId timezone;
 
     /**
      * Creates a new green area.
@@ -30,23 +28,8 @@ public class GreenAreaImpl implements GreenArea {
     public GreenAreaImpl( final String name, final String city ) {
         this.id = "AREA-" + new Random().nextInt( 100000 );
         this.name = name;
-        this.city = city;
-        this.timezone = resolveTimezone(city);  
+        this.location = new LocationImpl(city);
         this.sectors = new ArrayList<>();
-    }
-
-    private ZoneId resolveTimezone(String city) {
-
-        return switch (city.toLowerCase()) {
-
-            case "roma", "milano", "bologna", "cesena", "arco" -> ZoneId.of("Europe/Rome");
-
-            case "london", "londra" -> ZoneId.of("Europe/London");
-
-            case "new york" -> ZoneId.of("America/New_York");
-
-            default -> ZoneId.of("Europe/Rome");
-        };
     }
 
 
@@ -58,11 +41,6 @@ public class GreenAreaImpl implements GreenArea {
     @Override
     public String getName() {
         return this.name;
-    }
-
-    @Override
-    public String getCity() {
-        return this.city;
     }
 
     @Override
@@ -84,13 +62,8 @@ public class GreenAreaImpl implements GreenArea {
     }
 
     @Override
-    public ZoneId getTimezone() {
-        return timezone;
-    }
-
-    @Override
-    public LocalTime getLocalTime() {
-        return LocalTime.now( timezone );
+    public Location getLocation() {
+        return this.location;
     }
 
     @Override
@@ -100,11 +73,11 @@ public class GreenAreaImpl implements GreenArea {
             
             if (schedule != null) {
 
-                if (schedule.shouldStartNow(timezone) && !sector.isIrrigating()) {
+                if (schedule.shouldStartNow(location.getTimezone()) && !sector.isIrrigating()) {
                     sector.irrigate();
                 }
 
-                if (schedule.shouldStopNow(timezone) && sector.isIrrigating()) {
+                if (schedule.shouldStopNow(location.getTimezone()) && sector.isIrrigating()) {
                     sector.stop();
                 }
 

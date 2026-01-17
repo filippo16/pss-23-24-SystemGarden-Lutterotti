@@ -181,3 +181,55 @@ classDiagram
 ```
 
 ## Design dettagliato
+
+
+### Note di sviluppo
+
+#### Utilizzo di Stream per filtrare e operare su collezioni
+Dove: `it.unibo.systemgarden.controller.impl`
+
+```java
+ @Override
+public void irrigateSector( final String areaId, final String sectorId ) {
+    final GreenArea area = greenAreas.get( areaId );
+
+    if ( area != null ) {
+        area.getSectors().stream().filter(s -> s.getId().equals( sectorId )).findFirst()
+        .ifPresent( Sector::irrigate );
+        view.refreshAreaCard( area );
+    }
+}
+```
+
+
+#### Utilizzo di Polimorfismo parametrico e Lambda function (Consumer)
+Dove: `it.unibo.systemgarden.view.utils.DialogHelper`
+
+```java
+public static<R, C extends DialogController<R>> R showDialog( 
+        final String fxmlPath, final String title, final String css, 
+        final Consumer<C> controllerInit
+    ) {
+        
+    try {
+
+        final FXMLLoader loader = new FXMLLoader( ClassLoader.getSystemResource( fxmlPath ) );
+        final Parent root = loader.load();
+
+        final Stage dialog = createDialogStage( title, root, css );
+        final C controller = loader.getController();
+        controller.setStage( dialog );
+
+        
+        if ( controllerInit != null ) {
+            controllerInit.accept( controller );
+        }
+
+        dialog.showAndWait();
+
+        return controller.getResult();
+    } catch (Exception e) {
+        throw new RuntimeException( "Error showing dialog: " + e.getMessage(), e );
+    }
+}
+```

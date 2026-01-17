@@ -7,6 +7,7 @@ import it.unibo.systemgarden.model.impl.GreenAreaImpl;
 import it.unibo.systemgarden.model.impl.SectorImpl;
 import it.unibo.systemgarden.view.api.View;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -100,7 +101,8 @@ public class ControllerImpl implements Controller {
         final GreenArea area = greenAreas.get( areaId );
 
         if ( area != null ) {
-            area.getSectors().stream().filter(s -> s.getId().equals( sectorId )).findFirst().ifPresent( area::removeSector );
+            area.getSectors().stream().filter(s -> s.getId().equals( sectorId )).findFirst()
+            .ifPresent( area::removeSector );
             view.refreshAreaCard( area );
         }
     }
@@ -110,7 +112,8 @@ public class ControllerImpl implements Controller {
         final GreenArea area = greenAreas.get( areaId );
 
         if ( area != null ) {
-            area.getSectors().stream().filter(s -> s.getId().equals( sectorId )).findFirst().ifPresent( Sector::irrigate );
+            area.getSectors().stream().filter(s -> s.getId().equals( sectorId )).findFirst()
+            .ifPresent( Sector::irrigate );
             view.refreshAreaCard( area );
         }
     }
@@ -120,12 +123,29 @@ public class ControllerImpl implements Controller {
         final GreenArea area = greenAreas.get( areaId );
 
         if ( area != null ) {
-            area.getSectors().stream().filter(s -> s.getId().equals( sectorId )).findFirst().ifPresent( Sector::stop );
+            area.getSectors().stream().filter(s -> s.getId().equals( sectorId )).findFirst()
+            .ifPresent( Sector::stop );
             view.refreshAreaCard( area );
         }
     }
 
     private void checkAllSchedules() {
         greenAreas.values().forEach( GreenArea::checkSchedules );
+    }
+
+    @Override
+    public void updateSectorSchedule( final String areaId, final String sectorId, 
+        final LocalTime startTime, final int duration, final List<Integer> activeDays 
+    ) {
+
+        final GreenArea area = greenAreas.get( areaId );
+
+        if ( area != null ) {
+            area.getSectors().stream().filter(s -> s.getId().equals( sectorId )).findFirst()
+                .ifPresent(sector -> {
+                    sector.getSchedule().update( startTime, duration, activeDays );
+                    view.refreshAreaCard( area );
+                });
+        }
     }
 }

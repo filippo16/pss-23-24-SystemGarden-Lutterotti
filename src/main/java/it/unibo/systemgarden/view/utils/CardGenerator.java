@@ -3,6 +3,9 @@ package it.unibo.systemgarden.view.utils;
 import it.unibo.systemgarden.controller.api.Controller;
 import it.unibo.systemgarden.model.api.GreenArea;
 import it.unibo.systemgarden.model.api.Sector;
+import it.unibo.systemgarden.view.dialog.AddSectorDialogController;
+import it.unibo.systemgarden.view.dialog.EditScheduleDialogController;
+import it.unibo.systemgarden.view.dialog.ScheduleData;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -11,10 +14,12 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
-
 import java.time.format.DateTimeFormatter;
 
 public class CardGenerator {
+
+    private static final String FXML_PATH_SECTOR_DIALOG = "fxml/dialog/AddSectorDialog.fxml";
+    private static final String FXML_PATH_SCHEDULE_DIALOG = "fxml/dialog/EditScheduleDialog.fxml";
 
     private String css;
 
@@ -39,17 +44,17 @@ public class CardGenerator {
         final Label nameLabel = new Label(area.getName());
         nameLabel.getStyleClass().add("area-name");
 
-        final Label cityLabel = new Label("(" + area.getCity() + ")");
+        final Label cityLabel = new Label("(" + area.getLocation().getCity() + ")");
         cityLabel.setStyle("-fx-text-fill: #666666;");
 
         // Add clock
         final DateTimeFormatter clockFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-        final Label clockLabel = new Label(area.getLocalTime().format(clockFormatter));
+        final Label clockLabel = new Label(area.getLocation().getLocalTime().format(clockFormatter));
         clockLabel.getStyleClass().add("clock-label");
 
         final Timeline clockTimeline = new Timeline(
             new KeyFrame(Duration.seconds(1), e -> 
-                clockLabel.setText(area.getLocalTime().format(clockFormatter))
+                clockLabel.setText(area.getLocation().getLocalTime().format(clockFormatter))
             )
         );
         clockTimeline.setCycleCount(Animation.INDEFINITE);
@@ -94,7 +99,9 @@ public class CardGenerator {
         final Button addBtn = new Button("Aggiungi Settore");
         addBtn.getStyleClass().add("btn-primary");
         addBtn.setOnAction(e -> {
-            final String result = DialogHelper.showAddSectorDialog(css);
+            final String result = DialogHelper.<String, AddSectorDialogController>showDialog(FXML_PATH_SECTOR_DIALOG, "Nuovo Settore", 
+            css, null);
+
             if (result != null) {
                 controller.addSectorToArea(area.getId(), result);
             } 
@@ -104,6 +111,9 @@ public class CardGenerator {
         box.getChildren().add(titleRow);
 
         for (final Sector sector : area.getSectors()) {
+            final VBox sectorBox = new VBox(3);
+            sectorBox.getStyleClass().add("sector-item");
+            
             final HBox row = new HBox(10);
             row.setAlignment(Pos.CENTER_LEFT);
 
@@ -123,14 +133,34 @@ public class CardGenerator {
                 controller.stopSector(area.getId(), sector.getId());
             });
 
+            final Button scheduleBtn = new Button("Orari");
+            scheduleBtn.getStyleClass().add("btn-secondary");
+            scheduleBtn.setOnAction(e -> {
+                final ScheduleData result = DialogHelper.<ScheduleData, EditScheduleDialogController>showDialog( 
+                    FXML_PATH_SCHEDULE_DIALOG, "Modifica Programmazione", css, controllerInit -> {
+                        controllerInit.initData( sector.getSchedule() );
+                    }
+                );
+
+                if (result != null) {
+                    controller.updateSectorSchedule(area.getId(), sector.getId(), result.startTime(), result.duration(), result.activeDays());
+                }
+            });
+
             final Button deleteBtn = new Button("X");
             deleteBtn.getStyleClass().add("danger-button");
             deleteBtn.setOnAction(e -> {
                 controller.removeSectorFromArea(area.getId(), sector.getId());
             });
 
-            row.getChildren().addAll(sectorLabel, startBtn, stopBtn, deleteBtn);
-            box.getChildren().add(row);
+            row.getChildren().addAll(sectorLabel, startBtn, stopBtn, scheduleBtn, deleteBtn);
+            
+            // Schedule info label
+            final Label scheduleInfoLabel = new Label( sector.getSchedule().formatScheduleInfo() );
+            scheduleInfoLabel.setStyle("-fx-text-fill: #888888; -fx-font-size: 11px;");
+            
+            sectorBox.getChildren().addAll(row, scheduleInfoLabel);
+            box.getChildren().add(sectorBox);
         }
 
         return box;
