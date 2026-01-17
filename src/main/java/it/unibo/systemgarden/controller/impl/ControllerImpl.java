@@ -101,7 +101,8 @@ public class ControllerImpl implements Controller {
         final GreenArea area = greenAreas.get( areaId );
 
         if ( area != null ) {
-            area.getSectors().stream().filter(s -> s.getId().equals( sectorId )).findFirst().ifPresent( area::removeSector );
+            area.getSectors().stream().filter(s -> s.getId().equals( sectorId )).findFirst()
+            .ifPresent( area::removeSector );
             view.refreshAreaCard( area );
         }
     }
@@ -111,7 +112,8 @@ public class ControllerImpl implements Controller {
         final GreenArea area = greenAreas.get( areaId );
 
         if ( area != null ) {
-            area.getSectors().stream().filter(s -> s.getId().equals( sectorId )).findFirst().ifPresent( Sector::irrigate );
+            area.getSectors().stream().filter(s -> s.getId().equals( sectorId )).findFirst()
+            .ifPresent( Sector::irrigate );
             view.refreshAreaCard( area );
         }
     }
@@ -121,7 +123,8 @@ public class ControllerImpl implements Controller {
         final GreenArea area = greenAreas.get( areaId );
 
         if ( area != null ) {
-            area.getSectors().stream().filter(s -> s.getId().equals( sectorId )).findFirst().ifPresent( Sector::stop );
+            area.getSectors().stream().filter(s -> s.getId().equals( sectorId )).findFirst()
+            .ifPresent( Sector::stop );
             view.refreshAreaCard( area );
         }
     }

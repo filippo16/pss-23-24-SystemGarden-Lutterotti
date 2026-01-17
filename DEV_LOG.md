@@ -23,7 +23,7 @@
 La progettazione mi ha permesso di avere un'idea chiara fin dall'inizio, ho avuto comnuque qualche piccola difficoltà a capire come procedere con la struttura del progetto. 
 
 
-## 14.01.2026 – 15.01.2026 (ca. 17 ORE)
+## 14.01.2026 – 17.01.2026 (ca. 23 ORE) forse meno
 **Attività**
 - Sviluppo della view mediante utilizzo di FXML e JavaFX.
 - Sviluppo schedule con controllo del fuso orario
