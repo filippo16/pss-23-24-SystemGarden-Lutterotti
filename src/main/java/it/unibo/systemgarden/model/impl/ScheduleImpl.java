@@ -5,8 +5,10 @@ import it.unibo.systemgarden.model.api.Schedule;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class ScheduleImpl implements Schedule {
@@ -63,5 +65,42 @@ public class ScheduleImpl implements Schedule {
         this.startTime = startTime;
         this.duration = duration;
         this.activeDays = new ArrayList<>(activeDays);
+    }
+
+
+    /**
+     * Formats the schedule information for display.
+     */
+    @Override
+    public String formatScheduleInfo() {
+        
+        final String time = this.getStartTime().format( DateTimeFormatter.ofPattern( "HH:mm" ) );
+        final String duration = this.getDuration() + " min";
+        final String days = formatDays( this.getActiveDays() );
+        
+        return "Orario " + time + " | " + duration + " | " + days;
+    }
+
+    /**
+     * Formats the list of active days.
+     */
+    private String formatDays(final List<Integer> days) {
+        if (days == null || days.isEmpty()) {
+            return "Nessun giorno";
+        }
+        
+        return days.stream()
+            .sorted()
+            .map(d -> switch (d) {
+                case 1 -> "Lun";
+                case 2 -> "Mar";
+                case 3 -> "Mer";
+                case 4 -> "Gio";
+                case 5 -> "Ven";
+                case 6 -> "Sab";
+                case 7 -> "Dom";
+                default -> "";
+            })
+            .collect(Collectors.joining(", "));
     }
 }

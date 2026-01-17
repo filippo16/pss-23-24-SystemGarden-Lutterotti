@@ -41,4 +41,6 @@ public interface Schedule {
     boolean shouldStopNow( ZoneId timezone );
 
     void update( LocalTime startTime, int duration, List<Integer> activeDays );
+
+    String formatScheduleInfo();
 }

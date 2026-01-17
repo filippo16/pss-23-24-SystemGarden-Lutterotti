@@ -2,7 +2,6 @@ package it.unibo.systemgarden.view.utils;
 
 import it.unibo.systemgarden.controller.api.Controller;
 import it.unibo.systemgarden.model.api.GreenArea;
-import it.unibo.systemgarden.model.api.Schedule;
 import it.unibo.systemgarden.model.api.Sector;
 import it.unibo.systemgarden.view.dialog.AddSectorDialogController;
 import it.unibo.systemgarden.view.dialog.EditScheduleDialogController;
@@ -16,8 +15,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class CardGenerator {
 
@@ -155,7 +152,7 @@ public class CardGenerator {
             row.getChildren().addAll(sectorLabel, startBtn, stopBtn, scheduleBtn, deleteBtn);
             
             // Schedule info label
-            final Label scheduleInfoLabel = new Label(formatScheduleInfo(sector.getSchedule()));
+            final Label scheduleInfoLabel = new Label( sector.getSchedule().formatScheduleInfo() );
             scheduleInfoLabel.setStyle("-fx-text-fill: #888888; -fx-font-size: 11px;");
             
             sectorBox.getChildren().addAll(row, scheduleInfoLabel);
@@ -163,43 +160,5 @@ public class CardGenerator {
         }
 
         return box;
-    }
-
-    /**
-     * Formats the schedule information for display.
-     */
-    private String formatScheduleInfo(final Schedule schedule) {
-        if (schedule == null) {
-            return "Nessuna programmazione";
-        }
-        
-        final String time = schedule.getStartTime().format(DateTimeFormatter.ofPattern("HH:mm"));
-        final String duration = schedule.getDuration() + " min";
-        final String days = formatDays(schedule.getActiveDays());
-        
-        return "⏰ " + time + " | " + duration + " | " + days;
-    }
-
-    /**
-     * Formats the list of active days.
-     */
-    private String formatDays(final List<Integer> days) {
-        if (days == null || days.isEmpty()) {
-            return "Nessun giorno";
-        }
-        
-        return days.stream()
-            .sorted()
-            .map(d -> switch (d) {
-                case 1 -> "Lun";
-                case 2 -> "Mar";
-                case 3 -> "Mer";
-                case 4 -> "Gio";
-                case 5 -> "Ven";
-                case 6 -> "Sab";
-                case 7 -> "Dom";
-                default -> "";
-            })
-            .collect(Collectors.joining(", "));
     }
 }
