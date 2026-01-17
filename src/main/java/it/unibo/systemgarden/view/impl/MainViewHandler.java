@@ -44,7 +44,8 @@ public class MainViewHandler {
 
     @FXML
     private void onAddAreaClicked() {
-        final String[] result = DialogHelper.<String[], AddAreaDialogController>showDialog(FXML_PATH_AREA_DIALOG, "+ Nuova Area Verde", css);
+        final String[] result = DialogHelper.<String[], AddAreaDialogController>showDialog(
+            FXML_PATH_AREA_DIALOG, "+ Nuova Area Verde", css, null);
         
         if(result != null) {
             controller.createGreenArea(result[0], result[1]);

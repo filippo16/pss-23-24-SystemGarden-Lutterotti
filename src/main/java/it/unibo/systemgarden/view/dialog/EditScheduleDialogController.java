@@ -1,7 +1,7 @@
 package it.unibo.systemgarden.view.dialog;
 
 import it.unibo.systemgarden.model.api.Schedule;
-import it.unibo.systemgarden.view.api.DialogController;
+import it.unibo.systemgarden.view.api.InitializableDialogController;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Spinner;
@@ -16,7 +16,7 @@ import java.util.List;
  * Controller for EditScheduleDialog.
  * Allows editing schedule parameters (start time, duration, active days).
  */
-public class EditScheduleDialogController implements DialogController<ScheduleData> {
+public class EditScheduleDialogController implements InitializableDialogController<ScheduleData, Schedule> {
 
     @FXML
     private Spinner<Integer> hourSpinner;
@@ -53,31 +53,12 @@ public class EditScheduleDialogController implements DialogController<ScheduleDa
 
     @FXML
     private void initialize() {
-        hourSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, 6));
-        minuteSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, 0));
-        durationSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 180, 30));
-    }
-
-    /**
-     * Pre-populates the dialog with existing schedule data.
-     * 
-     * @param schedule the existing schedule
-     */
-    public void setSchedule(final Schedule schedule) {
-        if (schedule != null) {
-            hourSpinner.getValueFactory().setValue(schedule.getStartTime().getHour());
-            minuteSpinner.getValueFactory().setValue(schedule.getStartTime().getMinute());
-            durationSpinner.getValueFactory().setValue(schedule.getDuration());
-            
-            final List<Integer> activeDays = schedule.getActiveDays();
-            mondayCheck.setSelected(activeDays.contains(1));
-            tuesdayCheck.setSelected(activeDays.contains(2));
-            wednesdayCheck.setSelected(activeDays.contains(3));
-            thursdayCheck.setSelected(activeDays.contains(4));
-            fridayCheck.setSelected(activeDays.contains(5));
-            saturdayCheck.setSelected(activeDays.contains(6));
-            sundayCheck.setSelected(activeDays.contains(7));
-        }
+        hourSpinner.setValueFactory(
+            new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, 6));
+        minuteSpinner.setValueFactory(
+            new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, 0));
+        durationSpinner.setValueFactory(
+            new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 180, 30));
     }
 
     @FXML
@@ -116,5 +97,25 @@ public class EditScheduleDialogController implements DialogController<ScheduleDa
     @Override
     public void setStage(final Stage stage) {
         this.stage = stage;
+    }
+
+    @Override
+    public void initData(final Schedule data) {
+        if (data != null) {
+
+            hourSpinner.getValueFactory().setValue( data.getStartTime().getHour() );
+            minuteSpinner.getValueFactory().setValue( data.getStartTime().getMinute() );
+            durationSpinner.getValueFactory().setValue( data.getDuration() );
+            
+            final List<Integer> activeDays = data.getActiveDays();
+            mondayCheck.setSelected( activeDays.contains(1) );
+            tuesdayCheck.setSelected( activeDays.contains(2) );
+            wednesdayCheck.setSelected( activeDays.contains(3) );
+            thursdayCheck.setSelected( activeDays.contains(4) );
+            fridayCheck.setSelected( activeDays.contains(5) );
+            saturdayCheck.setSelected( activeDays.contains(6) );
+            sundayCheck.setSelected( activeDays.contains(7) );
+            
+        }
     }
 }

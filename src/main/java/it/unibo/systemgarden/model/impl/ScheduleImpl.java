@@ -35,7 +35,7 @@ public class ScheduleImpl implements Schedule {
 
     @Override
     public List<Integer> getActiveDays() {
-        return new ArrayList<>(this.activeDays);
+        return new ArrayList<>( this.activeDays );
     }
 
     public boolean shouldStartNow(ZoneId timezone) {
