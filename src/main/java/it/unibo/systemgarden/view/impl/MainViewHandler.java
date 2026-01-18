@@ -84,6 +84,18 @@ public class MainViewHandler {
         }
     }
 
+    public void refreshAllAreaCard() {
+        ObservableList<Node> children = areasContainer.getChildren();
+
+        for (int i = 0; i < children.size(); i++) {
+            String areaId = children.get(i).getId();
+            GreenArea area = controller.getGreenArea(areaId);
+            if (area != null) {
+                children.set(i, cardGenerator.createAreaCard(controller, area));
+            }
+        }
+    }
+
 
 
 }

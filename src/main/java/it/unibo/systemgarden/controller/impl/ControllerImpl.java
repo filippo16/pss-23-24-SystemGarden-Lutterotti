@@ -130,7 +130,9 @@ public class ControllerImpl implements Controller {
     }
 
     private void checkAllSchedules() {
+        System.out.println( "[Controller] Checking schedules..." );
         greenAreas.values().forEach( GreenArea::checkSchedules );
+        view.refreshAllAreaCard();
     }
 
     @Override

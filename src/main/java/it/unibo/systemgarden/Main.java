@@ -11,17 +11,25 @@ import javafx.stage.Stage;
  * Main entry point for SystemGarden
  */
 public class Main extends Application {
+    private Controller controller;
 
     @Override
     public void start( final Stage primaryStage ) {
         
         final View view = new ViewImpl( primaryStage );
 
-        final Controller controller = new ControllerImpl( view );
+        controller = new ControllerImpl( view );
 
         view.setController( controller );
 
         controller.start();
+    }
+
+    @Override
+    public void stop() {
+        if ( controller != null ) {
+            controller.stop();
+        }
     }
 
     public static void main(final String[] args) {

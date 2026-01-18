@@ -28,4 +28,6 @@ public interface View {
     void removeAreaCard( GreenArea area );
 
     void refreshAreaCard( GreenArea area );
+
+    void refreshAllAreaCard();
 }

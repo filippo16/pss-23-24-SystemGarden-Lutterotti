@@ -74,4 +74,9 @@ public class ViewImpl implements View {
     public void refreshAreaCard( final GreenArea area ) {
         mainHandler.refreshAreaCard( area );
     }
+
+    @Override
+    public void refreshAllAreaCard() {
+        mainHandler.refreshAllAreaCard();
+    }
 }
