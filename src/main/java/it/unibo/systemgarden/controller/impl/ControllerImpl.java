@@ -6,6 +6,7 @@ import it.unibo.systemgarden.model.api.Sector;
 import it.unibo.systemgarden.model.impl.GreenAreaImpl;
 import it.unibo.systemgarden.model.impl.SectorImpl;
 import it.unibo.systemgarden.view.api.View;
+import javafx.application.Platform;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -102,7 +103,7 @@ public class ControllerImpl implements Controller {
 
         if ( area != null ) {
             area.getSectors().stream().filter(s -> s.getId().equals( sectorId )).findFirst()
-            .ifPresent( area::removeSector );
+                .ifPresent( area::removeSector );
             view.refreshAreaCard( area );
         }
     }
@@ -113,7 +114,7 @@ public class ControllerImpl implements Controller {
 
         if ( area != null ) {
             area.getSectors().stream().filter(s -> s.getId().equals( sectorId )).findFirst()
-            .ifPresent( Sector::irrigate );
+                .ifPresent( Sector::irrigate );
             view.refreshAreaCard( area );
         }
     }
@@ -124,15 +125,20 @@ public class ControllerImpl implements Controller {
 
         if ( area != null ) {
             area.getSectors().stream().filter(s -> s.getId().equals( sectorId )).findFirst()
-            .ifPresent( Sector::stop );
+                .ifPresent( Sector::stop );
             view.refreshAreaCard( area );
         }
     }
 
     private void checkAllSchedules() {
-        System.out.println( "[Controller] Checking schedules..." );
-        greenAreas.values().forEach( GreenArea::checkSchedules );
-        view.refreshAllAreaCard();
+        List<GreenArea> changedAreas = greenAreas.values().stream()
+            .filter(GreenArea::checkSchedules).toList();
+
+        if (!changedAreas.isEmpty()) {
+            Platform.runLater(() -> 
+                changedAreas.forEach(view::refreshAreaCard)
+            );
+        }
     }
 
     @Override
