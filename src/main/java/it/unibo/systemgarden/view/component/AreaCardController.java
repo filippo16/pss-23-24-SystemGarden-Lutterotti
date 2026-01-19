@@ -1,6 +1,5 @@
 package it.unibo.systemgarden.view.component;
 
-import it.unibo.systemgarden.view.api.CardController;
 import it.unibo.systemgarden.controller.api.Controller;
 import it.unibo.systemgarden.model.api.GreenArea;
 import it.unibo.systemgarden.view.dialog.AddSectorDialogController;
@@ -11,7 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
-public class AreaCardController implements CardController {
+public class AreaCardController {
 
     private static final String FXML_PATH_SECTOR_DIALOG = "fxml/dialog/AddSectorDialog.fxml";
     // private static final DateTimeFormatter CLOCK_FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
