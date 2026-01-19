@@ -36,6 +36,7 @@ La progettazione mi ha permesso di avere un'idea chiara fin dall'inizio, ho avut
 - All'inizio ho avuto difficoltà a capire come procedere con la struttura della view, nonostante lo studio della documentazione.
 
 
-## 18.01.2026 – xx.01.2026 (ca. 1 ORE)
+## 18.01.2026 – xx.01.2026 (ca. 3 ORE)
 **Attvità**
-- Sistemare la partenza automatica dell'impianto (check tramite threadPool - vedere se esitono cronJob)
+- Sistemare la partenza automatica dell'impianto (check tramite threadPool - vedere se esitono cronJob).
+- Implementare Card Component con view fxml.
