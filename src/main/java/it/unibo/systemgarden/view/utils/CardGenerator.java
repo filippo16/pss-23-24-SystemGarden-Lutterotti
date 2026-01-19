@@ -2,15 +2,8 @@ package it.unibo.systemgarden.view.utils;
 
 import it.unibo.systemgarden.controller.api.Controller;
 import it.unibo.systemgarden.model.api.GreenArea;
-import it.unibo.systemgarden.model.api.Sector;
 import it.unibo.systemgarden.view.component.AreaCardController;
-import it.unibo.systemgarden.view.component.SectorCardController;
-import it.unibo.systemgarden.view.dialog.AddSectorDialogController;
-import it.unibo.systemgarden.view.dialog.EditScheduleDialogController;
-import it.unibo.systemgarden.view.dialog.ScheduleData;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
-import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
 import java.io.IOException;
@@ -18,8 +11,6 @@ import java.io.IOException;
 
 public class CardGenerator {
 
-    private static final String FXML_PATH_SECTOR_DIALOG = "fxml/dialog/AddSectorDialog.fxml";
-    private static final String FXML_PATH_SCHEDULE_DIALOG = "fxml/dialog/EditScheduleDialog.fxml";
     private static final String FXML_PATH_AREA_CARD = "fxml/component/AreaCard.fxml";
     private String css;
 
