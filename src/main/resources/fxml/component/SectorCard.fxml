@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="it.unibo.systemgarden.view.component.SectorCardController"
+      fx:id="sectorBox" spacing="3" styleClass="c">
+    
+    <!-- Row with buttons -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label fx:id="sectorLabel" prefWidth="150"/>
+        <Button fx:id="startBtn" text="Avvia" styleClass="btn-secondary" onAction="#onStart"/>
+        <Button fx:id="stopBtn" text="Ferma" styleClass="btn-secondary" onAction="#onStop"/>
+        <Button fx:id="scheduleBtn" text="Orari" styleClass="btn-secondary" onAction="#onSchedule"/>
+        <Button fx:id="deleteBtn" text="X" styleClass="danger-button" onAction="#onDelete"/>
+    </HBox>
+    
+    <!-- Schedule info -->
+    <Label fx:id="scheduleInfoLabel" styleClass="schedule-label"/>
+</VBox>
