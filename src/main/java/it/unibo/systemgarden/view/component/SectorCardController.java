@@ -3,7 +3,7 @@ package it.unibo.systemgarden.view.component;
 import it.unibo.systemgarden.controller.api.Controller;
 import it.unibo.systemgarden.model.api.Sector;
 import it.unibo.systemgarden.view.dialog.EditScheduleDialogController;
-import it.unibo.systemgarden.view.dialog.ScheduleData;
+import it.unibo.systemgarden.view.dto.ScheduleData;
 import it.unibo.systemgarden.view.utils.DialogHelper;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
