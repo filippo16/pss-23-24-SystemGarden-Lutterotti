@@ -34,3 +34,16 @@ La progettazione mi ha permesso di avere un'idea chiara fin dall'inizio, ho avut
 
 **Difficoltà**
 - All'inizio ho avuto difficoltà a capire come procedere con la struttura della view, nonostante lo studio della documentazione.
+
+
+## 18.01.2026 – 19.01.2026 (ca. 5 ORE)
+**Attvità**
+- Sistemare la partenza automatica dell'impianto (check tramite threadPool - vedere se esitono cronJob).
+- Implementare Card Component con view fxml.
+
+
+## 20.01.2026 - xx.01.2026 (ca. 4 ORE)
+**Attività**
+- Aggiunto un manager di tutte le aree verdi (migliore separazione dei concetti e così il controller non conosce tutte le greenaree)
+- Aggiunto clock interno con visualizzazione.
+- Aggiunti metodi crud per sector (come per green area).

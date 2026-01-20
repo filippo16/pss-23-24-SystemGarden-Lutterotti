@@ -45,5 +45,5 @@ public interface GreenArea {
     /**
      * Checks all sector schedules and starts/stops irrigation as needed.
      */
-    void checkSchedules();
+    boolean checkSchedules();
 }
