@@ -36,11 +36,6 @@ public interface Controller {
     void removeGreenArea( String areaId );
 
     /**
-     * @return list of all green areas
-     */
-    List<GreenArea> getGreenAreas();
-
-    /**
      * Gets a green area by ID.
      * 
      * @param areaId the area ID
@@ -80,6 +75,15 @@ public interface Controller {
      */
     void stopSector( String areaId, String sectorId );
 
- 
-    void updateSectorSchedule( String areaId, String sectorId, LocalTime startTime, int duration, List<Integer> activeDays );
+    /**
+     * Updates the irrigation schedule for a specific sector.
+     * @param areaId the area ID of the specific sector
+     * @param sectorId the sector ID of the specific schedule
+     * @param startTime the start time of the irrigation
+     * @param duration the duration of the irrigation
+     * @param activeDays the days on which the irrigation is active
+     * @return the updated green area
+    */
+    void updateSectorSchedule( String areaId, String sectorId, 
+        LocalTime startTime, int duration, List<Integer> activeDays );
 }

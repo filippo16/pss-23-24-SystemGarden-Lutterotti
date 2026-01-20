@@ -82,7 +82,8 @@ public interface Manager {
      * @param duration the duration of the irrigation
      * @param activeDays the days on which the irrigation is active
      * @return the updated green area
-     */
+    */
     GreenArea updateSectorSchedule( String areaId, String sectorId, 
-        LocalTime startTime, int duration, List<Integer> activeDays );
+        LocalTime startTime, int duration, List<Integer> activeDays 
+    );
 }
