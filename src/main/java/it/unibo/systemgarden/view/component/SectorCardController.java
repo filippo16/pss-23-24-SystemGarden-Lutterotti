@@ -12,7 +12,8 @@ import javafx.scene.layout.VBox;
 
 public class SectorCardController {
 
-    private static final String FXML_PATH_SCHEDULE_DIALOG = "fxml/dialog/EditScheduleDialog.fxml";
+    private static final String FXML_PATH_SCHEDULE_DIALOG = 
+        "fxml/dialog/EditScheduleDialog.fxml";
 
     @FXML private VBox sectorBox;
     @FXML private Label sectorLabel;
@@ -30,7 +31,9 @@ public class SectorCardController {
     /**
      * Initializes the sector card with data.
      */
-    public void initialize(final Controller controller, final String areaId, final Sector sector, final String css) {
+    public void initialize(final Controller controller, final String areaId, 
+        final Sector sector, final String css
+    ) {
         this.controller = controller;
         this.areaId = areaId;
         this.sector = sector;
