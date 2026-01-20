@@ -44,4 +44,5 @@ La progettazione mi ha permesso di avere un'idea chiara fin dall'inizio, ho avut
 
 ## 20.01.2026 - xx.01.2026 (ca. 2 ORE)
 **Attività**
-- Aggiungere un manager di tutte le aree verdi (migliore separazione dei concetti e così il controller non conosce tutte le greenaree)
+- Aggiunto un manager di tutte le aree verdi (migliore separazione dei concetti e così il controller non conosce tutte le greenaree)
+- Aggiunto clock interno con visualizzazione.
