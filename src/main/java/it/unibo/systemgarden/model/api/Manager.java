@@ -1,5 +1,6 @@
 package it.unibo.systemgarden.model. api;
 
+import java.time.LocalTime;
 import java. util.List;
 
 /**
@@ -21,7 +22,7 @@ public interface Manager {
      * 
      * @param areaId the area ID to remove
      */
-    void removeGreenArea( String areaId );
+    GreenArea removeGreenArea( String areaId );
 
     /**
      * Gets a green area by ID.
@@ -39,7 +40,7 @@ public interface Manager {
     /**
      * Checks all schedules and returns the areas that changed state.
     */
-    void checkAllSchedules();
+    List<GreenArea> checkAllSchedules();
 
     /**
      * Adds a sector to an area.
@@ -47,7 +48,7 @@ public interface Manager {
      * @param areaId     the area ID
      * @param sectorName the sector name
     */
-    void addSectorToArea( String areaId, String sectorName );
+    GreenArea addSectorToArea( String areaId, String sectorName );
 
     /**
      * Removes a sector from an area.
@@ -55,7 +56,7 @@ public interface Manager {
      * @param areaId   the area ID
      * @param sectorId the sector ID
     */
-    void removeSectorFromArea( String areaId, String sectorId );
+    GreenArea removeSectorFromArea( String areaId, String sectorId );
 
     /**
      * Starts irrigation for a specific sector.
@@ -63,7 +64,7 @@ public interface Manager {
      * @param areaId the area ID
      * @param sectorId the sector ID
     */
-    void irrigateSector( String areaId, String sectorId );
+    GreenArea irrigateSector( String areaId, String sectorId );
 
     /**
      * Stops irrigation for a specific sector.
@@ -71,5 +72,17 @@ public interface Manager {
      * @param areaId the area ID
      * @param sectorId the sector ID
     */
-    void stopSector( String areaId, String sectorId );
+    GreenArea stopSector( String areaId, String sectorId );
+
+    /**
+     * Updates the irrigation schedule for a specific sector.
+     * @param areaId the area ID of the specific sector
+     * @param sectorId the sector ID of the specific schedule
+     * @param startTime the start time of the irrigation
+     * @param duration the duration of the irrigation
+     * @param activeDays the days on which the irrigation is active
+     * @return the updated green area
+     */
+    GreenArea updateSectorSchedule( String areaId, String sectorId, 
+        LocalTime startTime, int duration, List<Integer> activeDays );
 }
