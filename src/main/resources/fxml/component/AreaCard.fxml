@@ -14,6 +14,7 @@
         <Label fx:id="nameLabel" styleClass="area-name"/>
         <Label fx:id="cityLabel" style="-fx-text-fill: #666666;"/>
         <Region HBox.hgrow="ALWAYS"/>
+        <Label fx:id="clockLabel" styleClass="clock-label" />
         <Button fx:id="deleteBtn" text="X" styleClass="danger-button" onAction="#onDeleteArea"/>
     </HBox>
     

@@ -1,5 +1,8 @@
 package it.unibo.systemgarden.view.component;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
 import it.unibo.systemgarden.controller.api.Controller;
 import it.unibo.systemgarden.model.api.GreenArea;
 import it.unibo.systemgarden.view.dialog.AddSectorDialogController;
@@ -18,7 +21,7 @@ public class AreaCardController {
     @FXML private VBox card;
     @FXML private Label nameLabel;
     @FXML private Label cityLabel;
-    //@FXML private Label clockLabel;
+    @FXML private Label clockLabel;
     @FXML private Button deleteBtn;
     @FXML private Button addSectorBtn;
     @FXML private VBox sectorsContainer;
@@ -35,14 +38,18 @@ public class AreaCardController {
         this.area = area;
         this.css = css;
 
-        card.setId(area.getId());
+        card.setId( area.getId() );
 
-        nameLabel.setText(area.getName());
-        cityLabel.setText("(" + area.getLocation().getCity() + ")");
-        //clockLabel.setText(area.getLocation().getLocalTime().format(CLOCK_FORMATTER));
+        nameLabel.setText( area.getName() );
+        cityLabel.setText( "(" + area.getLocation().getCity() + ")" );
+        clockLabel.setText( area.getLocation().getLocalTime().format( DateTimeFormatter.ofPattern( "HH:mm" ) ) );
 
         // Populate sectors
         addSectors();
+    }
+
+    public void updateClock(LocalTime time) {
+        clockLabel.setText( time.format( DateTimeFormatter.ofPattern( "HH:mm" ) ) );
     }
 
     private void addSectors() {
