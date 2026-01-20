@@ -108,9 +108,11 @@ In questo capitolo si descrivono le strategie messe in campo per soddisfare i re
 
 ## Architettura
 
-L'architettura adottata segue le regole del pattern **MVC** (Model-View-Controller). In questo caso il modello si sviluppa partendo da `GreenAreaManager` che funge da entry point per tutto lo stato applicativo del modello.
+L'architettura adottata segue le regole del pattern **MVC** (Model-View-Controller). In questo caso il modello si sviluppa partendo da `Manager` che funge da entry point per tutto lo stato applicativo del modello.
 
-`GreenAreaManager` è un'interfaccia che viene implementata da `GreenAreaManagerImpl`. In questo modo si può astrarre dall'implementazione del gestore e lavorare solo con il contratto d'uso definito.
+`Manager` è un'interfaccia che viene implementata da `ManagerImpl`. In questo modo si può astrarre dall'implementazione del gestore e lavorare solo con il contratto d'uso definito.
+
+`GreenArea` è un'interfaccia che viene implementata da `GreenAreaImpl`. In questo modo si può astrarre dall'implementazione dell'area verde e lavorare solo con il contratto d'uso definito.
 
 Sono state modellate diverse entità associate a GreenArea:
 - **Sector**: rappresenta una zona irrigabile con propria valvola e programmazione
