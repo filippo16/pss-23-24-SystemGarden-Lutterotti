@@ -2,6 +2,7 @@ package it.unibo.systemgarden.view.dialog;
 
 import it.unibo.systemgarden.model.api.Schedule;
 import it.unibo.systemgarden.view.api.InitializableDialogController;
+import it.unibo.systemgarden.view.dto.ScheduleData;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Spinner;

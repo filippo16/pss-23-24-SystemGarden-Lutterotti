@@ -67,7 +67,9 @@ public class GreenAreaImpl implements GreenArea {
     }
 
     @Override
-    public void checkSchedules() {
+    public boolean checkSchedules() {
+        boolean changed = false;
+
         for (Sector sector : sectors) {
             Schedule schedule = sector.getSchedule();
             
@@ -75,13 +77,16 @@ public class GreenAreaImpl implements GreenArea {
 
                 if (schedule.shouldStartNow(location.getTimezone()) && !sector.isIrrigating()) {
                     sector.irrigate();
+                    changed = true;
                 }
 
                 if (schedule.shouldStopNow(location.getTimezone()) && sector.isIrrigating()) {
                     sector.stop();
+                    changed = true;
                 }
 
             }
         }
+        return changed;
     }
 }
