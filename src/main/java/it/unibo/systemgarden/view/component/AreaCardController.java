@@ -9,7 +9,7 @@ import it.unibo.systemgarden.controller.api.Controller;
 import it.unibo.systemgarden.model.api.GreenArea;
 import it.unibo.systemgarden.model.api.Sector;
 import it.unibo.systemgarden.view.dialog.AddSectorDialogController;
-import it.unibo.systemgarden.view.dto.SectorCardData;
+import it.unibo.systemgarden.view.dto.CardData;
 import it.unibo.systemgarden.view.utils.DialogHelper;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -37,7 +37,9 @@ public class AreaCardController {
 
     private final Map<String, SectorCardController> sectorControllers = new HashMap<>();
 
-    public void initialize(final Controller controller, final GreenArea area, final String css) {
+    public void initialize(final Controller controller, final GreenArea area, 
+        final String css
+    ) {
         this.controller = controller;
         this.area = area;
         this.css = css;
@@ -45,7 +47,9 @@ public class AreaCardController {
         card.setId(area.getId());
         nameLabel.setText(area.getName());
         cityLabel.setText("(" + area.getLocation().getCity() + ")");
-        clockLabel.setText(area.getLocation().getLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")));
+        clockLabel.setText(area.getLocation().getLocalTime()
+            .format(DateTimeFormatter.ofPattern("HH:mm"))
+        );
 
         // Populate sectors
         for (final var sector : area.getSectors()) {
@@ -60,7 +64,7 @@ public class AreaCardController {
     /**
      * Adds a new sector card.
      */
-    public SectorCardData addSectorCard(final Sector sector) {
+    public CardData<SectorCardController> addSectorCard(final Sector sector) {
         try {
             final FXMLLoader loader = new FXMLLoader(
                 getClass().getClassLoader().getResource( FXML_PATH_SECTOR_CARD ));
@@ -73,7 +77,7 @@ public class AreaCardController {
             sectorsContainer.getChildren().add( sectorCard );
             sectorControllers.put( sector.getId(), ctrl );
             
-            return new SectorCardData(sectorCard, ctrl);
+            return new CardData<SectorCardController>(sectorCard, ctrl);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -99,11 +103,12 @@ public class AreaCardController {
 
             if ( sector.getId().equals( children.get(i).getId() ) ) {
 
-                final SectorCardData sectorCardData = addSectorCard( sector );
+                final CardData<SectorCardController> sectorCardData = 
+                    addSectorCard( sector );
 
                 if (sectorCardData != null) {
 
-                    children.set( i, sectorCardData.sectorCard() );
+                    children.set( i, sectorCardData.card() );
                     sectorControllers.put( sector.getId(), 
                         sectorCardData.controller() 
                     );

@@ -16,7 +16,7 @@ import it.unibo.systemgarden.model.api.Sector;
 import it.unibo.systemgarden.view.utils.DialogHelper;
 import it.unibo.systemgarden.view.component.AreaCardController;
 import it.unibo.systemgarden.view.dialog.AddAreaDialogController;
-import it.unibo.systemgarden.view.dto.AreaCardData;
+import it.unibo.systemgarden.view.dto.CardData;
 import it.unibo.systemgarden.view.utils.CardGenerator;
 
 
@@ -63,9 +63,9 @@ public class MainViewHandler {
     * Adds a new area card to the Areas Container in the main view.
     */
     public void addAreaCard( final GreenArea area ) {
-        final AreaCardData cardData = cardGenerator.createAreaCard( controller, area );
+        final CardData<AreaCardController> cardData = cardGenerator.createAreaCard( controller, area );
 
-        areasContainer.getChildren().add( cardData.areaCard() );
+        areasContainer.getChildren().add( cardData.card() );
         areaControllers.put( area.getId(), cardData.controller() );
     }
 
@@ -74,7 +74,9 @@ public class MainViewHandler {
     */
     public void removeAreaCard( final GreenArea area ) {
         areasContainer.getChildren().removeIf( node -> 
-            node.getId().equals( area.getId() ) );
+            node.getId().equals( area.getId() ) 
+        );
+        
         areaControllers.remove( area.getId() );
     }
 
@@ -89,13 +91,13 @@ public class MainViewHandler {
 
             if ( area.getId().equals( children.get(i).getId() ) ) {
 
-                final AreaCardData cardData = 
+                final CardData<AreaCardController> cardData = 
                     cardGenerator.createAreaCard( controller, area 
                 );
                 
                 if( cardData != null ) {
 
-                    children.set( i, cardData.areaCard() ); 
+                    children.set( i, cardData.card() ); 
                     areaControllers.put( area.getId(), cardData.controller() );
                 }
                 break;
