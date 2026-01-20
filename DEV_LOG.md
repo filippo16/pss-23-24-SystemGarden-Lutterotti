@@ -42,7 +42,8 @@ La progettazione mi ha permesso di avere un'idea chiara fin dall'inizio, ho avut
 - Implementare Card Component con view fxml.
 
 
-## 20.01.2026 - xx.01.2026 (ca. 2 ORE)
+## 20.01.2026 - xx.01.2026 (ca. 4 ORE)
 **Attività**
 - Aggiunto un manager di tutte le aree verdi (migliore separazione dei concetti e così il controller non conosce tutte le greenaree)
 - Aggiunto clock interno con visualizzazione.
+- Aggiunti metodi crud per sector (come per green area).
