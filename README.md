@@ -51,9 +51,12 @@ Per il monitoraggio delle condizioni ambientali, ogni area può essere dotata di
 ```mermaid
 classDiagram
 
+class GreenAreaManager {
+    <<interface>>
+}
+
 class GreenArea {
-    +irrigateAll()
-    +stopAll()
+
 }
 <<interface>> GreenArea
 
@@ -89,6 +92,7 @@ class Location {
 }
 <<interface>> Location
 
+GreenAreaManager *-- GreenArea
 GreenArea *-- Sector
 GreenArea *-- Sensor
 GreenArea *-- Camera
@@ -104,9 +108,9 @@ In questo capitolo si descrivono le strategie messe in campo per soddisfare i re
 
 ## Architettura
 
-L'architettura adottata segue le regole del pattern **MVC** (Model-View-Controller). In questo caso il modello si sviluppa partendo da GreenArea. Da qui si accede a tutto lo stato applicativo del modello.
+L'architettura adottata segue le regole del pattern **MVC** (Model-View-Controller). In questo caso il modello si sviluppa partendo da `GreenAreaManager` che funge da entry point per tutto lo stato applicativo del modello.
 
-`GreenArea` è un'interfaccia che viene implementata da `GreenAreaImpl`. In questo modo si può astrarre dall'implementazione dell'area verde e lavorare solo con il contratto d'uso definito. È perciò possibile, con futuri aggiornamenti, implementare diverse versioni di GreenArea.
+`GreenAreaManager` è un'interfaccia che viene implementata da `GreenAreaManagerImpl`. In questo modo si può astrarre dall'implementazione del gestore e lavorare solo con il contratto d'uso definito.
 
 Sono state modellate diverse entità associate a GreenArea:
 - **Sector**: rappresenta una zona irrigabile con propria valvola e programmazione
@@ -119,6 +123,7 @@ L'interfaccia grafica viene gestita nella parte della "view". Seguendo i princip
 
 ```
 classDiagram
+
     class Controller {
         <<interface>>
     }
@@ -134,7 +139,11 @@ classDiagram
         +addCamera(Camera)
     }
 
-    class GreenAreaImpl {
+    class GreenAreaManagerImpl {
+    }
+
+    class GreenAreaManager {
+        <<interface>>
     }
 
     class Sector {
@@ -168,14 +177,17 @@ classDiagram
         +getLocalTime(): LocalTime
     }
 
-    Controller *-- View
-    Controller *-- GreenArea
 
-    GreenAreaImpl --|> GreenArea
-    GreenAreaImpl *-- Sensor
-    GreenAreaImpl *-- Sector
-    GreenAreaImpl *-- Camera
-    GreenAreaImpl *-- Location
+    GreenAreaManagerImpl --|> GreenAreaManager
+    Controller *-- View
+    Controller *-- GreenAreaManager
+    
+
+    GreenAreaManagerImpl *-- GreenArea
+    GreenArea *-- Sensor
+    GreenArea *-- Sector
+    GreenArea *-- Camera
+    GreenArea *-- Location
     
     Sector *-- Schedule
 ```
