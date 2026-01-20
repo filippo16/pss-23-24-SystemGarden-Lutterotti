@@ -38,7 +38,10 @@ public class ControllerImpl implements Controller {
     @Override
     public void start() {
         scheduler = Executors.newSingleThreadScheduledExecutor();
-        scheduler.scheduleAtFixedRate(this::checkAllSchedules, 0, 30, TimeUnit.SECONDS);
+        scheduler.scheduleAtFixedRate(() -> {
+            checkAllSchedules();
+            updateClocks();  
+        }, 0, 1, TimeUnit.MINUTES);
         view.show();
     }
 
@@ -133,5 +136,13 @@ public class ControllerImpl implements Controller {
 
             view.refreshAreaCard( area );
         }
+    }
+
+    private void updateClocks() {
+        Platform.runLater(() -> {
+            model.getGreenAreas().forEach(area -> {
+                view.updateAreaClock(area.getId(), area.getLocation().getLocalTime());
+            });
+        });
     }
 }
