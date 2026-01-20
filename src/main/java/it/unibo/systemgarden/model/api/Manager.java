@@ -5,7 +5,7 @@ import java. util.List;
 /**
  * This is the main entry point for the model layer.
  */
-public interface GreenAreaManager {
+public interface Manager {
 
     /**
      * Creates a new green area.

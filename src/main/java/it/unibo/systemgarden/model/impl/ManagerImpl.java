@@ -1,5 +1,5 @@
 package it.unibo.systemgarden.model.impl;
 
-public class GreenAreaManagerImpl {
+public class ManagerImpl {
     
 }
