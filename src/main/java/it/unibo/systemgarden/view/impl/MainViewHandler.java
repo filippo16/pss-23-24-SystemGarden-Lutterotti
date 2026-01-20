@@ -6,10 +6,16 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
+import java.time.LocalTime;
+import java.util.HashMap;
+import java.util.Map;
+
 import it.unibo.systemgarden.controller.api.Controller;
 import it.unibo.systemgarden.model.api.GreenArea;
 import it.unibo.systemgarden.view.utils.DialogHelper;
+import it.unibo.systemgarden.view.component.AreaCardController;
 import it.unibo.systemgarden.view.dialog.AddAreaDialogController;
+import it.unibo.systemgarden.view.dto.AreaCardData;
 import it.unibo.systemgarden.view.utils.CardGenerator;
 
 
@@ -20,6 +26,8 @@ import it.unibo.systemgarden.view.utils.CardGenerator;
 public class MainViewHandler {
 
     private static final String FXML_PATH_AREA_DIALOG = "fxml/dialog/AddAreaDialog.fxml";
+
+    private final Map<String, AreaCardController> areaControllers = new HashMap<>();
 
     @FXML
     private VBox areasContainer;
@@ -48,8 +56,7 @@ public class MainViewHandler {
             FXML_PATH_AREA_DIALOG, "+ Nuova Area Verde", css, null);
         
         if(result != null) {
-            controller.createGreenArea(result[0], result[1]);
-            System.out.println("Creating area: " + result[0] + " in " + result[1]);
+            controller.createGreenArea( result[0], result[1] );
         }
 
     }
@@ -58,15 +65,18 @@ public class MainViewHandler {
     * Adds a new area card to the Areas Container in the main view.
     */
     public void addAreaCard(final GreenArea area) {
-        final VBox card = cardGenerator.createAreaCard( controller, area );
-        areasContainer.getChildren().add(card);
+        final AreaCardData cardData = cardGenerator.createAreaCard( controller, area );
+        areasContainer.getChildren().add( cardData.areaCard() );
+        areaControllers.put( area.getId(), cardData.controller() );
     }
 
     /**
     * Removes an area card from the Areas Container in the main view.
     */
     public void removeAreaCard(final GreenArea area) {
-        areasContainer.getChildren().removeIf( node -> node.getId().equals( area.getId() ) );
+        areasContainer.getChildren().removeIf( node -> 
+            node.getId().equals( area.getId() ) );
+        areaControllers.remove( area.getId() );
     }
 
 
@@ -77,25 +87,23 @@ public class MainViewHandler {
         ObservableList<Node> children = areasContainer.getChildren();
     
         for (int i = 0; i < children.size(); i++) {
-            if (area.getId().equals(children.get(i).getId())) {
-                children.set( i, cardGenerator.createAreaCard( controller, area ) ); 
+            if ( area.getId().equals( children.get( i ).getId() ) ) {
+                final AreaCardData cardData = 
+                    cardGenerator.createAreaCard( controller, area );
+
+                children.set( i, cardData.areaCard() ); 
+                areaControllers.put( area.getId(), cardData.controller() );
+
                 break;
             }
         }
     }
 
-    public void refreshAllAreaCard() {
-        ObservableList<Node> children = areasContainer.getChildren();
+    public void updateAreaClock( String areaId, LocalTime time ) {   
+        AreaCardController ctrl = areaControllers.get( areaId );  
 
-        for (int i = 0; i < children.size(); i++) {
-            String areaId = children.get(i).getId();
-            GreenArea area = controller.getGreenArea(areaId);
-            if (area != null) {
-                children.set(i, cardGenerator.createAreaCard(controller, area));
-            }
-        }
-    }
-
-
-
+        if (ctrl != null) {                                         
+            ctrl.updateClock(time);                                 
+        }                                                           
+    } 
 }

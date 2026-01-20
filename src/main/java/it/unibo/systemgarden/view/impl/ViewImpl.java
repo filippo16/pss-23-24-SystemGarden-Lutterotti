@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.time.LocalTime;
 
 /**
  * JavaFX implementation of View.
@@ -76,7 +77,7 @@ public class ViewImpl implements View {
     }
 
     @Override
-    public void refreshAllAreaCard() {
-        mainHandler.refreshAllAreaCard();
-    }
+    public void updateAreaClock(String areaId, LocalTime time) {    
+        mainHandler.updateAreaClock(areaId, time);                  
+    } 
 }

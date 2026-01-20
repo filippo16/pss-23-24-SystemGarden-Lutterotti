@@ -29,5 +29,5 @@ public interface View {
 
     void refreshAreaCard( GreenArea area );
 
-    void refreshAllAreaCard();
+    void updateAreaClock( String areaId, java.time.LocalTime time );
 }
