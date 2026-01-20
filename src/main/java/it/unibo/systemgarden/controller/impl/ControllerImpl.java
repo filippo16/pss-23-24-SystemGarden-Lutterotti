@@ -35,13 +35,18 @@ public class ControllerImpl implements Controller {
         this.model = new ManagerImpl();
     }
 
-    @Override
+     @Override
     public void start() {
         scheduler = Executors.newSingleThreadScheduledExecutor();
+        
+        // Calculate initial delay to align with the start of the next minute
+        long now = System.currentTimeMillis();
+        long delayToNextMinute = 60000 - ( now % 60000 );
+        
         scheduler.scheduleAtFixedRate(() -> {
             checkAllSchedules();
             updateClocks();  
-        }, 0, 1, TimeUnit.MINUTES);
+        }, delayToNextMinute, 60000, TimeUnit.MILLISECONDS);
         view.show();
     }
 
