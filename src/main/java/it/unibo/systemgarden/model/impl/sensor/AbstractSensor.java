@@ -6,7 +6,7 @@ import it.unibo.systemgarden.model.api.observer.SensorObserver;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+import java.util.Random;
 
 /**
  * Abstract base class for sensors that implements Observable pattern.
@@ -19,7 +19,7 @@ public abstract class AbstractSensor implements Sensor, SensorObservable {
     protected double currentValue;
 
     protected AbstractSensor(final String name) {
-        this.id = "SENS-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+        this.id = "SENS-" + new Random().nextInt( 100000 );
         this.name = name;
         this.observers = new ArrayList<>();
     }

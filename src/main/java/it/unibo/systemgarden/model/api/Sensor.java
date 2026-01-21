@@ -6,9 +6,9 @@ public interface Sensor {
 
     String getId();
 
-
     String getName();
 
+    String getType();
 
     double readData();
     
