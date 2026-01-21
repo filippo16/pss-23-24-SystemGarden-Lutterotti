@@ -72,12 +72,12 @@ public class MainViewHandler {
     /**
     * Removes an area card from the Areas Container in the main view.
     */
-    public void removeAreaCard( final GreenArea area ) {
+    public void removeAreaCard( final String areaId ) {
         areasContainer.getChildren().removeIf( node -> 
-            node.getId().equals( area.getId() ) 
+            node.getId().equals( areaId ) 
         );
         
-        areaControllers.remove( area.getId() );
+        areaControllers.remove( areaId );
     }
 
 

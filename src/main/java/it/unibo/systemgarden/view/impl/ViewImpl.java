@@ -63,8 +63,8 @@ public class ViewImpl implements View {
     }
 
     @Override
-    public void removeAreaCard( final GreenArea area ) {
-        mainHandler.removeAreaCard( area );
+    public void removeAreaCard( final String areaId ) {
+        mainHandler.removeAreaCard( areaId );
     }
 
     @Override

@@ -24,9 +24,9 @@ public interface View {
 
     /**
      * Remove the card view for the specified green area.
-     * @param area the green area to remove
+     * @param areaId the ID of the green area to remove
      */
-    void removeAreaCard( GreenArea area );
+    void removeAreaCard( String areaId );
 
     void refreshAreaCard( GreenArea area );
 

@@ -70,10 +70,10 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void removeGreenArea(final String areaId) {
-        final GreenArea area = model.removeGreenArea( areaId );
+        final boolean removed = model.removeGreenArea( areaId );
 
-        if ( area != null ) {
-            view.removeAreaCard( area );
+        if ( removed ) {
+            view.removeAreaCard( areaId );
         }
     }
 

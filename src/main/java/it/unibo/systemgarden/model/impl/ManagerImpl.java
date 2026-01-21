@@ -27,10 +27,10 @@ public class ManagerImpl implements Manager {
     }
 
     @Override
-    public GreenArea removeGreenArea( final String areaId ) {
+    public boolean removeGreenArea( final String areaId ) {
         GreenArea area = greenAreas.remove( areaId );
     
-        return area;
+        return area != null;
     }
 
     @Override

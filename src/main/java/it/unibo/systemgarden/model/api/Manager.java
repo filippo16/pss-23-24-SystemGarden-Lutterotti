@@ -22,7 +22,7 @@ public interface Manager {
      * 
      * @param areaId the area ID to remove
      */
-    GreenArea removeGreenArea( String areaId );
+    boolean removeGreenArea( String areaId );
 
     /**
      * Gets a green area by ID.
