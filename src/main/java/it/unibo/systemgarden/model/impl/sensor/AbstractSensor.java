@@ -1,4 +1,4 @@
-package it.unibo.systemgarden.model.impl;
+package it.unibo.systemgarden.model.impl.sensor;
 
 import it.unibo.systemgarden.model.api.Sensor;
 import it.unibo.systemgarden.model.api.observer.SensorObservable;
