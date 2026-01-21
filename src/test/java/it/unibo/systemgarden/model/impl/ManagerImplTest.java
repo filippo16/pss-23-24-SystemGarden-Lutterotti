@@ -7,6 +7,7 @@ import it.unibo.systemgarden.model.api.Sector;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -87,7 +88,7 @@ class ManagerImplTest {
     }
 
 
-    
+
     
     @Test
     void testAddSectorToArea() {
@@ -122,5 +123,84 @@ class ManagerImplTest {
         final boolean result = manager.removeSectorFromArea( "NON-EXISTENT-ID", "SECTOR-ID" );
 
         assertFalse( result );
+    }
+
+
+
+
+
+    @Test
+    void testIrrigateSector() {
+        final GreenArea area = manager.createGreenArea( "Parco Centrale", "Roma" );
+        final Sector sector = manager.addSectorToArea( area.getId(), "Prato Nord" );
+
+        assertFalse( sector.isIrrigating() );
+
+        final Sector irrigated = manager.irrigateSector( area.getId(), sector.getId() );
+
+        assertNotNull( irrigated );
+        assertTrue( irrigated.isIrrigating() );
+    }
+
+    @Test
+    void testIrrigateSectorAreaNotFound() {
+        final Sector result = manager.irrigateSector( "NON-EXISTENT-ID", "SECTOR-ID" );
+
+        assertNull( result );
+    }
+
+    @Test
+    void testStopSector() {
+        final GreenArea area = manager.createGreenArea( "Parco Centrale", "Roma" );
+        final Sector sector = manager.addSectorToArea( area.getId(), "Prato Nord" );
+
+        manager.irrigateSector( area.getId(), sector.getId() );
+        assertTrue( sector.isIrrigating() );
+
+        final Sector stopped = manager.stopSector( area.getId(), sector.getId() );
+
+        assertNotNull( stopped );
+        assertFalse( stopped.isIrrigating() );
+    }
+
+    @Test
+    void testStopSectorAreaNotFound() {
+        final Sector result = manager.stopSector( "NON-EXISTENT-ID", "SECTOR-ID" );
+
+        assertNull( result );
+    }
+
+
+
+
+
+
+
+    @Test
+    void testUpdateSectorSchedule() {
+        final GreenArea area = manager.createGreenArea( "Parco Centrale", "Roma" );
+        final Sector sector = manager.addSectorToArea( area.getId(), "Prato Nord" );
+
+        final LocalTime startTime = LocalTime.of( 6, 30 );
+        final int duration = 45;
+        final List<Integer> activeDays = List.of( 1, 3, 5 ); // Lunedì, Mercoledì, Venerdì
+
+        final Sector updated = manager.updateSectorSchedule( 
+            area.getId(), sector.getId(), startTime, duration, activeDays 
+        );
+
+        assertNotNull( updated );
+        assertEquals( startTime, updated.getSchedule().getStartTime() );
+        assertEquals( duration, updated.getSchedule().getDuration() );
+        assertEquals( activeDays, updated.getSchedule().getActiveDays() );
+    }
+
+    @Test
+    void testUpdateSectorScheduleAreaNotFound() {
+        final Sector result = manager.updateSectorSchedule( 
+            "NOT_EXIST", "SECTOR-ID", LocalTime.of( 8, 0 ), 30, List.of( 1, 2 ) 
+        );
+
+        assertNull( result );
     }
 }
