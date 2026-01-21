@@ -52,21 +52,21 @@ public class ManagerImpl implements Manager {
     }
 
     @Override
-    public GreenArea addSectorToArea( final String areaId, final String sectorName ) {
+    public Sector addSectorToArea( final String areaId, final String sectorName ) {
         final GreenArea area = greenAreas.get( areaId );
 
         if ( area != null ) {
             final Sector sector = new SectorImpl( sectorName );
             area.addSector( sector ); 
 
-            return area;
+            return sector;
         }
 
         return null;
     }
 
     @Override
-    public GreenArea removeSectorFromArea( final String areaId, final String sectorId ) {
+    public boolean removeSectorFromArea( final String areaId, final String sectorId ) {
         final GreenArea area = greenAreas.get( areaId );
 
         if ( area != null ) {
@@ -74,42 +74,43 @@ public class ManagerImpl implements Manager {
                 .filter(s -> s.getId().equals( sectorId )).findFirst()
                 .ifPresent( area::removeSector );
 
-            return area;
+            return true;
         }
 
-        return null;
+        return false;
     }
 
     @Override
-    public GreenArea irrigateSector( final String areaId, final String sectorId ) {
+    public Sector irrigateSector( final String areaId, final String sectorId ) {
         final GreenArea area = greenAreas.get( areaId );
 
         if ( area != null ) {
             area.getSectors().stream()
                 .filter(s -> s.getId().equals( sectorId )).findFirst()
                 .ifPresent( Sector::irrigate );
-            return area;
+            
+            return area.getSector( sectorId );
         }
 
         return null;
     }
 
     @Override
-    public GreenArea stopSector( final String areaId, final String sectorId ) {
+    public Sector stopSector( final String areaId, final String sectorId ) {
         final GreenArea area = greenAreas.get( areaId );
 
         if ( area != null ) {
             area.getSectors().stream()
                 .filter(s -> s.getId().equals( sectorId )).findFirst()
                 .ifPresent( Sector::stop );
-            return area;
+            return area.getSector( sectorId );
         }
 
         return null;
     }
 
     @Override
-    public GreenArea updateSectorSchedule( final String areaId, final String sectorId, 
+    public Sector updateSectorSchedule( final String areaId, final String sectorId, 
         final java.time.LocalTime startTime, final int duration, final List<Integer> activeDays 
     ) {
         final GreenArea area = greenAreas.get( areaId );
@@ -118,7 +119,8 @@ public class ManagerImpl implements Manager {
             area.getSectors().stream()
                 .filter(s -> s.getId().equals( sectorId )).findFirst()
                 .ifPresent( s -> s.getSchedule().update( startTime, duration, activeDays ) );
-            return area;
+
+            return area.getSector( sectorId );
         }
 
         return null;

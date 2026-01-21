@@ -49,6 +49,14 @@ public class GreenAreaImpl implements GreenArea {
     }
 
     @Override
+    public Sector getSector( final String sectorId ) {
+        return this.sectors.stream()
+            .filter( s -> s.getId().equals( sectorId ) )
+            .findFirst()
+            .orElse( null );
+    }
+
+    @Override
     public void addSector( final Sector sector ) {
         if ( !sectors.contains( sector ) ) {
             sectors.add( sector );

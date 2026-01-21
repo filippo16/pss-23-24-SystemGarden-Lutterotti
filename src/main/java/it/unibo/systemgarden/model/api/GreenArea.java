@@ -28,6 +28,8 @@ public interface GreenArea {
      */
     List<Sector> getSectors();
 
+    Sector getSector( String sectorId );
+
     /**
      * Adds a sector to this area.
      * 

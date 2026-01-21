@@ -48,7 +48,7 @@ public interface Manager {
      * @param areaId     the area ID
      * @param sectorName the sector name
     */
-    GreenArea addSectorToArea( String areaId, String sectorName );
+    Sector addSectorToArea( String areaId, String sectorName );
 
     /**
      * Removes a sector from an area.
@@ -56,7 +56,7 @@ public interface Manager {
      * @param areaId   the area ID
      * @param sectorId the sector ID
     */
-    GreenArea removeSectorFromArea( String areaId, String sectorId );
+    boolean removeSectorFromArea( String areaId, String sectorId );
 
     /**
      * Starts irrigation for a specific sector.
@@ -64,7 +64,7 @@ public interface Manager {
      * @param areaId the area ID
      * @param sectorId the sector ID
     */
-    GreenArea irrigateSector( String areaId, String sectorId );
+    Sector irrigateSector( String areaId, String sectorId );
 
     /**
      * Stops irrigation for a specific sector.
@@ -72,7 +72,7 @@ public interface Manager {
      * @param areaId the area ID
      * @param sectorId the sector ID
     */
-    GreenArea stopSector( String areaId, String sectorId );
+    Sector stopSector( String areaId, String sectorId );
 
     /**
      * Updates the irrigation schedule for a specific sector.
@@ -81,9 +81,9 @@ public interface Manager {
      * @param startTime the start time of the irrigation
      * @param duration the duration of the irrigation
      * @param activeDays the days on which the irrigation is active
-     * @return the updated green area
+     * @return the updated sector
     */
-    GreenArea updateSectorSchedule( String areaId, String sectorId, 
+    Sector updateSectorSchedule( String areaId, String sectorId, 
         LocalTime startTime, int duration, List<Integer> activeDays 
     );
 }

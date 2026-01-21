@@ -3,6 +3,7 @@ package it.unibo.systemgarden.controller.impl;
 import it.unibo.systemgarden.controller.api.Controller;
 import it.unibo.systemgarden.model.api.GreenArea;
 import it.unibo.systemgarden.model.api.Manager;
+import it.unibo.systemgarden.model.api.Sector;
 import it.unibo.systemgarden.model.impl.ManagerImpl;
 import it.unibo.systemgarden.view.api.View;
 import javafx.application.Platform;
@@ -19,7 +20,6 @@ import java.util.concurrent.TimeUnit;
 public class ControllerImpl implements Controller {
 
     private final View view;
-    //private final Map<String, GreenArea> greenAreas;
     private final Manager model;
     private ScheduledExecutorService scheduler;
 
@@ -85,37 +85,38 @@ public class ControllerImpl implements Controller {
     @Override
     public void addSectorToArea( final String areaId, final String sectorName ) {
 
-        final GreenArea area = model.addSectorToArea( areaId, sectorName );
+        final Sector sector = model.addSectorToArea( areaId, sectorName );
 
-        if ( area != null ) {
-            view.refreshAreaCard( area );
+        if ( sector != null ) {
+            view.addSectorCard(areaId, sector);
+
         }
     }
 
     @Override
     public void removeSectorFromArea( final String areaId, final String sectorId ) {
-        final GreenArea area = model.removeSectorFromArea( areaId, sectorId );
+        final boolean removed = model.removeSectorFromArea( areaId, sectorId );
 
-        if ( area != null ) {
-            view.refreshAreaCard( area );
+        if ( removed ) {
+            view.removeSectorCard(areaId, sectorId);
         }
     }
 
     @Override
     public void irrigateSector( final String areaId, final String sectorId ) {
-        final GreenArea area = model.irrigateSector( areaId, sectorId );
+        final Sector sector = model.irrigateSector( areaId, sectorId );
 
-        if ( area != null ) {
-            view.refreshAreaCard( area );
+        if ( sector != null ) {
+            view.refreshSectorCard( areaId, sector );
         }
     }
 
     @Override
     public void stopSector( final String areaId, final String sectorId ) {
-        final GreenArea area = model.stopSector( areaId, sectorId );
+        final Sector sector = model.stopSector( areaId, sectorId );
 
-        if ( area != null ) {
-            view.refreshAreaCard( area );
+        if ( sector != null ) {
+            view.refreshSectorCard( areaId, sector );
         }
     }
 
@@ -123,7 +124,7 @@ public class ControllerImpl implements Controller {
         List<GreenArea> changedAreas = model.checkAllSchedules();
 
         if (!changedAreas.isEmpty()) {
-            Platform.runLater(() -> 
+            Platform.runLater(() -> // Thread safe
                 changedAreas.forEach(view::refreshAreaCard)
             );
         }
@@ -133,13 +134,12 @@ public class ControllerImpl implements Controller {
     public void updateSectorSchedule( final String areaId, final String sectorId, 
         final LocalTime startTime, final int duration, final List<Integer> activeDays 
     ) {
-        final GreenArea area = model.updateSectorSchedule(areaId, sectorId, 
+        final Sector sector = model.updateSectorSchedule(areaId, sectorId, 
             startTime, duration, activeDays
         );
 
-        if ( area != null ) {
-
-            view.refreshAreaCard( area );
+        if ( sector != null ) {
+            view.refreshSectorCard( areaId, sector );
         }
     }
 
