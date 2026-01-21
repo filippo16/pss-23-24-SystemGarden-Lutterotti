@@ -44,27 +44,25 @@ public class AreaCardController {
         this.area = area;
         this.css = css;
 
-        card.setId(area.getId());
-        nameLabel.setText(area.getName());
-        cityLabel.setText("(" + area.getLocation().getCity() + ")");
-        clockLabel.setText(area.getLocation().getLocalTime()
-            .format(DateTimeFormatter.ofPattern("HH:mm"))
-        );
+        card.setId( area.getId() );
+        nameLabel.setText( area.getName() );
+        cityLabel.setText( "(" + area.getLocation().getCity() + ")" );
+        updateClock( area.getLocation().getLocalTime() );
 
         // Populate sectors
         for (final var sector : area.getSectors()) {
-            addSectorCard(sector);
+            addSectorCard( sector );
         }
     }
 
-    public void updateClock(LocalTime time) {
-        clockLabel.setText(time.format(DateTimeFormatter.ofPattern("HH:mm")));
+    public void updateClock( LocalTime time ) {
+        clockLabel.setText( time.format( DateTimeFormatter.ofPattern( "HH:mm" ) ) );
     }
 
     /**
-     * Adds a new sector card.
+     * Creates a sector card
      */
-    public CardData<SectorCardController> addSectorCard(final Sector sector) {
+    private CardData<SectorCardController> createSectorCard(final Sector sector) {
         try {
             final FXMLLoader loader = new FXMLLoader(
                 getClass().getClassLoader().getResource( FXML_PATH_SECTOR_CARD ));
@@ -74,14 +72,25 @@ public class AreaCardController {
             final SectorCardController ctrl = loader.getController();
             ctrl.initialize( controller, area.getId(), sector, css );
             
-            sectorsContainer.getChildren().add( sectorCard );
-            sectorControllers.put( sector.getId(), ctrl );
-            
             return new CardData<SectorCardController>(sectorCard, ctrl);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * Adds a new sector card.
+     */
+    public CardData<SectorCardController> addSectorCard(final Sector sector) {
+        final CardData<SectorCardController> sectorCardData = createSectorCard( sector );
+        
+        if (sectorCardData != null) {
+            sectorsContainer.getChildren().add( sectorCardData.card() );
+            sectorControllers.put( sector.getId(), sectorCardData.controller() );
+        }
+        
+        return sectorCardData;
     }
 
     /**
@@ -103,11 +112,12 @@ public class AreaCardController {
 
             if ( sector.getId().equals( children.get(i).getId() ) ) {
 
+                // Crea la card SENZA aggiungerla
                 final CardData<SectorCardController> sectorCardData = 
-                    addSectorCard( sector );
+                    createSectorCard( sector );
 
                 if (sectorCardData != null) {
-
+                    // Sostituisci la vecchia card con la nuova
                     children.set( i, sectorCardData.card() );
                     sectorControllers.put( sector.getId(), 
                         sectorCardData.controller() 
