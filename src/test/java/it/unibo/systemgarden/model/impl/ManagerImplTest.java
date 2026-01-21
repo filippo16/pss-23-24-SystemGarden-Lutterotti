@@ -73,18 +73,17 @@ class ManagerImplTest {
         final GreenArea area = manager.createGreenArea( "Parco Centrale", "Roma" );
         final String areaId = area.getId();
 
-        final GreenArea removed = manager.removeGreenArea( areaId );
+        final boolean removed = manager.removeGreenArea( areaId );
 
-        assertNotNull( removed );
-        assertEquals( areaId, removed.getId() );
+        assertTrue( removed );
         assertNull( manager.getGreenArea( areaId ) );
     }
 
     @Test
     void testRemoveGreenAreaNotFound() {
-        final GreenArea removed = manager.removeGreenArea( "NON-EXISTENT-ID" );
+        final boolean removed = manager.removeGreenArea( "NON-EXISTENT-ID" );
 
-        assertNull( removed );
+        assertFalse( removed );
     }
 
 
