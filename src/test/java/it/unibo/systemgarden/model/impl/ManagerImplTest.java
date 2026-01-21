@@ -2,6 +2,8 @@ package it.unibo.systemgarden.model.impl;
 
 import it.unibo.systemgarden.model.api.GreenArea;
 import it.unibo.systemgarden.model.api.Manager;
+import it.unibo.systemgarden.model.api.Sector;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -82,5 +84,43 @@ class ManagerImplTest {
         final GreenArea removed = manager.removeGreenArea( "NON-EXISTENT-ID" );
 
         assertNull( removed );
+    }
+
+
+    
+    
+    @Test
+    void testAddSectorToArea() {
+        final GreenArea area = manager.createGreenArea( "Parco Centrale", "Roma" );
+        final Sector sector = manager.addSectorToArea( area.getId(), "Prato Nord" );
+
+        assertNotNull( sector );
+        assertEquals( "Prato Nord", sector.getName() );
+        assertEquals( 1, area.getSectors().size() );
+    }
+
+    @Test
+    void testAddSectorToAreaNotFound() {
+        final Sector sector = manager.addSectorToArea( "NON-EXISTENT-ID", "Prato Nord" );
+
+        assertNull( sector );
+    }
+
+    @Test
+    void testRemoveSectorFromArea() {
+        final GreenArea area = manager.createGreenArea( "Parco Centrale", "Roma" );
+        final Sector sector = manager.addSectorToArea( area.getId(), "Prato Nord" );
+
+        final boolean result = manager.removeSectorFromArea( area.getId(), sector.getId() );
+
+        assertTrue( result );
+        assertTrue( area.getSectors().isEmpty() );
+    }
+
+    @Test
+    void testRemoveSectorFromAreaNotFound() {
+        final boolean result = manager.removeSectorFromArea( "NON-EXISTENT-ID", "SECTOR-ID" );
+
+        assertFalse( result );
     }
 }
