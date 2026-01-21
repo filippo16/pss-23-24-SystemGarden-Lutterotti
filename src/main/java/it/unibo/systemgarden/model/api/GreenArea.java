@@ -48,4 +48,8 @@ public interface GreenArea {
      * Checks all sector schedules and starts/stops irrigation as needed.
      */
     boolean checkSchedules();
+
+    List<Sensor> getSensors();
+
+    void addSensor( final Sensor sensor );
 }

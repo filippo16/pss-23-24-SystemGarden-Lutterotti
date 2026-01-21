@@ -2,9 +2,13 @@ package it.unibo.systemgarden.controller.impl;
 
 import it.unibo.systemgarden.controller.api.Controller;
 import it.unibo.systemgarden.model.api.GreenArea;
+import it.unibo.systemgarden.model.api.Sensor;
+import it.unibo.systemgarden.model.api.observer.SensorObserver;
 import it.unibo.systemgarden.model.api.Manager;
 import it.unibo.systemgarden.model.api.Sector;
 import it.unibo.systemgarden.model.impl.ManagerImpl;
+import it.unibo.systemgarden.model.impl.sensor.AbstractSensor;
+import it.unibo.systemgarden.model.impl.sensor.TemperatureSensor;
 import it.unibo.systemgarden.view.api.View;
 import javafx.application.Platform;
 
@@ -44,10 +48,21 @@ public class ControllerImpl implements Controller {
         long delayToNextMinute = 60000 - ( now % 60000 );
         
         scheduler.scheduleAtFixedRate(() -> {
+
             checkAllSchedules();
             updateClocks();  
         }, delayToNextMinute, 60000, TimeUnit.MILLISECONDS);
         view.show();
+    }
+
+    private void testSensor() {
+        final Sensor sensor = new TemperatureSensor("TEST");
+
+        model.getGreenAreas().forEach(area -> {
+            model.addSensorToArea(area.getId(), sensor);
+            model.getGreenArea( area.getId() ).getSensors().stream()
+                .forEach(s -> ((AbstractSensor) s).addObserver((SensorObserver) view));
+        });
     }
 
     @Override
@@ -65,6 +80,8 @@ public class ControllerImpl implements Controller {
         if( area != null ) {
             view.addAreaCard( area );
         }
+
+        testSensor();
         
     }
 
@@ -149,5 +166,10 @@ public class ControllerImpl implements Controller {
                 view.updateAreaClock(area.getId(), area.getLocation().getLocalTime());
             });
         });
+    }
+
+    @Override
+    public void refreshSensorData() {
+        model.refreshSensorData();
     }
 }

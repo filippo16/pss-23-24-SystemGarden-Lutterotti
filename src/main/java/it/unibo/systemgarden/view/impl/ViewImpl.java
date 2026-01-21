@@ -3,6 +3,7 @@ package it.unibo.systemgarden.view.impl;
 import it.unibo.systemgarden.controller.api.Controller;
 import it.unibo.systemgarden.model.api.GreenArea;
 import it.unibo.systemgarden.model.api.Sector;
+import it.unibo.systemgarden.model.api.observer.SensorObserver;
 import it.unibo.systemgarden.view.api.View;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,7 +13,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.time.LocalTime;
 
-public class ViewImpl implements View {
+public class ViewImpl implements View, SensorObserver  {
 
     private static final String FXML_PATH = "fxml/MainView.fxml";
     private static final String CSS_PATH = "css/style.css";
@@ -92,5 +93,10 @@ public class ViewImpl implements View {
     @Override
     public void refreshSectorCard( final String areaId, final Sector sector ) {
         mainHandler.refreshSectorCard( areaId, sector );
+    }
+
+    @Override
+    public void onSensorUpdate( double currentValue) {
+        System.out.println( "[View] Sensor data updated: " + currentValue );
     }
 }

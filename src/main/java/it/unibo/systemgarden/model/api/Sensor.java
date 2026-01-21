@@ -11,5 +11,7 @@ public interface Sensor {
     String getType();
 
     double readData();
+
+    void setTemperature(double temperature);
     
 }

@@ -2,6 +2,7 @@ package it.unibo.systemgarden.model.impl;
 
 
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
 import it.unibo.systemgarden.model.api.GreenArea;
 import it.unibo.systemgarden.model.api.Manager;
 import it.unibo.systemgarden.model.api.Sector;
+import it.unibo.systemgarden.model.api.Sensor;
 
 public class ManagerImpl implements Manager {
 
@@ -124,6 +126,33 @@ public class ManagerImpl implements Manager {
         }
 
         return null;
+    }
+
+    @Override
+    public void refreshSensorData() {
+        for ( GreenArea area : greenAreas.values() ) {
+            for ( Sensor sensor : ( (GreenAreaImpl) area ).getSensors() ) {
+                sensor.setTemperature(new Random().nextDouble(15.0, 30.0));
+            }
+        }
+    }
+
+    @Override
+    public void addSensorToArea( final String areaId, final Sensor sensor ) {
+        final GreenArea area = greenAreas.get( areaId );
+
+        if ( area != null ) {
+            area.addSensor( sensor );
+        }
+    }
+
+
+    public void removeSensorFromArea( final String areaId, final Sensor sensor ) {
+        final GreenArea area = greenAreas.get( areaId );
+
+        if ( area != null ) {
+            //area.removeSensor( sensor );
+        }
     }
 
 }

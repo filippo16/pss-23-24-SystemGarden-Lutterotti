@@ -4,6 +4,8 @@ import it.unibo.systemgarden.model.api.GreenArea;
 import it.unibo.systemgarden.model.api.Location;
 import it.unibo.systemgarden.model.api.Schedule;
 import it.unibo.systemgarden.model.api.Sector;
+import it.unibo.systemgarden.model.api.Sensor;
+import it.unibo.systemgarden.model.impl.sensor.TemperatureSensor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +20,7 @@ public class GreenAreaImpl implements GreenArea {
     private final String name;
     private final Location location;
     private final List<Sector> sectors;
+    private final List<Sensor> sensors;
 
     /**
      * Creates a new green area.
@@ -30,6 +33,7 @@ public class GreenAreaImpl implements GreenArea {
         this.name = name;
         this.location = new LocationImpl(city);
         this.sectors = new ArrayList<>();
+        this.sensors = new ArrayList<>();
     }
 
 
@@ -83,12 +87,16 @@ public class GreenAreaImpl implements GreenArea {
             
             if (schedule != null) {
 
-                if (schedule.shouldStartNow(location.getTimezone()) && !sector.isIrrigating()) {
+                if (schedule.shouldStartNow(location.getTimezone()) && 
+                !sector.isIrrigating()
+                ) {
                     sector.irrigate();
                     changed = true;
                 }
 
-                if (schedule.shouldStopNow(location.getTimezone()) && sector.isIrrigating()) {
+                if (schedule.shouldStopNow(location.getTimezone()) && 
+                sector.isIrrigating()
+                ) {
                     sector.stop();
                     changed = true;
                 }
@@ -97,4 +105,21 @@ public class GreenAreaImpl implements GreenArea {
         }
         return changed;
     }
+
+
+    public List<Sensor> getSensors() {
+        return new ArrayList<>( this.sensors );
+    }
+
+    @Override
+    public void addSensor( final Sensor sensor ) {
+        if ( !sensors.contains( sensor ) ) {
+            sensors.add( sensor );
+        }
+    }
+
+    public void removeSensor( final Sensor sensor ) {
+        sensors.remove( sensor );
+    }
+
 }

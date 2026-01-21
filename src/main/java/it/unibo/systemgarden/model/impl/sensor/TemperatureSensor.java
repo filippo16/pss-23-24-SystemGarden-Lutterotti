@@ -14,7 +14,7 @@ public class TemperatureSensor extends AbstractSensor {
     }
 
     // ONLY TEST METHOD
-    public void setTemperature(double temperature) {
+    public void setTemperature( double temperature ) {
         this.currentValue = temperature;
         notifyObservers();
     }

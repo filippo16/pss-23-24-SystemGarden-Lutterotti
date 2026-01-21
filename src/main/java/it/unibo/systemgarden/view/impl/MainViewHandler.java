@@ -137,4 +137,9 @@ public class MainViewHandler {
             ctrl.refreshSectorCard( sector );
         }
     }
+
+    @FXML
+    private void onRefreshClicked() {
+        controller.refreshSensorData();
+    }
 }

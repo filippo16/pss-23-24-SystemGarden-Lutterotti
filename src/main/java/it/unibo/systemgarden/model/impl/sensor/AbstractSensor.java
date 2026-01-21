@@ -53,6 +53,6 @@ public abstract class AbstractSensor implements Sensor, SensorObservable {
 
     @Override
     public void notifyObservers(  ) {
-        observers.forEach( obs -> obs.onSensorUpdate(  ) );
+        observers.forEach( obs -> obs.onSensorUpdate( currentValue ) );
     }
 }

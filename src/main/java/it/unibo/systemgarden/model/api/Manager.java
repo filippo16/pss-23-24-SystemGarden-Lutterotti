@@ -86,4 +86,8 @@ public interface Manager {
     Sector updateSectorSchedule( String areaId, String sectorId, 
         LocalTime startTime, int duration, List<Integer> activeDays 
     );
+
+    void refreshSensorData();
+
+    void addSensorToArea( final String areaId, final Sensor sensor );
 }
