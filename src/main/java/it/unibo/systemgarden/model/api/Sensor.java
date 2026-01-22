@@ -1,5 +1,6 @@
 package it.unibo.systemgarden.model.api;
 
+import it.unibo.systemgarden.model.utils.SensorType;
 
 public interface Sensor {
 
@@ -8,7 +9,7 @@ public interface Sensor {
 
     String getName();
 
-    String getType();
+    SensorType getType();
 
     double readData();
 
