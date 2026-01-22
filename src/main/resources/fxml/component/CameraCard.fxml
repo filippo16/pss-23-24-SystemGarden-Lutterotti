@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<HBox xmlns="http://javafx.com/javafx/17" 
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="it.unibo.systemgarden.view.component.CameraCardController"
+      styleClass="camera-card" spacing="8" minHeight="50">
+    <padding><Insets topRightBottomLeft="10"/></padding>
+
+    <Label fx:id="nameLabel" styleClass="camera-name"/>
+    <Button fx:id="viewBtn" text="Visualizza" styleClass="btn-secondary" onAction="#showCamera"/>
+
+</HBox>

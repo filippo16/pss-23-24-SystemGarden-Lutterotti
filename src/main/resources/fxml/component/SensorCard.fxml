@@ -17,4 +17,4 @@
     <Label fx:id="valueLabel" text="--" styleClass="sensor-value"/>
     <Label fx:id="typeValueLabel" text="Unità" styleClass="sensor-type-value"/>
 
-  </VBox>
+</VBox>
