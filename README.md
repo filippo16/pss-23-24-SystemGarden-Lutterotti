@@ -196,6 +196,42 @@ classDiagram
 
 ## Design dettagliato
 
+### Creazione dei sensori
+Rappresentazione UML del pattern **Factory Method** per la creazione dei sensori.
+
+```mermaid
+classDiagram
+    class Sensor {
+        +readData(): double
+        +getType(): String
+    }
+    <<interface>> Sensor
+
+    class HumiditySensor
+    class TemperatureSensor 
+
+    class SensorFactory {
+        +createSensor(String type, String name): Sensor
+    }
+    <<interface>> SensorFactory
+
+    class SensorFactoryImpl {
+        +createSensor(String type, String name): Sensor
+    }
+
+    Sensor <|-- HumiditySensor
+    Sensor <|-- TemperatureSensor
+    SensorFactory <|.. SensorFactoryImpl
+    SensorFactory -- Sensor
+```
+
+#### Problema
+Durante lo sviluppo ci sono stati dei problemi nella creazione delle istanze dei sensori, e inoltre
+in fase di analisi si era riscontrata la possibilità di aggiungere nuove tipologie di sensori (es. sensore di pioggia, sensore di luce).
+
+#### Soluzione
+La soluzione adottata è stata quella di utilizzare il pattern **Factory Method**, in particolare la versione parametrizzata. L'interfaccia `SensorFactory` definisce il contratto d'uso della factory. La classe `SensorFactoryImpl` è responsabile della creazione dei sensori.
+Questo pattern semplifica la creazione dei sensori, definendo una classe specifica per questo compito. Ogni tipo di sensore viene creato in base al parametro `type` passato alla factory.
 
 ### Note di sviluppo
 
