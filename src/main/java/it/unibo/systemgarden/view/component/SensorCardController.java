@@ -1,6 +1,7 @@
 package it.unibo.systemgarden.view.component;
 
 import it.unibo.systemgarden.model.api.Sensor;
+import it.unibo.systemgarden.model.utils.SensorType;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
@@ -17,22 +18,11 @@ public class SensorCardController {
 
     public void initialize( Sensor data ) {
         nameLabel.setText( data.getName() );
-        //valueLabel.setText( data.getValue() );
+        valueLabel.setText( String.valueOf( data.readData() ) );
         setTypeValue(data.getType());
     }
 
-	public void setTypeValue(String type) {
-		if( type.equals("Temperature") ) {
-
-            typeValueLabel.setText("°C");
-            
-        } else if( type.equals("Humidity") ) {
-
-            typeValueLabel.setText("%");
-
-        } else {
-
-            typeValueLabel.setText("");
-        }
+	public void setTypeValue(SensorType type) {
+		typeValueLabel.setText(type != null ? type.getUnit() : "");
 	}
 }
