@@ -1,5 +1,6 @@
 package it.unibo.systemgarden.model.impl;
 
+import it.unibo.systemgarden.model.api.Camera;
 import it.unibo.systemgarden.model.api.GreenArea;
 import it.unibo.systemgarden.model.api.Location;
 import it.unibo.systemgarden.model.api.Schedule;
@@ -20,6 +21,7 @@ public class GreenAreaImpl implements GreenArea {
     private final Location location;
     private final List<Sector> sectors;
     private final List<Sensor> sensors;
+    private final List<Camera> cameras;
 
     /**
      * Creates a new green area.
@@ -33,6 +35,9 @@ public class GreenAreaImpl implements GreenArea {
         this.location = new LocationImpl(city);
         this.sectors = new ArrayList<>();
         this.sensors = new ArrayList<>();
+        this.cameras = new ArrayList<>();
+        this.cameras.add(new CameraImpl("Camera 1"));
+        this.cameras.add(new CameraImpl("Camera 2"));
     }
 
 
@@ -120,6 +125,11 @@ public class GreenAreaImpl implements GreenArea {
     @Override
     public boolean removeSensor( final String sensorId ) {
         return sensors.removeIf(sensor -> sensor.getId().equals(sensorId));
+    }
+
+    @Override
+    public List<Camera> getCameras() {
+        return new ArrayList<>( this.cameras );
     }
 
 }

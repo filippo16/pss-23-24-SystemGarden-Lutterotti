@@ -54,4 +54,6 @@ public interface GreenArea {
     void addSensor( final Sensor sensor );
 
     boolean removeSensor( final String sensorId  );
+
+    List<Camera> getCameras();
 }
