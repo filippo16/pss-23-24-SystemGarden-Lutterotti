@@ -4,6 +4,7 @@ import it.unibo.systemgarden.model.api.GreenArea;
 import it.unibo.systemgarden.model.api.Location;
 import it.unibo.systemgarden.model.api.Schedule;
 import it.unibo.systemgarden.model.api.Sector;
+import it.unibo.systemgarden.model.api.Sensor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ public class GreenAreaImpl implements GreenArea {
     private final String name;
     private final Location location;
     private final List<Sector> sectors;
+    private final List<Sensor> sensors;
 
     /**
      * Creates a new green area.
@@ -30,6 +32,7 @@ public class GreenAreaImpl implements GreenArea {
         this.name = name;
         this.location = new LocationImpl(city);
         this.sectors = new ArrayList<>();
+        this.sensors = new ArrayList<>();
     }
 
 
@@ -46,6 +49,14 @@ public class GreenAreaImpl implements GreenArea {
     @Override
     public List<Sector> getSectors() {
         return new ArrayList<>( this.sectors );
+    }
+
+    @Override
+    public Sector getSector( final String sectorId ) {
+        return this.sectors.stream()
+            .filter( s -> s.getId().equals( sectorId ) )
+            .findFirst()
+            .orElse( null );
     }
 
     @Override
@@ -67,21 +78,48 @@ public class GreenAreaImpl implements GreenArea {
     }
 
     @Override
-    public void checkSchedules() {
+    public boolean checkSchedules() {
+        boolean changed = false;
+
         for (Sector sector : sectors) {
             Schedule schedule = sector.getSchedule();
             
             if (schedule != null) {
 
-                if (schedule.shouldStartNow(location.getTimezone()) && !sector.isIrrigating()) {
+                if (schedule.shouldStartNow(location.getTimezone()) && 
+                !sector.isIrrigating()
+                ) {
                     sector.irrigate();
+                    changed = true;
                 }
 
-                if (schedule.shouldStopNow(location.getTimezone()) && sector.isIrrigating()) {
+                if (schedule.shouldStopNow(location.getTimezone()) && 
+                sector.isIrrigating()
+                ) {
                     sector.stop();
+                    changed = true;
                 }
 
             }
         }
+        return changed;
     }
+
+
+    public List<Sensor> getSensors() {
+        return new ArrayList<>( this.sensors );
+    }
+
+    @Override
+    public void addSensor( final Sensor sensor ) {
+        if ( !sensors.contains( sensor ) ) {
+            sensors.add( sensor );
+        }
+    }
+
+    @Override
+    public boolean removeSensor( final String sensorId ) {
+        return sensors.removeIf(sensor -> sensor.getId().equals(sensorId));
+    }
+
 }

@@ -28,6 +28,8 @@ public interface GreenArea {
      */
     List<Sector> getSectors();
 
+    Sector getSector( String sectorId );
+
     /**
      * Adds a sector to this area.
      * 
@@ -45,5 +47,11 @@ public interface GreenArea {
     /**
      * Checks all sector schedules and starts/stops irrigation as needed.
      */
-    void checkSchedules();
+    boolean checkSchedules();
+
+    List<Sensor> getSensors();
+
+    void addSensor( final Sensor sensor );
+
+    boolean removeSensor( final String sensorId  );
 }

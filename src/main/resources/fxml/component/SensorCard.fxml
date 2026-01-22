@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17" 
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="it.unibo.systemgarden.view.component.SensorCardController"
+      styleClass="sensor-card" spacing="2" minWidth="100">
+    <padding><Insets topRightBottomLeft="10"/></padding>
+    <HBox alignment="TOP_LEFT">
+      <Button fx:id="deleteBtn" text="X" styleClass="danger-button" onAction="#onDelete"/>
+    </HBox>
+
+    <Label fx:id="nameLabel" text="Nome sensore" styleClass="sensor-name"/>
+    <Label fx:id="valueLabel" text="--" styleClass="sensor-value"/>
+    <Label fx:id="typeValueLabel" text="Unità" styleClass="sensor-type-value"/>
+
+  </VBox>

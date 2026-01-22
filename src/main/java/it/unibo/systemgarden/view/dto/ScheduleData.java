@@ -1,4 +1,4 @@
-package it.unibo.systemgarden.view.dialog;
+package it.unibo.systemgarden.view.dto;
 
 import java.time.LocalTime;
 import java.util.List;

@@ -2,18 +2,19 @@ package it.unibo.systemgarden.view.impl;
 
 import it.unibo.systemgarden.controller.api.Controller;
 import it.unibo.systemgarden.model.api.GreenArea;
+import it.unibo.systemgarden.model.api.Sector;
+import it.unibo.systemgarden.model.api.observer.SensorObserver;
 import it.unibo.systemgarden.view.api.View;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.time.LocalTime;
 
-/**
- * JavaFX implementation of View.
- */
-public class ViewImpl implements View {
+public class ViewImpl implements View, SensorObserver  {
 
     private static final String FXML_PATH = "fxml/MainView.fxml";
     private static final String CSS_PATH = "css/style.css";
@@ -23,7 +24,6 @@ public class ViewImpl implements View {
     private final Stage primaryStage;
     private MainViewHandler mainHandler;
     private Controller controller;
-     
 
     public ViewImpl(final Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -36,15 +36,14 @@ public class ViewImpl implements View {
     @Override
     public void show() {
         try {
-            final FXMLLoader loader = new FXMLLoader( ClassLoader.getSystemResource(FXML_PATH) );
+            final FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemResource(FXML_PATH));
             final Parent root = loader.load();
-            final Scene scene = new Scene( root, WINDOW_WIDTH, WINDOW_HEIGHT );
-            final String css = ClassLoader.getSystemResource( CSS_PATH ).toExternalForm();
+            final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+            final String css = ClassLoader.getSystemResource(CSS_PATH).toExternalForm();
             
-            this.mainHandler = loader.getController(); // Get the controller instance from FXMLLoader (fx:controller)
+            this.mainHandler = loader.getController();
             this.mainHandler.setCssStylesheet(css);
             this.mainHandler.setController(controller);
-
 
             if (css != null) {
                 scene.getStylesheets().add(css);
@@ -66,12 +65,39 @@ public class ViewImpl implements View {
     }
 
     @Override
-    public void removeAreaCard( final GreenArea area ) {
-        mainHandler.removeAreaCard( area );
+    public void removeAreaCard( final String areaId ) {
+        mainHandler.removeAreaCard( areaId );
     }
 
     @Override
     public void refreshAreaCard( final GreenArea area ) {
         mainHandler.refreshAreaCard( area );
+    }
+
+    @Override
+    public void updateAreaClock( String areaId, LocalTime time ) {    
+        mainHandler.updateAreaClock( areaId, time );                  
+    }
+
+
+
+    @Override
+    public void addSectorCard( final String areaId, final Sector sector ) {
+        mainHandler.addSectorCard( areaId, sector );
+    }
+
+    @Override
+    public void removeSectorCard( final String areaId, final String sectorId ) {
+        mainHandler.removeSectorCard( areaId, sectorId );
+    }
+
+    @Override
+    public void refreshSectorCard( final String areaId, final Sector sector ) {
+        mainHandler.refreshSectorCard( areaId, sector );
+    }
+
+    @Override
+    public void onSensorUpdate( final String areaId, final String sensorId, final double newValue ) {
+       Platform.runLater(() -> mainHandler.refreshSensorData( areaId, sensorId, newValue ));
     }
 }

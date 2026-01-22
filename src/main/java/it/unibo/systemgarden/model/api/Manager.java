@@ -1,25 +1,14 @@
-package it.unibo.systemgarden.controller.api;
-
-import it.unibo.systemgarden.model.api.GreenArea;
-import it.unibo.systemgarden.model.utils.SensorType;
+package it.unibo.systemgarden.model. api;
 
 import java.time.LocalTime;
-import java.util.List;
+import java. util.List;
+
+import it.unibo.systemgarden.model.utils.SensorType;
 
 /**
- * Controller interface for SystemGarden
+ * This is the main entry point for the model layer.
  */
-public interface Controller {
-
-    /**
-     * Starts the application.
-     */
-    void start();
-
-    /**
-     * Stops the application.
-     */
-    void stop();
+public interface Manager {
 
     /**
      * Creates a new green area.
@@ -28,53 +17,64 @@ public interface Controller {
      * @param city the city
      * @return the created green area
      */
-    void createGreenArea( String name, String city );
+    GreenArea createGreenArea(String name, String city);
+
     /**
      * Removes a green area.
      * 
      * @param areaId the area ID to remove
      */
-    void removeGreenArea( String areaId );
+    boolean removeGreenArea( String areaId );
 
     /**
      * Gets a green area by ID.
      * 
      * @param areaId the area ID
      * @return the green area, or null if not found
-     */
+    */
     GreenArea getGreenArea( String areaId );
+
+    /**
+     * @return list of all green areas
+    */
+    List<GreenArea> getGreenAreas();
+
+    /**
+     * Checks all schedules and returns the areas that changed state.
+    */
+    List<GreenArea> checkAllSchedules();
 
     /**
      * Adds a sector to an area.
      * 
      * @param areaId     the area ID
      * @param sectorName the sector name
-     */
-    void addSectorToArea( String areaId, String sectorName );
+    */
+    Sector addSectorToArea( String areaId, String sectorName );
 
     /**
      * Removes a sector from an area.
      * 
      * @param areaId   the area ID
      * @param sectorId the sector ID
-     */
-    void removeSectorFromArea( String areaId, String sectorId );
+    */
+    boolean removeSectorFromArea( String areaId, String sectorId );
 
     /**
      * Starts irrigation for a specific sector.
      *
      * @param areaId the area ID
      * @param sectorId the sector ID
-     */
-    void irrigateSector( String areaId, String sectorId );
+    */
+    Sector irrigateSector( String areaId, String sectorId );
 
     /**
      * Stops irrigation for a specific sector.
      *
      * @param areaId the area ID
      * @param sectorId the sector ID
-     */
-    void stopSector( String areaId, String sectorId );
+    */
+    Sector stopSector( String areaId, String sectorId );
 
     /**
      * Updates the irrigation schedule for a specific sector.
@@ -83,12 +83,15 @@ public interface Controller {
      * @param startTime the start time of the irrigation
      * @param duration the duration of the irrigation
      * @param activeDays the days on which the irrigation is active
-     * @return the updated green area
+     * @return the updated sector
     */
-    void updateSectorSchedule( String areaId, String sectorId, 
-        LocalTime startTime, int duration, List<Integer> activeDays );
+    Sector updateSectorSchedule( String areaId, String sectorId, 
+        LocalTime startTime, int duration, List<Integer> activeDays 
+    );
 
-    void addSensorToArea( String areaId, String name, SensorType type );
+    void refreshSensorData();
 
-    void removeSensorFromArea( String areaId, String sensorId );
+    GreenArea addSensorToArea( final String areaId, final String name, final SensorType type );
+
+    boolean removeSensorFromArea( final String areaId, final String sensorId );
 }
