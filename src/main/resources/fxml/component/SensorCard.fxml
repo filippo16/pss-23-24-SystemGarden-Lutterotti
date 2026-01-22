@@ -8,9 +8,12 @@
       xmlns:fx="http://javafx.com/fxml/1"
       styleClass="sensor-card" spacing="2" minWidth="100">
     <padding><Insets topRightBottomLeft="10"/></padding>
-    
+    <HBox alignment="TOP_LEFT">
+      <Button fx:id="deleteBtn" text="X" styleClass="danger-button"/>
+    </HBox>
+
     <Label fx:id="nameLabel" text="Nome sensore" styleClass="sensor-name"/>
     <Label fx:id="valueLabel" text="--" styleClass="sensor-value"/>
     <Label fx:id="typeValueLabel" text="Unità" styleClass="sensor-type-value"/>
-    
-</VBox>
+
+  </VBox>
