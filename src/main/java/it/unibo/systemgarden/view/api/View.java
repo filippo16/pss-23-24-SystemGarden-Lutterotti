@@ -2,6 +2,9 @@ package it.unibo.systemgarden.view.api;
 
 import it.unibo.systemgarden.model.api.GreenArea;
 import it.unibo.systemgarden.model.api.Sector;
+
+import java.time.LocalTime;
+
 import it.unibo.systemgarden.controller.api.Controller;
 
 /**
@@ -30,7 +33,7 @@ public interface View {
 
     void refreshAreaCard( GreenArea area );
 
-    void updateAreaClock( String areaId, java.time.LocalTime time );
+    void updateAreaClock( String areaId, LocalTime time );
 
     void addSectorCard( String areaId, Sector sector );
 

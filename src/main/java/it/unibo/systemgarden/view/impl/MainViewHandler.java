@@ -138,7 +138,11 @@ public class MainViewHandler {
         }
     }
 
-    public void refreshSensorData() {
-        areaControllers.values().forEach( AreaCardController::refreshSensorsData );
+    public void refreshSensorData(final String areaId, final String sensorId, final double newValue ) {
+        AreaCardController ctrl = areaControllers.get( areaId );
+
+        if ( ctrl != null ) {
+            ctrl.refreshSensorData( sensorId, newValue );
+        }
     }
 }

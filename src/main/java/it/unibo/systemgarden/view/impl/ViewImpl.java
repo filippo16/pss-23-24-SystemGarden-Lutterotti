@@ -5,6 +5,7 @@ import it.unibo.systemgarden.model.api.GreenArea;
 import it.unibo.systemgarden.model.api.Sector;
 import it.unibo.systemgarden.model.api.observer.SensorObserver;
 import it.unibo.systemgarden.view.api.View;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -96,7 +97,7 @@ public class ViewImpl implements View, SensorObserver  {
     }
 
     @Override
-    public void onSensorUpdate( String sensorId, double currentValue) {
-        System.out.println( "[View] Sensor data updated: " + currentValue );
+    public void onSensorUpdate( final String areaId, final String sensorId, final double newValue ) {
+       Platform.runLater(() -> mainHandler.refreshSensorData( areaId, sensorId, newValue ));
     }
 }

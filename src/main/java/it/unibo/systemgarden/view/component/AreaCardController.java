@@ -51,6 +51,7 @@ public class AreaCardController {
     private String css;
 
     private final Map<String, SectorCardController> sectorControllers = new HashMap<>();
+    private final Map<String, SensorCardController> sensorControllers = new HashMap<>();
 
     public void initialize(final Controller controller, final GreenArea area, 
         final String css
@@ -211,12 +212,23 @@ public class AreaCardController {
         if (sensorCardData != null) {
 
             sensorsContainer.getChildren().add( sensorCardData.card() );
+            sensorControllers.put( sensor.getId(), sensorCardData.controller() );
         }
     }
 
     public void removeSensorCard( final String sensorId ) {
         sensorsContainer.getChildren().removeIf( node -> 
             sensorId.equals( node.getId() ) );
+        sensorControllers.remove( sensorId );
+    }
+
+    public void refreshSensorData( final String sensorId, final double newValue ) {
+        SensorCardController ctrl = sensorControllers.get( sensorId );
+
+        if ( ctrl != null ) {
+            ctrl.updateValue( newValue );
+        }
+        
     }
 
 
