@@ -54,14 +54,14 @@ public abstract class AbstractSensor implements Sensor, SensorObservable {
     }
 
     @Override
-    public void notifyObservers( final String sensorId, final double value ) {
-        observers.forEach( obs -> obs.onSensorUpdate( sensorId, value ) );
+    public void notifyObservers( final String areaId, final String sensorId, final double value ) {
+        observers.forEach( obs -> obs.onSensorUpdate( areaId, sensorId, value ) );
     }
 
     @Override
-    public void refresh() {
+    public void refresh( final String areaId ) {
         this.currentValue = generateNewValue();
-        notifyObservers(this.id, this.currentValue);
+        notifyObservers(areaId, this.id, this.currentValue);
     }
 
     /**

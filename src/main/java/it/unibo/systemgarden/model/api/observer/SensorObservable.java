@@ -6,5 +6,5 @@ public interface SensorObservable {
 
     void removeObserver(SensorObserver observer);
 
-    void notifyObservers( String sensorId, double value );
+    void notifyObservers( String areaId, String sensorId, double value );
 }

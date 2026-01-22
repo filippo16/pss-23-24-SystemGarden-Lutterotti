@@ -135,7 +135,7 @@ public class ManagerImpl implements Manager {
     public void refreshSensorData() {
         for ( GreenArea area : greenAreas.values() ) {
             final List<Sensor> s = area.getSensors();
-            s.forEach( Sensor::refresh );
+            s.forEach( sensor -> sensor.refresh( area.getId() ) );
         }
     }
 

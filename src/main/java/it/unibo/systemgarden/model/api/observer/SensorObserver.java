@@ -2,5 +2,5 @@ package it.unibo.systemgarden.model.api.observer;
 
 public interface SensorObserver {
     
-    void onSensorUpdate( String sensorId, double currentValue);
+    void onSensorUpdate( String areaId, String sensorId, double newValue);
 }

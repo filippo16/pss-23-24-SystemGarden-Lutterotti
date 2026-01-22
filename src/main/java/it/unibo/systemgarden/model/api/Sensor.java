@@ -13,6 +13,6 @@ public interface Sensor {
 
     double readData();
 
-    void refresh();
+    void refresh(  String areaId );
     
 }
