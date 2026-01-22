@@ -8,6 +8,7 @@ import java.util.Map;
 import it.unibo.systemgarden.controller.api.Controller;
 import it.unibo.systemgarden.model.api.GreenArea;
 import it.unibo.systemgarden.model.api.Sector;
+import it.unibo.systemgarden.model.api.Sensor;
 import it.unibo.systemgarden.view.dialog.AddSectorDialogController;
 import it.unibo.systemgarden.view.dialog.AddSensorDialogController;
 import it.unibo.systemgarden.view.dto.CardData;
@@ -16,7 +17,9 @@ import it.unibo.systemgarden.view.utils.DialogHelper;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class AreaCardController {
@@ -40,7 +43,8 @@ public class AreaCardController {
     @FXML 
     private VBox sectorsContainer;
 
-    private VBox sensorsContainer;
+    @FXML
+    private HBox sensorsContainer;
 
     private Controller controller;
     private GreenArea area;
@@ -61,8 +65,12 @@ public class AreaCardController {
         updateClock( area.getLocation().getLocalTime() );
 
         // Populate sectors
-        for (final var sector : area.getSectors()) {
+        for (final Sector sector : area.getSectors()) {
             addSectorCard( sector );
+        }
+
+        for (final Sensor sensor : area.getSensors()) {
+            addSensorCard( sensor );
         }
     }
 
@@ -72,11 +80,14 @@ public class AreaCardController {
 
     /**
      * Creates a sector card
+     * @param sector sector to create
+     * @return containing the sector card and its controller
      */
     private CardData<SectorCardController> createSectorCard(final Sector sector) {
         try {
             final FXMLLoader loader = new FXMLLoader(
                 getClass().getClassLoader().getResource( FXML_PATH_SECTOR_CARD ));
+            
             final VBox sectorCard = loader.load();
             sectorCard.setId( sector.getId() );
             
@@ -93,20 +104,20 @@ public class AreaCardController {
 
     /**
      * Adds a new sector card.
+     * @param sector sector to add
      */
-    public CardData<SectorCardController> addSectorCard(final Sector sector) {
+    public void addSectorCard(final Sector sector) {
         final CardData<SectorCardController> sectorCardData = createSectorCard( sector );
         
         if (sectorCardData != null) {
             sectorsContainer.getChildren().add( sectorCardData.card() );
             sectorControllers.put( sector.getId(), sectorCardData.controller() );
         }
-        
-        return sectorCardData;
     }
 
     /**
      * Removes a sector card.
+     * @param sectorId sector to remove
      */
     public void removeSectorCard( final String sectorId ) {
         sectorsContainer.getChildren().removeIf( node -> 
@@ -116,9 +127,10 @@ public class AreaCardController {
 
     /**
      * Refreshes a specific sector card.
+     * @param sector sector to refresh
      */
     public void refreshSectorCard( final Sector sector ) {
-        ObservableList<javafx.scene.Node> children = sectorsContainer.getChildren();
+        ObservableList<Node> children = sectorsContainer.getChildren();
 
         for (int i = 0; i < children.size(); i++) {
 
@@ -158,19 +170,55 @@ public class AreaCardController {
 
     @FXML
     private void onAddSensor() {
+        
+        final SensorData result = DialogHelper.<SensorData, AddSensorDialogController>showDialog(
+            FXML_PATH_SENSOR_DIALOG, "Nuovo Sensore", css, null);
+
+
+        if (result != null) {
+            controller.addSensorToArea( area.getId(), result.name(), result.type() );
+        }
+    }
+
+    private CardData<SensorCardController> createSensorCard( final Sensor sensor ) {
         try {
-            final SensorData result = DialogHelper.<SensorData, AddSensorDialogController>showDialog(
-                FXML_PATH_SENSOR_DIALOG, "Nuovo Sensore", css, null);
+            final FXMLLoader loader = new FXMLLoader(
+                getClass().getClassLoader().getResource( 
+                    "fxml/component/SensorCard.fxml" ));
+            
+            final VBox sensorCard = loader.load();
+            sensorCard.setId( sensor.getId() );
+            
+            final SensorCardController ctrl = loader.getController();
+            ctrl.initialize( sensor, controller, area.getId() );
 
-            if (result != null) {
-                //controller.addSensorToArea( area.getId(), result );
-            }
-
+            return new CardData<SensorCardController>(sensorCard, ctrl);
         } catch (Exception e) {
             e.printStackTrace();
-            System.err.println("Error show add sensor dialog: " + e.getMessage());
-        } 
+            System.err.println("Error creating sensor card : " + e.getMessage());
+        }
+        return null;
     }
+
+    /**
+     * Adds a new sensor card.
+     * @param sensor sensor to add
+     */
+    public void addSensorCard( final Sensor sensor ) {
+        final CardData<SensorCardController> sensorCardData = 
+            createSensorCard( sensor );
+        
+        if (sensorCardData != null) {
+
+            sensorsContainer.getChildren().add( sensorCardData.card() );
+        }
+    }
+
+    public void removeSensorCard( final String sensorId ) {
+        sensorsContainer.getChildren().removeIf( node -> 
+            sensorId.equals( node.getId() ) );
+    }
+
 
     public VBox getCard() {
         return card;

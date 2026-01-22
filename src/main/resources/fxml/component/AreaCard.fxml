@@ -18,7 +18,7 @@
         <Button fx:id="deleteBtn" text="X" styleClass="danger-button" onAction="#onDeleteArea"/>
     </HBox>
     
-    <!-- Sensors Section (sotto l'header) -->
+    <!-- Sensors Section -->
     <HBox fx:id="sensorsContainer" spacing="8" alignment="CENTER_LEFT" styleClass="sensors-container">
         <HBox spacing="10" alignment="CENTER_LEFT">
             <Label text="Sensori" styleClass="section-label"/> 
