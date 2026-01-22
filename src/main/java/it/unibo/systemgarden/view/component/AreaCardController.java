@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import it.unibo.systemgarden.controller.api.Controller;
+import it.unibo.systemgarden.model.api.Camera;
 import it.unibo.systemgarden.model.api.GreenArea;
 import it.unibo.systemgarden.model.api.Sector;
 import it.unibo.systemgarden.model.api.Sensor;
@@ -46,6 +47,9 @@ public class AreaCardController {
     @FXML
     private HBox sensorsContainer;
 
+    @FXML
+    private VBox camerasContainer;
+
     private Controller controller;
     private GreenArea area;
     private String css;
@@ -73,6 +77,11 @@ public class AreaCardController {
         for (final Sensor sensor : area.getSensors()) {
             addSensorCard( sensor );
         }
+
+        for (final Camera camera : area.getCameras()) {
+            addCameraCard( camera );
+        }
+
     }
 
     public void updateClock( LocalTime time ) {
@@ -230,6 +239,34 @@ public class AreaCardController {
         }
         
     }
+
+    private HBox createCameraCard( final Camera camera ) {
+        try {
+            final FXMLLoader loader = new FXMLLoader(
+                getClass().getClassLoader().getResource( 
+                    "fxml/component/CameraCard.fxml" ));
+            
+            final HBox cameraCard = loader.load();
+            cameraCard.setId( camera.getId() );
+
+            return cameraCard;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Error creating camera card : " + e.getMessage());
+        }
+        return null;
+    }
+
+    private void addCameraCard( final Camera camera ) {
+        final HBox cameraCard = createCameraCard( camera );
+        
+        if (cameraCard != null) {
+
+            camerasContainer.getChildren().add( cameraCard );
+        }
+    }
+
+    
 
 
     public VBox getCard() {

@@ -35,4 +35,8 @@
         </HBox>
         
     </VBox>
+
+    <VBox fx:id="camerasContainer" spacing="5">
+        
+    </VBox>
 </VBox>
