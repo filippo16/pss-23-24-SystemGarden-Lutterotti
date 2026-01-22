@@ -88,8 +88,6 @@ public interface Controller {
     void updateSectorSchedule( String areaId, String sectorId, 
         LocalTime startTime, int duration, List<Integer> activeDays );
 
-    void refreshSensorData();
-
     void addSensorToArea( String areaId, String name, SensorType type );
 
     void removeSensorFromArea( String areaId, String sensorId );

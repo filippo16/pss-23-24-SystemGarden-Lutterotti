@@ -157,11 +157,6 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void refreshSensorData() {
-        model.refreshSensorData();
-    }
-
-    @Override
     public void addSensorToArea( String areaId, String name, SensorType type ) {
        final GreenArea area = model.addSensorToArea( areaId, name, type );
 

@@ -138,8 +138,7 @@ public class MainViewHandler {
         }
     }
 
-    @FXML
-    private void onRefreshClicked() {
-        controller.refreshSensorData();
+    public void refreshSensorData() {
+        areaControllers.values().forEach( AreaCardController::refreshSensorsData );
     }
 }
