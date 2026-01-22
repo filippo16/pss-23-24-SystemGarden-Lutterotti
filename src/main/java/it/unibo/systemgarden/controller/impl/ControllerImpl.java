@@ -9,6 +9,7 @@ import it.unibo.systemgarden.model.api.Sector;
 import it.unibo.systemgarden.model.impl.ManagerImpl;
 import it.unibo.systemgarden.model.impl.sensor.AbstractSensor;
 import it.unibo.systemgarden.model.impl.sensor.TemperatureSensor;
+import it.unibo.systemgarden.model.utils.SensorType;
 import it.unibo.systemgarden.view.api.View;
 import javafx.application.Platform;
 
@@ -172,4 +173,19 @@ public class ControllerImpl implements Controller {
     public void refreshSensorData() {
         model.refreshSensorData();
     }
+
+    @Override
+    public void addSensorToArea( String areaId, String name, SensorType type ) {
+       //final GreenArea area = model.addSensorToArea( areaId, name, type );
+    }
+
+    @Override
+    public void removeSensorFromArea( String areaId, String sensorId ) {
+        // final boolean removed = model.removeSensorFromArea( areaId, sensorId );
+
+        // if ( removed ) {
+        //     view.removeSensorCard( areaId, sensorId );
+        // }
+    }
+ 
 }

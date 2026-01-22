@@ -1,6 +1,7 @@
 package it.unibo.systemgarden.controller.api;
 
 import it.unibo.systemgarden.model.api.GreenArea;
+import it.unibo.systemgarden.model.utils.SensorType;
 
 import java.time.LocalTime;
 import java.util.List;
@@ -88,4 +89,8 @@ public interface Controller {
         LocalTime startTime, int duration, List<Integer> activeDays );
 
     void refreshSensorData();
+
+    void addSensorToArea( String areaId, String name, SensorType type );
+
+    void removeSensorFromArea( String areaId, String sensorId );
 }

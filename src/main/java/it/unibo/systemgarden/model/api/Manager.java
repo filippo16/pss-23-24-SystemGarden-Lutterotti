@@ -89,5 +89,7 @@ public interface Manager {
 
     void refreshSensorData();
 
-    void addSensorToArea( final String areaId, final Sensor sensor );
+    GreenArea addSensorToArea( final String areaId, final Sensor sensor );
+
+    boolean removeSensorFromArea( final String areaId, final String sensorId );
 }

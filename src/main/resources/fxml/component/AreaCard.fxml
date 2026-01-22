@@ -18,6 +18,15 @@
         <Button fx:id="deleteBtn" text="X" styleClass="danger-button" onAction="#onDeleteArea"/>
     </HBox>
     
+    <!-- Sensors Section (sotto l'header) -->
+    <HBox fx:id="sensorsContainer" spacing="8" alignment="CENTER_LEFT" styleClass="sensors-container">
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Label text="Sensori" styleClass="section-label"/> 
+            <Button fx:id="addSensorBtn" text="Aggiungi Sensore" styleClass="btn-primary" onAction="#onAddSensor"/>
+        </HBox>
+       
+    </HBox>
+
     <!-- Sectors Section -->
     <VBox fx:id="sectorsContainer" spacing="5">
         <HBox spacing="10" alignment="CENTER_LEFT">

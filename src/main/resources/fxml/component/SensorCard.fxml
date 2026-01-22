@@ -6,10 +6,11 @@
 
 <VBox xmlns="http://javafx.com/javafx/17" 
       xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="it.unibo.systemgarden.view.component.SensorCardController"
       styleClass="sensor-card" spacing="2" minWidth="100">
     <padding><Insets topRightBottomLeft="10"/></padding>
     <HBox alignment="TOP_LEFT">
-      <Button fx:id="deleteBtn" text="X" styleClass="danger-button"/>
+      <Button fx:id="deleteBtn" text="X" styleClass="danger-button" onAction="#onDelete"/>
     </HBox>
 
     <Label fx:id="nameLabel" text="Nome sensore" styleClass="sensor-name"/>

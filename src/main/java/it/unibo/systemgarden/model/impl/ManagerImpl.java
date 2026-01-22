@@ -138,21 +138,27 @@ public class ManagerImpl implements Manager {
     }
 
     @Override
-    public void addSensorToArea( final String areaId, final Sensor sensor ) {
+    public GreenArea addSensorToArea( final String areaId, final String name, final SensorType type ) {
         final GreenArea area = greenAreas.get( areaId );
 
         if ( area != null ) {
+            final Sensor sensor = new SensorImpl( name, type );
             area.addSensor( sensor );
+            return area;
         }
+
+        return null;
     }
 
-
-    public void removeSensorFromArea( final String areaId, final Sensor sensor ) {
+    @Override
+    public boolean removeSensorFromArea( final String areaId, final String sensorId ) {
         final GreenArea area = greenAreas.get( areaId );
 
         if ( area != null ) {
             //area.removeSensor( sensor );
+            return true;
         }
+        return false;
     }
 
 }
