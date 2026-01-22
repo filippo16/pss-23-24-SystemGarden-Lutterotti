@@ -17,11 +17,13 @@ public abstract class AbstractSensor implements Sensor, SensorObservable {
     private final String name;
     private final List<SensorObserver> observers;
     protected double currentValue;
+    private final Random random;
 
     protected AbstractSensor(final String name) {
         this.id = "SENS-" + new Random().nextInt( 100000 );
         this.name = name;
         this.observers = new ArrayList<>();
+        this.random = new Random();
     }
 
     @Override
@@ -54,5 +56,14 @@ public abstract class AbstractSensor implements Sensor, SensorObservable {
     @Override
     public void notifyObservers(  ) {
         observers.forEach( obs -> obs.onSensorUpdate( currentValue ) );
+    }
+
+    /**
+     * @return a new random value for this sensor type
+     */
+    protected abstract double generateNewValue();
+
+    protected Random getRandom() {
+        return this.random;
     }
 }

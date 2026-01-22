@@ -12,7 +12,5 @@ public interface Sensor {
     SensorType getType();
 
     double readData();
-
-    void setTemperature(double temperature);
     
 }
