@@ -102,3 +102,28 @@
   -fx-text-fill: #888888; 
   -fx-font-size: 12px;
 }
+
+
+/* SENSOR CARD */
+.sensor-card {
+  -fx-background-color: #e0e0e0;
+  -fx-background-radius: 8;
+  -fx-padding: 10;
+}
+
+.sensor-name {
+  -fx-font-weight: bold;
+  -fx-font-size: 13px;
+  -fx-text-fill: #333;
+}
+
+.sensor-value {
+  -fx-font-size: 18px;
+  -fx-font-weight: bold;
+  -fx-text-fill: #333;
+}
+
+.sensor-type-value {
+  -fx-font-size: 12px;
+  -fx-text-fill: #666;
+}
