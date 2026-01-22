@@ -5,18 +5,15 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-/**
- * Controller for AddSectorDialog.
- * Contains the methods of the dialog (Create Sector)
- */
-public class AddSectorDialogController implements DialogController<String> {
+public class AddCameraDialogController implements DialogController<String> {
 
     @FXML
     private TextField nameField;
 
     private String result;
     private Stage stage;
-  
+
+
     @FXML
     private void onAdd() {
         final String name = nameField.getText().trim();
@@ -33,19 +30,18 @@ public class AddSectorDialogController implements DialogController<String> {
         closeDialog();
     }
 
-    /**
-     * @return the sector name or null if cancelled
-     */
-    public String getResult() {
-        return result;
-    }
-
     private void closeDialog() {
         stage.close();
     }
 
     @Override
-    public void setStage(Stage stage) {
+    public String getResult() {
+        return result;
+    }
+
+    @Override
+    public void setStage(javafx.stage.Stage stage) {
         this.stage = stage;
     }
+    
 }

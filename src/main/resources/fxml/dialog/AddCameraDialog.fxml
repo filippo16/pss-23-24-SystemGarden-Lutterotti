@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17" 
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="it.unibo.systemgarden.view.dialog.AddCameraDialogController"
+    spacing="10" prefWidth="300" styleClass="dialog-root">
+    
+    <padding><Insets topRightBottomLeft="20"/></padding>
+
+    <Label text="aggiungi una telecamera" styleClass="dialog-title" />
+    
+    <Label text="Nome Telecamera:" />
+    <TextField fx:id="nameField" promptText="Es: Giardino Nord"/>
+    
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Annulla" onAction="#onCancel" styleClass="btn-secondary"/>
+        <Button text="Crea" onAction="#onAdd" styleClass="btn-primary"/>
+    </HBox>
+    
+</VBox>
