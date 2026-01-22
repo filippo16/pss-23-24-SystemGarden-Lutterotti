@@ -1,0 +1,21 @@
+<VBox xmlns="http://javafx.com/javafx/17" 
+      xmlns:fx="http://javafx.com/fxml/1"
+      spacing="15" prefWidth="300" prefHeight="150">
+    <padding><Insets topRightBottomLeft="20"/></padding>
+    
+    <Label text="Tipo sensore:" />
+    <ComboBox fx:id="sensorTypeCombo" prefWidth="200">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="humidity"/>
+                <String fx:value="temperature"/>
+            </FXCollections>
+        </items>
+    </ComboBox>
+    
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Annulla" onAction="#onCancelClicked"/>
+        <Button text="Aggiungi" styleClass="primary-button" onAction="#onCreateClicked"/>
+    </HBox>
+    
+</VBox>
