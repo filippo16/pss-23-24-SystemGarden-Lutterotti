@@ -48,6 +48,10 @@ La progettazione mi ha permesso di avere un'idea chiara fin dall'inizio, ho avut
 - Aggiunto clock interno con visualizzazione.
 - Aggiunti metodi crud per sector (come per green area).
 
-## 21.01.2026 - xx.01.2026 (ca. 3 ORE)
+## 21.01.2026 - xx.01.2026 (ca. 11 ORE)
 **Attività**
 - Implementazione pattern observer per i sensori
+- Implementazione pattern facotry per la creazione dei sensori
+
+**Difficoltà**
+- Non c'è ne sono state troppe, più che altro mi chiedo se view può effettivamente essere un observer e le varie metodologie per iscriverla in modo più pulito.
