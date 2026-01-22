@@ -196,6 +196,82 @@ classDiagram
 
 ## Design dettagliato
 
+### Creazione dei sensori
+Rappresentazione UML del pattern **Factory Method** per la creazione dei sensori.
+
+```mermaid
+classDiagram
+    class Sensor {
+        +readData(): double
+        +getType(): String
+    }
+    <<interface>> Sensor
+
+    class HumiditySensor
+    class TemperatureSensor 
+
+    class SensorFactory {
+        +createSensor(String type, String name): Sensor
+    }
+    <<interface>> SensorFactory
+
+    class SensorFactoryImpl {
+        +createSensor(String type, String name): Sensor
+    }
+
+    Sensor <|-- HumiditySensor
+    Sensor <|-- TemperatureSensor
+    SensorFactory <|.. SensorFactoryImpl
+    SensorFactory -- Sensor
+```
+
+#### Problema
+Durante lo sviluppo ci sono stati dei problemi nella creazione delle istanze dei sensori, e inoltre
+in fase di analisi si era riscontrata la possibilità di aggiungere nuove tipologie di sensori (es. sensore di pioggia, sensore di luce).
+
+#### Soluzione
+La soluzione adottata è stata quella di utilizzare il pattern **Factory Method**, in particolare la versione parametrizzata. L'interfaccia `SensorFactory` definisce il contratto d'uso della factory. La classe `SensorFactoryImpl` è responsabile della creazione dei sensori.
+Questo pattern semplifica la creazione dei sensori, definendo una classe specifica per questo compito. Ogni tipo di sensore viene creato in base al parametro `type` passato alla factory.
+
+
+
+### Notifica aggiornamento sensori
+Rappresentazione UML del pattern **Observer** per la notifica dei dati sensori.
+
+```mermaid
+    classDiagram
+        class SensorObservable {
+        +addObserver( SensorObserver )
+        +removeObserver( SensorObserver )
+        +notifyObservers( String, double )
+    }
+    <<interface>> SensorObservable
+
+    class SensorObserver {
+        +onSensorUpdate( String areaId, String sensorId, double value )
+    }
+    <<interface>> SensorObserver
+
+    class AbstractSensor
+    class ViewImpl
+
+    SensorObservable --> SensorObserver
+    SensorObservable <|.. AbstractSensor
+    SensorObserver <|.. ViewImpl
+```
+
+#### Problema
+Il problema riscontrato è stato quello di notificare alla view quando un sensore ha un nuovo valore. In questo modo la view può visualizzare le informazioni aggiornate per avvisare l'utente.
+
+#### Soluzione
+La soluzione adottata è il pattern **Observer**: l'interfaccia `SensorObserver` definisce il metodo di callback `onSensorUpdate`. L'interfaccia `SensorObservable` definisce i metodi per gestire gli observer.
+In questo scenario, `AbstractSensor` implementa la logica dell'observable e notifica alla `view` (observer) quando ha un nuovo valore.
+
+
+
+
+
+
 
 ### Note di sviluppo
 
@@ -203,20 +279,11 @@ classDiagram
 Dove: `it.unibo.systemgarden.controller.impl`
 
 ```java
- @Override
-public void irrigateSector( final String areaId, final String sectorId ) {
-    final GreenArea area = greenAreas.get( areaId );
 
-    if ( area != null ) {
-        area.getSectors().stream().filter(s -> s.getId().equals( sectorId )).findFirst()
-        .ifPresent( Sector::irrigate );
-        view.refreshAreaCard( area );
-    }
-}
 ```
 
 
-#### Utilizzo di Polimorfismo parametrico e Lambda function (Consumer)
+#### Utilizzo di metodi Generci e Lambda function (Consumer)
 Dove: `it.unibo.systemgarden.view.utils.DialogHelper`
 
 ```java
@@ -244,6 +311,42 @@ public static<R, C extends DialogController<R>> R showDialog(
         return controller.getResult();
     } catch (Exception e) {
         throw new RuntimeException( "Error showing dialog: " + e.getMessage(), e );
+    }
+}
+```
+
+
+#### Utilizzo di enumerazioni
+Dove: `it.unibo.systemgarden.model.utils.SensorType`
+```java
+public enum SensorType {
+    TEMPERATURE("temperature"),
+    HUMIDITY("humidity");
+
+    private final String label;
+
+    SensorType(final String label) {
+        this.label = label;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public String getUnit() {
+        switch (this) {
+            case TEMPERATURE:
+                return "°C";
+            case HUMIDITY:
+                return "%";
+            default:
+                return "";
+        }
+    }
+
+    @Override
+    public String toString() {
+        return label.substring( 0, 1 ).toUpperCase() + label.substring( 1 );
     }
 }
 ```
