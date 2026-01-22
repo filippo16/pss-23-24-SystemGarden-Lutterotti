@@ -7,10 +7,10 @@ import it.unibo.systemgarden.model.utils.SensorType;
 public class SensorFactoryImpl implements SensorFactory {
     
     @Override
-    public Sensor createSensor(final String name, final SensorType type) {;
+    public Sensor createSensor( final String name, final SensorType type ) {
         return switch (type) {
-            case HUMIDITY -> new TemperatureSensor(name);
-            case TEMPERATURE -> new TemperatureSensor(name);
+            case HUMIDITY -> new HumiditySensor( name );
+            case TEMPERATURE -> new TemperatureSensor( name );
         };
     }
 
