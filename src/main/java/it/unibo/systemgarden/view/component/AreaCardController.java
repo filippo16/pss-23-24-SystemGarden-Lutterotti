@@ -9,7 +9,9 @@ import it.unibo.systemgarden.controller.api.Controller;
 import it.unibo.systemgarden.model.api.GreenArea;
 import it.unibo.systemgarden.model.api.Sector;
 import it.unibo.systemgarden.view.dialog.AddSectorDialogController;
+import it.unibo.systemgarden.view.dialog.AddSensorDialogController;
 import it.unibo.systemgarden.view.dto.CardData;
+import it.unibo.systemgarden.view.dto.SensorData;
 import it.unibo.systemgarden.view.utils.DialogHelper;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -21,6 +23,7 @@ public class AreaCardController {
 
     private static final String FXML_PATH_SECTOR_DIALOG = "fxml/dialog/AddSectorDialog.fxml";
     private static final String FXML_PATH_SECTOR_CARD = "fxml/component/SectorCard.fxml";
+    private static final String FXML_PATH_SENSOR_DIALOG = "fxml/dialog/AddSensorDialog.fxml";
 
     @FXML 
     private VBox card;
@@ -36,6 +39,8 @@ public class AreaCardController {
 
     @FXML 
     private VBox sectorsContainer;
+
+    private VBox sensorsContainer;
 
     private Controller controller;
     private GreenArea area;
@@ -81,6 +86,7 @@ public class AreaCardController {
             return new CardData<SectorCardController>(sectorCard, ctrl);
         } catch (Exception e) {
             e.printStackTrace();
+            System.err.println("Error creating sector card : " + e.getMessage());
         }
         return null;
     }
@@ -148,6 +154,22 @@ public class AreaCardController {
         if (result != null) {
             controller.addSectorToArea( area.getId(), result );
         }
+    }
+
+    @FXML
+    private void onAddSensor() {
+        try {
+            final SensorData result = DialogHelper.<SensorData, AddSensorDialogController>showDialog(
+                FXML_PATH_SENSOR_DIALOG, "Nuovo Sensore", css, null);
+
+            if (result != null) {
+                //controller.addSensorToArea( area.getId(), result );
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Error show add sensor dialog: " + e.getMessage());
+        } 
     }
 
     public VBox getCard() {
