@@ -49,20 +49,12 @@ public class ControllerImpl implements Controller {
         scheduler.scheduleAtFixedRate(() -> {
 
             checkAllSchedules();
-            updateClocks();  
+            updateClocks();
+            model.refreshSensorData(); 
+
         }, delayToNextMinute, 60000, TimeUnit.MILLISECONDS);
         view.show();
     }
-
-    // private void testSensor() {
-    //     final Sensor sensor = new TemperatureSensor("TEST");
-
-    //     model.getGreenAreas().forEach(area -> {
-    //         model.addSensorToArea(area.getId(), sensor);
-    //         model.getGreenArea( area.getId() ).getSensors().stream()
-    //             .forEach(s -> ((AbstractSensor) s).addObserver((SensorObserver) view));
-    //     });
-    // }
 
     @Override
     public void stop() {

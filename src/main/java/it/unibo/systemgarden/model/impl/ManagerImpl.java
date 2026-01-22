@@ -2,7 +2,6 @@ package it.unibo.systemgarden.model.impl;
 
 
 import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.ArrayList;
 import java.util.List;
@@ -135,9 +134,8 @@ public class ManagerImpl implements Manager {
     @Override
     public void refreshSensorData() {
         for ( GreenArea area : greenAreas.values() ) {
-            for ( Sensor sensor : ( (GreenAreaImpl) area ).getSensors() ) {
-                //sensor.setTemperature(new Random().nextDouble(15.0, 30.0));
-            }
+            final List<Sensor> s = area.getSensors();
+            s.forEach( Sensor::refresh );
         }
     }
 
