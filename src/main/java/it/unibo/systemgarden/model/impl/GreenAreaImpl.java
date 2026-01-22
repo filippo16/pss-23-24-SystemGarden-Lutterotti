@@ -5,7 +5,6 @@ import it.unibo.systemgarden.model.api.Location;
 import it.unibo.systemgarden.model.api.Schedule;
 import it.unibo.systemgarden.model.api.Sector;
 import it.unibo.systemgarden.model.api.Sensor;
-import it.unibo.systemgarden.model.impl.sensor.TemperatureSensor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -118,8 +117,9 @@ public class GreenAreaImpl implements GreenArea {
         }
     }
 
-    public void removeSensor( final Sensor sensor ) {
-        sensors.remove( sensor );
+    @Override
+    public boolean removeSensor( final String sensorId ) {
+        return sensors.removeIf(sensor -> sensor.getId().equals(sensorId));
     }
 
 }

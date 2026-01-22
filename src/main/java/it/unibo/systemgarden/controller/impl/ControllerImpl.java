@@ -2,13 +2,11 @@ package it.unibo.systemgarden.controller.impl;
 
 import it.unibo.systemgarden.controller.api.Controller;
 import it.unibo.systemgarden.model.api.GreenArea;
-import it.unibo.systemgarden.model.api.Sensor;
 import it.unibo.systemgarden.model.api.observer.SensorObserver;
 import it.unibo.systemgarden.model.api.Manager;
 import it.unibo.systemgarden.model.api.Sector;
 import it.unibo.systemgarden.model.impl.ManagerImpl;
 import it.unibo.systemgarden.model.impl.sensor.AbstractSensor;
-import it.unibo.systemgarden.model.impl.sensor.TemperatureSensor;
 import it.unibo.systemgarden.model.utils.SensorType;
 import it.unibo.systemgarden.view.api.View;
 import javafx.application.Platform;
@@ -56,15 +54,15 @@ public class ControllerImpl implements Controller {
         view.show();
     }
 
-    private void testSensor() {
-        final Sensor sensor = new TemperatureSensor("TEST");
+    // private void testSensor() {
+    //     final Sensor sensor = new TemperatureSensor("TEST");
 
-        model.getGreenAreas().forEach(area -> {
-            model.addSensorToArea(area.getId(), sensor);
-            model.getGreenArea( area.getId() ).getSensors().stream()
-                .forEach(s -> ((AbstractSensor) s).addObserver((SensorObserver) view));
-        });
-    }
+    //     model.getGreenAreas().forEach(area -> {
+    //         model.addSensorToArea(area.getId(), sensor);
+    //         model.getGreenArea( area.getId() ).getSensors().stream()
+    //             .forEach(s -> ((AbstractSensor) s).addObserver((SensorObserver) view));
+    //     });
+    // }
 
     @Override
     public void stop() {
@@ -81,9 +79,6 @@ public class ControllerImpl implements Controller {
         if( area != null ) {
             view.addAreaCard( area );
         }
-
-        testSensor();
-        
     }
 
     @Override
@@ -164,7 +159,7 @@ public class ControllerImpl implements Controller {
     private void updateClocks() {
         Platform.runLater(() -> {
             model.getGreenAreas().forEach(area -> {
-                view.updateAreaClock(area.getId(), area.getLocation().getLocalTime());
+                view.updateAreaClock( area.getId(), area.getLocation().getLocalTime() );
             });
         });
     }
@@ -176,16 +171,24 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void addSensorToArea( String areaId, String name, SensorType type ) {
-       //final GreenArea area = model.addSensorToArea( areaId, name, type );
+       final GreenArea area = model.addSensorToArea( areaId, name, type );
+
+       if( area != null ) {
+            model.getGreenArea( area.getId() ).getSensors().stream()
+                .forEach( s -> ( (AbstractSensor) s ).addObserver( (SensorObserver) view ) );
+            
+            view.refreshAreaCard(area);
+       }
     }
 
     @Override
     public void removeSensorFromArea( String areaId, String sensorId ) {
-        // final boolean removed = model.removeSensorFromArea( areaId, sensorId );
+        final boolean removed = model.removeSensorFromArea( areaId, sensorId );
 
-        // if ( removed ) {
-        //     view.removeSensorCard( areaId, sensorId );
-        // }
+        if ( removed ) {
+            final GreenArea area = model.getGreenArea( areaId );
+            view.refreshAreaCard( area );
+        }
     }
  
 }

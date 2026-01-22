@@ -77,7 +77,7 @@ public class ManagerImpl implements Manager {
 
         if ( area != null ) {
             area.getSectors().stream()
-                .filter(s -> s.getId().equals( sectorId )).findFirst()
+                .filter( s -> s.getId().equals( sectorId ) ).findFirst()
                 .ifPresent( area::removeSector );
 
             return true;
@@ -92,7 +92,7 @@ public class ManagerImpl implements Manager {
 
         if ( area != null ) {
             area.getSectors().stream()
-                .filter(s -> s.getId().equals( sectorId )).findFirst()
+                .filter( s -> s.getId().equals( sectorId ) ).findFirst()
                 .ifPresent( Sector::irrigate );
             
             return area.getSector( sectorId );
@@ -107,7 +107,7 @@ public class ManagerImpl implements Manager {
 
         if ( area != null ) {
             area.getSectors().stream()
-                .filter(s -> s.getId().equals( sectorId )).findFirst()
+                .filter( s -> s.getId().equals( sectorId ) ).findFirst()
                 .ifPresent( Sector::stop );
             return area.getSector( sectorId );
         }
@@ -123,7 +123,7 @@ public class ManagerImpl implements Manager {
 
         if ( area != null ) {
             area.getSectors().stream()
-                .filter(s -> s.getId().equals( sectorId )).findFirst()
+                .filter( s -> s.getId().equals( sectorId ) ).findFirst()
                 .ifPresent( s -> s.getSchedule().update( startTime, duration, activeDays ) );
 
             return area.getSector( sectorId );
@@ -155,14 +155,14 @@ public class ManagerImpl implements Manager {
     }
 
     @Override
-    public boolean removeSensorFromArea( final String areaId, final String sensorId ) {
-        final GreenArea area = greenAreas.get( areaId );
-
-        if ( area != null ) {
-            //area.removeSensor( sensor );
-            return true;
-        }
-        return false;
+    public boolean removeSensorFromArea(String areaId, String sensorId) {
+    GreenArea area = greenAreas.get(areaId);
+    
+    if (area != null) {
+        return area.removeSensor(sensorId);
     }
+    
+    return false;
+}
 
 }
