@@ -239,20 +239,11 @@ Questo pattern semplifica la creazione dei sensori, definendo una classe specifi
 Dove: `it.unibo.systemgarden.controller.impl`
 
 ```java
- @Override
-public void irrigateSector( final String areaId, final String sectorId ) {
-    final GreenArea area = greenAreas.get( areaId );
 
-    if ( area != null ) {
-        area.getSectors().stream().filter(s -> s.getId().equals( sectorId )).findFirst()
-        .ifPresent( Sector::irrigate );
-        view.refreshAreaCard( area );
-    }
-}
 ```
 
 
-#### Utilizzo di Polimorfismo parametrico e Lambda function (Consumer)
+#### Utilizzo di metodi Generci e Lambda function (Consumer)
 Dove: `it.unibo.systemgarden.view.utils.DialogHelper`
 
 ```java
