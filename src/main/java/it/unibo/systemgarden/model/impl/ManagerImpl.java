@@ -11,10 +11,14 @@ import it.unibo.systemgarden.model.api.GreenArea;
 import it.unibo.systemgarden.model.api.Manager;
 import it.unibo.systemgarden.model.api.Sector;
 import it.unibo.systemgarden.model.api.Sensor;
+import it.unibo.systemgarden.model.api.factory.SensorFactory;
+import it.unibo.systemgarden.model.impl.sensor.SensorFactoryImpl;
+import it.unibo.systemgarden.model.utils.SensorType;
 
 public class ManagerImpl implements Manager {
 
     private final Map<String, GreenArea> greenAreas;
+    SensorFactory factory = new SensorFactoryImpl();
 
     public ManagerImpl() {
         this.greenAreas = new ConcurrentHashMap<>();
@@ -142,7 +146,7 @@ public class ManagerImpl implements Manager {
         final GreenArea area = greenAreas.get( areaId );
 
         if ( area != null ) {
-            final Sensor sensor = new SensorImpl( name, type );
+            Sensor sensor = factory.createSensor(name, type);
             area.addSensor( sensor );
             return area;
         }

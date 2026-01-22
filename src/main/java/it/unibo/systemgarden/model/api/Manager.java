@@ -3,6 +3,8 @@ package it.unibo.systemgarden.model. api;
 import java.time.LocalTime;
 import java. util.List;
 
+import it.unibo.systemgarden.model.utils.SensorType;
+
 /**
  * This is the main entry point for the model layer.
  */
@@ -89,7 +91,7 @@ public interface Manager {
 
     void refreshSensorData();
 
-    GreenArea addSensorToArea( final String areaId, final Sensor sensor );
+    GreenArea addSensorToArea( final String areaId, final String name, final SensorType type );
 
     boolean removeSensorFromArea( final String areaId, final String sensorId );
 }
