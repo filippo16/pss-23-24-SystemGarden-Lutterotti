@@ -22,11 +22,20 @@ public class AreaCardController {
     private static final String FXML_PATH_SECTOR_DIALOG = "fxml/dialog/AddSectorDialog.fxml";
     private static final String FXML_PATH_SECTOR_CARD = "fxml/component/SectorCard.fxml";
 
-    @FXML private VBox card;
-    @FXML private Label nameLabel;
-    @FXML private Label cityLabel;
-    @FXML private Label clockLabel;
-    @FXML private VBox sectorsContainer;
+    @FXML 
+    private VBox card;
+
+    @FXML 
+    private Label nameLabel;
+
+    @FXML 
+    private Label cityLabel;
+
+    @FXML 
+    private Label clockLabel;
+
+    @FXML 
+    private VBox sectorsContainer;
 
     private Controller controller;
     private GreenArea area;
