@@ -6,7 +6,6 @@ import it.unibo.systemgarden.view.dialog.EditScheduleDialogController;
 import it.unibo.systemgarden.view.dto.ScheduleData;
 import it.unibo.systemgarden.view.utils.DialogHelper;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
@@ -18,10 +17,6 @@ public class SectorCardController {
     @FXML private VBox sectorBox;
     @FXML private Label sectorLabel;
     @FXML private Label scheduleInfoLabel;
-    @FXML private Button startBtn;
-    @FXML private Button stopBtn;
-    @FXML private Button scheduleBtn;
-    @FXML private Button deleteBtn;
 
     private Controller controller;
     private String areaId;

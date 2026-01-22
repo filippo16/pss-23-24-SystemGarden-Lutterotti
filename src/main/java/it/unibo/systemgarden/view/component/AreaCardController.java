@@ -14,7 +14,6 @@ import it.unibo.systemgarden.view.utils.DialogHelper;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
@@ -27,8 +26,6 @@ public class AreaCardController {
     @FXML private Label nameLabel;
     @FXML private Label cityLabel;
     @FXML private Label clockLabel;
-    @FXML private Button deleteBtn;
-    @FXML private Button addSectorBtn;
     @FXML private VBox sectorsContainer;
 
     private Controller controller;
