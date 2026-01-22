@@ -233,6 +233,46 @@ in fase di analisi si era riscontrata la possibilità di aggiungere nuove tipolo
 La soluzione adottata è stata quella di utilizzare il pattern **Factory Method**, in particolare la versione parametrizzata. L'interfaccia `SensorFactory` definisce il contratto d'uso della factory. La classe `SensorFactoryImpl` è responsabile della creazione dei sensori.
 Questo pattern semplifica la creazione dei sensori, definendo una classe specifica per questo compito. Ogni tipo di sensore viene creato in base al parametro `type` passato alla factory.
 
+
+
+### Notifica aggiornamento sensori
+Rappresentazione UML del pattern **Observer** per la notifica dei dati sensori.
+
+```mermaid
+    classDiagram
+        class SensorObservable {
+        +addObserver( SensorObserver )
+        +removeObserver( SensorObserver )
+        +notifyObservers( String, double )
+    }
+    <<interface>> SensorObservable
+
+    class SensorObserver {
+        +onSensorUpdate( String areaId, String sensorId, double value )
+    }
+    <<interface>> SensorObserver
+
+    class AbstractSensor
+    class ViewImpl
+
+    SensorObservable --> SensorObserver
+    SensorObservable <|.. AbstractSensor
+    SensorObserver <|.. ViewImpl
+```
+
+#### Problema
+Il problema riscontrato è stato quello di notificare alla view quando un sensore ha un nuovo valore. In questo modo la view può visualizzare le informazioni aggiornate per avvisare l'utente.
+
+#### Soluzione
+La soluzione adottata è il pattern **Observer**: l'interfaccia `SensorObserver` definisce il metodo di callback `onSensorUpdate`. L'interfaccia `SensorObservable` definisce i metodi per gestire gli observer.
+In questo scenario, `AbstractSensor` implementa la logica dell'observable e notifica alla `view` (observer) quando ha un nuovo valore.
+
+
+
+
+
+
+
 ### Note di sviluppo
 
 #### Utilizzo di Stream per filtrare e operare su collezioni
