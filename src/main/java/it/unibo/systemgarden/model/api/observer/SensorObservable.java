@@ -6,5 +6,5 @@ public interface SensorObservable {
 
     void removeObserver(SensorObserver observer);
 
-    void notifyObservers( );
+    void notifyObservers( String sensorId, double value );
 }

@@ -96,7 +96,7 @@ public class ViewImpl implements View, SensorObserver  {
     }
 
     @Override
-    public void onSensorUpdate( double currentValue) {
+    public void onSensorUpdate( String sensorId, double currentValue) {
         System.out.println( "[View] Sensor data updated: " + currentValue );
     }
 }

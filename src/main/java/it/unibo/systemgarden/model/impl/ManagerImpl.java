@@ -136,7 +136,7 @@ public class ManagerImpl implements Manager {
     public void refreshSensorData() {
         for ( GreenArea area : greenAreas.values() ) {
             for ( Sensor sensor : ( (GreenAreaImpl) area ).getSensors() ) {
-                sensor.setTemperature(new Random().nextDouble(15.0, 30.0));
+                //sensor.setTemperature(new Random().nextDouble(15.0, 30.0));
             }
         }
     }

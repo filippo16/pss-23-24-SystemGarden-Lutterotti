@@ -12,5 +12,7 @@ public interface Sensor {
     SensorType getType();
 
     double readData();
+
+    void refresh();
     
 }

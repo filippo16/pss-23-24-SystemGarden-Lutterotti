@@ -54,12 +54,20 @@ public abstract class AbstractSensor implements Sensor, SensorObservable {
     }
 
     @Override
-    public void notifyObservers(  ) {
-        observers.forEach( obs -> obs.onSensorUpdate( currentValue ) );
+    public void notifyObservers( final String sensorId, final double value ) {
+        observers.forEach( obs -> obs.onSensorUpdate( sensorId, value ) );
+    }
+
+    @Override
+    public void refresh() {
+        this.currentValue = generateNewValue();
+        notifyObservers(this.id, this.currentValue);
     }
 
     /**
-     * @return a new random value for this sensor type
+     * Generates a new value for the sensor.
+     * Is a test method to simulate sensor data changes. 
+     * @return the new sensor value
      */
     protected abstract double generateNewValue();
 
