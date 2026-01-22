@@ -127,3 +127,16 @@
   -fx-font-size: 12px;
   -fx-text-fill: #666;
 }
+
+
+/* CAMERA CARD */
+.camera-dialog {
+  -fx-background-color: #000000;
+}
+
+.camera-dialog .no-data {
+  -fx-text-fill: #ffffff;
+  -fx-font-size: 18px;
+  -fx-font-weight: bold;
+  -fx-alignment: center;
+}
