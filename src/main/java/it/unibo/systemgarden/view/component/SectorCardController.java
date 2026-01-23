@@ -21,18 +21,16 @@ public class SectorCardController {
     private Controller controller;
     private String areaId;
     private Sector sector;
-    private String css;
 
     /**
      * Initializes the sector card with data.
      */
     public void initialize(final Controller controller, final String areaId, 
-        final Sector sector, final String css
+        final Sector sector
     ) {
         this.controller = controller;
         this.areaId = areaId;
         this.sector = sector;
-        this.css = css;
 
         updateLabels();
     }

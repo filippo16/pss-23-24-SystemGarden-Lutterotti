@@ -48,7 +48,6 @@ public class AreaCardController {
 
     private Controller controller;
     private GreenArea area;
-    private String css;
 
     private final Map<String, SectorCardController> sectorControllers = new HashMap<>();
     private final Map<String, SensorCardController> sensorControllers = new HashMap<>();
@@ -90,7 +89,7 @@ public class AreaCardController {
             sectorCard.setId( sector.getId() );
             
             final SectorCardController ctrl = loader.getController();
-            ctrl.initialize( controller, area.getId(), sector, css );
+            ctrl.initialize( controller, area.getId(), sector );
             
             return new CardData<SectorCardController>(sectorCard, ctrl);
         } catch (Exception e) {
