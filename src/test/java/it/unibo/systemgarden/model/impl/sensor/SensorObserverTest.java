@@ -1,6 +1,7 @@
 package it.unibo.systemgarden.model.impl.sensor;
 
 import it.unibo.systemgarden.model.api.observer.SensorObserver;
+import it.unibo.systemgarden.model.utils.SensorType;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +26,7 @@ class SensorObserverTest {
     void testAddObserver() {
         sensor.addObserver(observer);
 
-        sensor.refresh("AREA-001");
+        sensor.refresh("AREA-001", SensorType.HUMIDITY);
 
         assertTrue(observer.wasNotified());
     }
@@ -34,11 +35,12 @@ class SensorObserverTest {
     void testObserverReceivesCorrectData() {
         sensor.addObserver(observer);
 
-        sensor.refresh("AREA-123");
+        sensor.refresh("AREA-123", SensorType.HUMIDITY);
 
         assertEquals("AREA-123", observer.getLastAreaId());
         assertEquals(sensor.getId(), observer.getLastSensorId());
         assertEquals(sensor.readData(), observer.getLastValue());
+        assertEquals(SensorType.HUMIDITY, observer.getLastSensorType());
     }
 
     @Test
@@ -46,7 +48,7 @@ class SensorObserverTest {
         sensor.addObserver(observer);
         sensor.removeObserver(observer);
 
-        sensor.refresh("AREA-001");
+        sensor.refresh("AREA-001", SensorType.HUMIDITY);
 
         assertFalse(observer.wasNotified());
     }
@@ -58,10 +60,12 @@ class SensorObserverTest {
         sensor.addObserver(observer);
         sensor.addObserver(observer2);
 
-        sensor.refresh("AREA-001");
+        sensor.refresh("AREA-001", SensorType.TEMPERATURE);
 
         assertTrue(observer.wasNotified());
         assertTrue(observer2.wasNotified());
+        assertEquals(SensorType.TEMPERATURE, observer.getLastSensorType());
+        assertEquals(SensorType.TEMPERATURE, observer2.getLastSensorType());
     }
 
     @Test
@@ -69,7 +73,7 @@ class SensorObserverTest {
         sensor.addObserver(observer);
         sensor.addObserver(observer);
 
-        sensor.refresh("AREA-001");
+        sensor.refresh("AREA-001", SensorType.HUMIDITY);
 
         assertEquals(1, observer.getNotificationCount());
     }
@@ -84,14 +88,16 @@ class SensorObserverTest {
         private String lastSensorId;
         private double lastValue;
         private int notificationCount = 0;
+        private SensorType lastSensorType;
 
         @Override
-        public void onSensorUpdate(String areaId, String sensorId, double newValue) {
+        public void onSensorUpdate(String areaId, String sensorId, double newValue, SensorType sensorType) {
             this.notified = true;
             this.lastAreaId = areaId;
             this.lastSensorId = sensorId;
             this.lastValue = newValue;
             this.notificationCount++;
+            this.lastSensorType = sensorType;
         }
 
         public boolean wasNotified() {
@@ -112,6 +118,10 @@ class SensorObserverTest {
 
         public int getNotificationCount() {
             return notificationCount;
+        }
+
+        public SensorType getLastSensorType() {
+            return lastSensorType;
         }
     }
 
