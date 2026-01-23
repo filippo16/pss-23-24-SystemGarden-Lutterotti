@@ -4,6 +4,7 @@ import it.unibo.systemgarden.controller.api.Controller;
 import it.unibo.systemgarden.model.api.GreenArea;
 import it.unibo.systemgarden.model.api.Sector;
 import it.unibo.systemgarden.model.api.observer.SensorObserver;
+import it.unibo.systemgarden.model.utils.SensorType;
 import it.unibo.systemgarden.view.api.View;
 import it.unibo.systemgarden.view.component.ToastController;
 import it.unibo.systemgarden.view.utils.ToastType;
@@ -93,7 +94,9 @@ public class ViewImpl implements View, SensorObserver  {
     }
 
     @Override
-    public void onSensorUpdate( final String areaId, final String sensorId, final double newValue ) {
+    public void onSensorUpdate( final String areaId, final String sensorId, 
+        final double newValue, final SensorType type 
+    ) {
        Platform.runLater(() -> mainHandler.refreshSensorData( areaId, sensorId, newValue ));
     }
 

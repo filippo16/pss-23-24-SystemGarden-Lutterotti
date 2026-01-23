@@ -3,6 +3,7 @@ package it.unibo.systemgarden.model.impl.sensor;
 import it.unibo.systemgarden.model.api.Sensor;
 import it.unibo.systemgarden.model.api.observer.SensorObservable;
 import it.unibo.systemgarden.model.api.observer.SensorObserver;
+import it.unibo.systemgarden.model.utils.SensorType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,14 +55,14 @@ public abstract class AbstractSensor implements Sensor, SensorObservable {
     }
 
     @Override
-    public void notifyObservers( final String areaId, final String sensorId, final double value ) {
-        observers.forEach( obs -> obs.onSensorUpdate( areaId, sensorId, value ) );
+    public void notifyObservers( final String areaId, final String sensorId, final double value, final SensorType type ) {
+        observers.forEach( obs -> obs.onSensorUpdate( areaId, sensorId, value, type ) );
     }
 
     @Override
-    public void refresh( final String areaId ) {
+    public void refresh( final String areaId, final SensorType type ) {
         this.currentValue = generateNewValue();
-        notifyObservers(areaId, this.id, this.currentValue);
+        notifyObservers(areaId, this.id, this.currentValue, type);
     }
 
     /**
