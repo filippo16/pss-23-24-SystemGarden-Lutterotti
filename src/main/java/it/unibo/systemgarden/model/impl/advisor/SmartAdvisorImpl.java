@@ -2,7 +2,6 @@ package it.unibo.systemgarden.model.impl.advisor;
 
 import java.util.List;
 
-import it.unibo.systemgarden.model.api.Sensor;
 import it.unibo.systemgarden.model.api.SmartAdvisor;
 import it.unibo.systemgarden.model.api.strategy.AdvisorStrategy;
 import it.unibo.systemgarden.model.utils.IrrigationAdvice;
@@ -14,9 +13,10 @@ public class SmartAdvisorImpl implements SmartAdvisor {
 
     private double currentTemperature = 0; 
     private double currentHumidity = 0; 
+    private boolean active = false;
 
     public SmartAdvisorImpl(AdvisorStrategy strategy) {
-        this.strategy = strategy;
+        this.strategy = new SensorAdvisor();
     }
 
     @Override
@@ -25,26 +25,38 @@ public class SmartAdvisorImpl implements SmartAdvisor {
     }
 
     @Override
-    public IrrigationAdvice getAdvice(List<Sensor> sensors) {
+    public IrrigationAdvice getAdvice(List<SensorType> sensorTypes, double newValue, SensorType type) {
         final IrrigationAdvice newAdvice;
 
-        if (strategy == null) {
+        if (strategy == null && active == false) {
             return null;
         }
 
-        final boolean hasTemp = sensors != null && sensors.stream()
-            .anyMatch( s -> s.getType() == SensorType.TEMPERATURE );
-        final boolean hasHum = sensors != null && sensors.stream()
-            .anyMatch( s -> s.getType() == SensorType.HUMIDITY );
+        final boolean hasTemp = sensorTypes.stream()
+            .anyMatch( s -> s == SensorType.TEMPERATURE );
+        final boolean hasHum = sensorTypes.stream()
+            .anyMatch( s -> s == SensorType.HUMIDITY );
 
         if (!hasTemp || !hasHum) {
             newAdvice = IrrigationAdvice.INSUFFICIENT_DATA;
         } else {
 
+            if (type == SensorType.TEMPERATURE) {
+                currentTemperature = newValue;
+            } else if (type == SensorType.HUMIDITY) {
+                currentHumidity = newValue;
+            }
+
             newAdvice = strategy.getAdvice(currentHumidity, currentTemperature);
         }
 
         return newAdvice;
+    }
+
+    public void activeAdvisor(double temperature, double humidity) {
+        this.currentTemperature = temperature;
+        this.currentHumidity = humidity;
+        this.active = true;
     }
 
 
