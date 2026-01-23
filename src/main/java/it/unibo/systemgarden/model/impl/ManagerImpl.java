@@ -12,6 +12,7 @@ import it.unibo.systemgarden.model.api.Sector;
 import it.unibo.systemgarden.model.api.Sensor;
 import it.unibo.systemgarden.model.api.exception.ActionMethodException;
 import it.unibo.systemgarden.model.api.factory.SensorFactory;
+import it.unibo.systemgarden.model.api.observer.AdvisorObserver;
 import it.unibo.systemgarden.model.impl.sensor.SensorFactoryImpl;
 import it.unibo.systemgarden.model.utils.SensorType;
 
@@ -164,13 +165,26 @@ public class ManagerImpl implements Manager {
 
     @Override
     public boolean removeSensorFromArea(String areaId, String sensorId) throws ActionMethodException {
-    GreenArea area = greenAreas.get(areaId);
-    
-    if (area != null) {
-        return area.removeSensor(sensorId);
+        GreenArea area = greenAreas.get(areaId);
+        
+        if (area != null) {
+            return area.removeSensor(sensorId);
+        }
+        
+        throw new ActionMethodException("Non è stato possibile rimuovere il sensore.");
     }
-    
-    throw new ActionMethodException("Non è stato possibile rimuovere il sensore.");
-}
+
+    @Override
+    public void toggleSmartAdvisor( final String areaId, final boolean enabled, final AdvisorObserver observer ) {
+        GreenArea area = greenAreas.get(areaId);
+        
+        if (area != null) {
+            if (enabled) {
+                area.addAdvisorObserver( observer );
+            } else {
+                area.removeAdvisorObserver( observer );
+            }
+        }
+    }
 
 }

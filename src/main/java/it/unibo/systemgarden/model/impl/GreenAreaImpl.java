@@ -5,6 +5,7 @@ import it.unibo.systemgarden.model.api.Location;
 import it.unibo.systemgarden.model.api.Schedule;
 import it.unibo.systemgarden.model.api.Sector;
 import it.unibo.systemgarden.model.api.Sensor;
+import it.unibo.systemgarden.model.api.observer.AdvisorObserver;
 import it.unibo.systemgarden.model.api.observer.SensorObserver;
 import it.unibo.systemgarden.model.impl.advisor.SmartAdvisorImpl;
 import it.unibo.systemgarden.model.utils.IrrigationAdvice;
@@ -28,6 +29,8 @@ public class GreenAreaImpl implements GreenArea, SensorObserver {
     private final List<Sensor> sensors;
     private final SmartAdvisorImpl advisor;
 
+    private final List<AdvisorObserver> advisorObservers;
+
     /**
      * Creates a new green area.
      * 
@@ -41,6 +44,7 @@ public class GreenAreaImpl implements GreenArea, SensorObserver {
         this.sectors = new ArrayList<>();
         this.sensors = new ArrayList<>();
         this.advisor = new SmartAdvisorImpl();
+        this.advisorObservers = new ArrayList<>();
     }
 
 
@@ -139,7 +143,28 @@ public class GreenAreaImpl implements GreenArea, SensorObserver {
 
         IrrigationAdvice advice = advisor.getAdvice( typeSet, newValue, type );
 
-        // notify( areaId, advice.getTitle())
+        notifyAdvisorObservers( areaId, advice.getTitle());
     }
 
+    @Override
+    public void addAdvisorObserver( AdvisorObserver observer ) {
+        if (!advisorObservers.contains( observer )) {
+            advisorObservers.add( observer );
+        }
+    }
+
+    @Override
+    public void removeAdvisorObserver( AdvisorObserver observer ) {
+        advisorObservers.remove( observer );
+    }
+
+    @Override
+    public void notifyAdvisorObservers( String areaId, String adviceTitle ) {
+        advisorObservers.forEach( obs -> obs.onAdviceReceived( areaId, adviceTitle ) );
+    }
+
+    @Override
+    public void toglgleSmartAdvisor( final boolean enabled ) {
+        advisor.toggleAdvisor( enabled );
+    }
 }

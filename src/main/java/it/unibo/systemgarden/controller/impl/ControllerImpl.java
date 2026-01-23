@@ -2,6 +2,7 @@ package it.unibo.systemgarden.controller.impl;
 
 import it.unibo.systemgarden.controller.api.Controller;
 import it.unibo.systemgarden.model.api.GreenArea;
+import it.unibo.systemgarden.model.api.observer.AdvisorObserver;
 import it.unibo.systemgarden.model.api.observer.SensorObserver;
 import it.unibo.systemgarden.model.api.Manager;
 import it.unibo.systemgarden.model.api.Sector;
@@ -202,7 +203,7 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void addSensorToArea( String areaId, String name, SensorType type ) {
+    public void addSensorToArea( final String areaId, final String name, final SensorType type ) {
         try {
 
             final GreenArea area = model.addSensorToArea( areaId, name, type );
@@ -220,7 +221,7 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void removeSensorFromArea( String areaId, String sensorId ) {
+    public void removeSensorFromArea( final String areaId, final String sensorId ) {
         try {
 
             final boolean removed = model.removeSensorFromArea( areaId, sensorId );
@@ -233,6 +234,10 @@ public class ControllerImpl implements Controller {
         } catch(ActionMethodException e) {
             view.showToast( e.getMessage(), ToastType.ERROR );
         }
+    }
+
+    public void toggleSmartAdvisor( final String areaId, final boolean enabled) {
+        model.toggleSmartAdvisor( areaId, enabled, (AdvisorObserver) view );
     }
  
 }

@@ -51,10 +51,9 @@ public class SmartAdvisorImpl implements SmartAdvisor {
         return newAdvice;
     }
 
-    public void activeAdvisor(double temperature, double humidity) {
-        this.currentTemperature = temperature;
-        this.currentHumidity = humidity;
-        this.active = true;
+    @Override
+    public void toggleAdvisor( boolean enabled ) {
+        this.active = enabled;
     }
 
 

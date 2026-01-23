@@ -1,10 +1,10 @@
 package it.unibo.systemgarden.model.api.observer;
 
 public interface AdvisorObservable {
-    
-    void addObserver( AdvisorObserver observer );
 
-    void removeObserver( AdvisorObserver observer );
+    void addAdvisorObserver( AdvisorObserver observer );
 
-    void notifyObservers( String areaId, String adviceTitle );
+    void removeAdvisorObserver( AdvisorObserver observer );
+
+    void notifyAdvisorObservers( String areaId, String adviceTitle );
 }

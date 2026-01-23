@@ -4,6 +4,7 @@ import java.time.LocalTime;
 import java. util.List;
 
 import it.unibo.systemgarden.model.api.exception.ActionMethodException;
+import it.unibo.systemgarden.model.api.observer.AdvisorObserver;
 import it.unibo.systemgarden.model.utils.SensorType;
 
 /**
@@ -93,7 +94,9 @@ public interface Manager {
 
     void refreshSensorData();
 
-    GreenArea addSensorToArea( final String areaId, final String name, final SensorType type ) throws ActionMethodException;
+    GreenArea addSensorToArea( String areaId,  String name,  SensorType type ) throws ActionMethodException;
 
-    boolean removeSensorFromArea( final String areaId, final String sensorId ) throws ActionMethodException;
+    boolean removeSensorFromArea(  String areaId, String sensorId ) throws ActionMethodException;
+
+    void toggleSmartAdvisor(  String areaId,  boolean enabled, AdvisorObserver observer );
 }

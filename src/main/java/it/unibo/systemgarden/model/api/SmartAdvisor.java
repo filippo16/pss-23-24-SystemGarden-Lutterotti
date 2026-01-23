@@ -8,8 +8,10 @@ import it.unibo.systemgarden.model.utils.SensorType;
 
 public interface SmartAdvisor {
 
-    void setStrategy(AdvisorStrategy strategy);
+    void setStrategy( AdvisorStrategy strategy );
 
-    IrrigationAdvice getAdvice(Set<SensorType> sensorTypes, double newValue, SensorType type);
+    IrrigationAdvice getAdvice( Set<SensorType> sensorTypes, double newValue, SensorType type );
+
+    void toggleAdvisor( boolean enabled );
     
 }
