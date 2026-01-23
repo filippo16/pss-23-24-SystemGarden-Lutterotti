@@ -236,6 +236,7 @@ public class ControllerImpl implements Controller {
         }
     }
 
+    @Override
     public void toggleSmartAdvisor( final String areaId, final boolean enabled) {
         model.toggleSmartAdvisor( areaId, enabled, (AdvisorObserver) view );
     }

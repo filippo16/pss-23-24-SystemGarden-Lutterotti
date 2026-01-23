@@ -184,6 +184,8 @@ public class ManagerImpl implements Manager {
             } else {
                 area.removeAdvisorObserver( observer );
             }
+
+            area.toglgleSmartAdvisor( enabled );
         }
     }
 

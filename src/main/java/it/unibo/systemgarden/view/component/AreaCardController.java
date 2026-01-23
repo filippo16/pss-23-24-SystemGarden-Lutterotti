@@ -236,12 +236,14 @@ public class AreaCardController {
 
     @FXML
     private void onCheckboxToggle() {
-        // funzione per disalibitare il smartadvisor
+        controller.toggleSmartAdvisor( 
+            area.getId(), smartAdvisorActiveCheckbox.isSelected() 
+        );
     }
 
-    public void refreshSmartAdvisorAdvice( final String advice ) {
+    public void showAdviceNotification( final String advice ) {
         if (smartAdvisorActiveCheckbox.isSelected() && advice != null) {
-            //smartAdvisorAdviceLabel.setText( advice.getTitle() );
+            smartAdvisorAdviceLabel.setText( advice );
         }
     }
 

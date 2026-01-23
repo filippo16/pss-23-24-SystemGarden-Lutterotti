@@ -25,6 +25,11 @@ public class SmartAdvisorImpl implements SmartAdvisor {
     }
 
     @Override
+    public boolean isActive() {
+        return active;
+    }
+
+    @Override
     public IrrigationAdvice getAdvice(Set<SensorType> sensorTypes, double newValue, SensorType type) {
         final IrrigationAdvice newAdvice;
 
@@ -32,8 +37,10 @@ public class SmartAdvisorImpl implements SmartAdvisor {
             return null;
         }
 
-        final boolean hasTemp = sensorTypes.contains(SensorType.TEMPERATURE);
-        final boolean hasHum  = sensorTypes.contains(SensorType.HUMIDITY);
+        final boolean hasTemp = sensorTypes != null && 
+            sensorTypes.contains(SensorType.TEMPERATURE);
+        final boolean hasHum  = sensorTypes != null && 
+            sensorTypes.contains(SensorType.HUMIDITY);
 
         if (!hasTemp || !hasHum) {
             newAdvice = IrrigationAdvice.INSUFFICIENT_DATA;
@@ -55,6 +62,4 @@ public class SmartAdvisorImpl implements SmartAdvisor {
     public void toggleAdvisor( boolean enabled ) {
         this.active = enabled;
     }
-
-
 }

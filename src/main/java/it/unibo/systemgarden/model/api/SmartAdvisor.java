@@ -14,4 +14,5 @@ public interface SmartAdvisor {
 
     void toggleAdvisor( boolean enabled );
     
+    boolean isActive();
 }

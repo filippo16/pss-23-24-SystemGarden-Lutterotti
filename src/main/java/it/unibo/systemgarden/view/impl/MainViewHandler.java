@@ -141,4 +141,12 @@ public class MainViewHandler {
             ctrl.refreshSensorData( sensorId, newValue );
         }
     }
+
+    public void showAdviceNotification( final String areaId, final String advice ) {
+        AreaCardController ctrl = areaControllers.get( areaId );
+
+        if ( ctrl != null ) {
+            ctrl.showAdviceNotification( advice );
+        }
+    }
 }

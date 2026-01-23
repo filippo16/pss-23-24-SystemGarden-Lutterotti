@@ -137,6 +137,11 @@ public class GreenAreaImpl implements GreenArea, SensorObserver {
 
     @Override
     public void onSensorUpdate( String areaId, String sensorId, double newValue, SensorType type ) {
+        
+        if (!this.id.equals(areaId)) {
+            return; 
+        }
+
         Set<SensorType> typeSet = sensors.stream()
             .map(Sensor::getType)
             .collect(Collectors.toSet());
@@ -144,6 +149,14 @@ public class GreenAreaImpl implements GreenArea, SensorObserver {
         IrrigationAdvice advice = advisor.getAdvice( typeSet, newValue, type );
 
         notifyAdvisorObservers( areaId, advice.getTitle());
+    }
+
+    private void initSmartAdvisor() {
+       sensors.forEach( s -> onSensorUpdate(id, s.getId(), s.readData(), s.getType()) );
+
+       if(sensors.isEmpty()) {
+           notifyAdvisorObservers( id, IrrigationAdvice.INSUFFICIENT_DATA.getTitle() );
+       }
     }
 
     @Override
@@ -165,6 +178,9 @@ public class GreenAreaImpl implements GreenArea, SensorObserver {
 
     @Override
     public void toglgleSmartAdvisor( final boolean enabled ) {
+        if( enabled == true && !advisor.isActive() ) {
+            initSmartAdvisor();
+        }
         advisor.toggleAdvisor( enabled );
     }
 }

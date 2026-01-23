@@ -3,6 +3,7 @@ package it.unibo.systemgarden.view.impl;
 import it.unibo.systemgarden.controller.api.Controller;
 import it.unibo.systemgarden.model.api.GreenArea;
 import it.unibo.systemgarden.model.api.Sector;
+import it.unibo.systemgarden.model.api.observer.AdvisorObserver;
 import it.unibo.systemgarden.model.api.observer.SensorObserver;
 import it.unibo.systemgarden.model.utils.SensorType;
 import it.unibo.systemgarden.view.api.View;
@@ -17,7 +18,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.time.LocalTime;
 
-public class ViewImpl implements View, SensorObserver  {
+public class ViewImpl implements View, SensorObserver, AdvisorObserver  {
 
     private static final String FXML_PATH = "fxml/MainView.fxml";
     private static final int WINDOW_WIDTH = 900;
@@ -103,5 +104,10 @@ public class ViewImpl implements View, SensorObserver  {
     @Override
     public void showToast( String message, ToastType type ) {
         Platform.runLater( () -> ToastController.show( primaryStage, message, type ) );
+    }
+
+    @Override
+    public void onAdviceReceived( final String areaId, final String advice ) {
+        Platform.runLater( () -> mainHandler.showAdviceNotification( areaId, advice ) );
     }
 }
