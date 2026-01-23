@@ -56,7 +56,7 @@ public class SectorCardController {
     @FXML
     private void onSchedule() {
         final ScheduleData result = DialogHelper.<ScheduleData, EditScheduleDialogController>showDialog(
-            FXML_PATH_SCHEDULE_DIALOG, "Modifica Programmazione", css, controllerInit -> {
+            FXML_PATH_SCHEDULE_DIALOG, "Modifica Programmazione", controllerInit -> {
                 controllerInit.initData(sector.getSchedule());
             }
         );

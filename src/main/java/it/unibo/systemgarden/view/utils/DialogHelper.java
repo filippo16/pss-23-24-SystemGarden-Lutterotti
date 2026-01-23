@@ -25,7 +25,7 @@ public final class DialogHelper {
      * @return the result from the dialog controller
     */
     public static<R, C extends DialogController<R>> R showDialog( 
-            final String fxmlPath, final String title, final String css, 
+            final String fxmlPath, final String title, 
             final Consumer<C> controllerInit
         ) {
             
@@ -34,7 +34,7 @@ public final class DialogHelper {
             final FXMLLoader loader = new FXMLLoader( ClassLoader.getSystemResource( fxmlPath ) );
             final Parent root = loader.load();
 
-            final Stage dialog = createDialogStage( title, root, css );
+            final Stage dialog = createDialogStage( title, root );
             final C controller = loader.getController();
             controller.setStage( dialog );
 
@@ -51,7 +51,7 @@ public final class DialogHelper {
         }
     }
     
-    private static Stage createDialogStage( final String title, final Parent root, final String css ) {
+    private static Stage createDialogStage( final String title, final Parent root ) {
         final Stage stage = new Stage();
         stage.setTitle( title );
         stage.initModality( Modality.APPLICATION_MODAL );
@@ -59,10 +59,6 @@ public final class DialogHelper {
         stage.setResizable(false);
 
         final Scene dialogScene = new Scene(root);
-
-        if (css != null) {
-            dialogScene.getStylesheets().setAll(css);
-        }
 
         stage.setScene(dialogScene);
         return stage;

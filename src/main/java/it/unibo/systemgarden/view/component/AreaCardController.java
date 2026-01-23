@@ -53,12 +53,9 @@ public class AreaCardController {
     private final Map<String, SectorCardController> sectorControllers = new HashMap<>();
     private final Map<String, SensorCardController> sensorControllers = new HashMap<>();
 
-    public void initialize(final Controller controller, final GreenArea area, 
-        final String css
-    ) {
+    public void initialize( final Controller controller, final GreenArea area) {
         this.controller = controller;
         this.area = area;
-        this.css = css;
 
         card.setId( area.getId() );
         nameLabel.setText( area.getName() );
@@ -162,7 +159,7 @@ public class AreaCardController {
     @FXML
     private void onAddSector() {
         final String result = DialogHelper.<String, AddSectorDialogController>showDialog(
-            FXML_PATH_SECTOR_DIALOG, "Nuovo Settore", css, null);
+            FXML_PATH_SECTOR_DIALOG, "Nuovo Settore", null);
 
         if (result != null) {
             controller.addSectorToArea( area.getId(), result );
@@ -173,7 +170,7 @@ public class AreaCardController {
     private void onAddSensor() {
         
         final SensorData result = DialogHelper.<SensorData, AddSensorDialogController>showDialog(
-            FXML_PATH_SENSOR_DIALOG, "Nuovo Sensore", css, null);
+            FXML_PATH_SENSOR_DIALOG, "Nuovo Sensore", null);
 
 
         if (result != null) {

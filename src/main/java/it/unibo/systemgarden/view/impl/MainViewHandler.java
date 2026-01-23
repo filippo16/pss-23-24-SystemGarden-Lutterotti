@@ -33,14 +33,10 @@ public class MainViewHandler {
     @FXML private VBox areasContainer;
     @FXML private Label statusLabel;
 
-    private String css;
     private Controller controller;
-    private CardGenerator cardGenerator;
 
-    public void setCssStylesheet(final String css) {
-        this.css = css;
-        this.cardGenerator = new CardGenerator(css);
-        this.areaControllers = new HashMap<>();
+    public MainViewHandler() {
+        this.areaControllers = new HashMap<>();    
     }
 
     public void setController(final Controller controller) {
@@ -50,7 +46,7 @@ public class MainViewHandler {
     @FXML
     private void onAddAreaClicked() {
         final String[] result = DialogHelper.<String[], AddAreaDialogController>showDialog(
-            FXML_PATH_AREA_DIALOG, "+ Nuova Area Verde", css, null
+            FXML_PATH_AREA_DIALOG, "+ Nuova Area Verde", null
         );
         
         if (result != null) {
@@ -63,7 +59,7 @@ public class MainViewHandler {
     * Adds a new area card to the Areas Container in the main view.
     */
     public void addAreaCard( final GreenArea area ) {
-        final CardData<AreaCardController> cardData = cardGenerator.createAreaCard( controller, area );
+        final CardData<AreaCardController> cardData = CardGenerator.createAreaCard( controller, area );
 
         areasContainer.getChildren().add( cardData.card() );
         areaControllers.put( area.getId(), cardData.controller() );
@@ -92,7 +88,7 @@ public class MainViewHandler {
             if ( area.getId().equals( children.get(i).getId() ) ) {
 
                 final CardData<AreaCardController> cardData = 
-                    cardGenerator.createAreaCard( controller, area 
+                    CardGenerator.createAreaCard( controller, area 
                 );
                 
                 if( cardData != null ) {

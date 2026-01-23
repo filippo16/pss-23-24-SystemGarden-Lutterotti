@@ -13,25 +13,20 @@ import java.io.IOException;
 public class CardGenerator {
 
     private static final String FXML_PATH_AREA_CARD = "fxml/component/AreaCard.fxml";
-    private String css;
-
-    public CardGenerator(final String css) {
-        this.css = css;
-    }
 
 
     /**
      * Creates a card that representing a GreenArea.
      */
-    public CardData<AreaCardController> createAreaCard(final Controller controller, final GreenArea area) {
+    public static CardData<AreaCardController> createAreaCard(final Controller controller, final GreenArea area) {
         try {
             final FXMLLoader loader = new FXMLLoader(
-                getClass().getClassLoader().getResource(FXML_PATH_AREA_CARD)
+                CardGenerator.class.getClassLoader().getResource(FXML_PATH_AREA_CARD)
             );
             final VBox card = loader.load();
             
             final AreaCardController cardController = loader.getController();
-            cardController.initialize(controller, area, css);
+            cardController.initialize( controller, area );
             
             return new CardData<AreaCardController>(card, cardController);
         } catch (IOException e) {
