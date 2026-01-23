@@ -24,7 +24,7 @@ public class SmartAdvisorImpl implements SmartAdvisor {
         this.strategy = strategy;
     }
 
-
+    @Override
     public IrrigationAdvice getAdvice(List<Sensor> sensors) {
         final IrrigationAdvice newAdvice;
 
