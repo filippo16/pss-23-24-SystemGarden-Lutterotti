@@ -51,6 +51,29 @@ class SensorObserverTest {
         assertFalse(observer.wasNotified());
     }
 
+    @Test
+    void testMultipleObservers() {
+        final TestObserver observer2 = new TestObserver();
+
+        sensor.addObserver(observer);
+        sensor.addObserver(observer2);
+
+        sensor.refresh("AREA-001");
+
+        assertTrue(observer.wasNotified());
+        assertTrue(observer2.wasNotified());
+    }
+
+    @Test
+    void testObserverNotAddedTwice() {
+        sensor.addObserver(observer);
+        sensor.addObserver(observer);
+
+        sensor.refresh("AREA-001");
+
+        assertEquals(1, observer.getNotificationCount());
+    }
+
     /**
      * Helper class to mock observer notifications.
      */
@@ -60,6 +83,7 @@ class SensorObserverTest {
         private String lastAreaId;
         private String lastSensorId;
         private double lastValue;
+        private int notificationCount = 0;
 
         @Override
         public void onSensorUpdate(String areaId, String sensorId, double newValue) {
@@ -67,6 +91,7 @@ class SensorObserverTest {
             this.lastAreaId = areaId;
             this.lastSensorId = sensorId;
             this.lastValue = newValue;
+            this.notificationCount++;
         }
 
         public boolean wasNotified() {
@@ -83,6 +108,10 @@ class SensorObserverTest {
 
         public double getLastValue() {
             return lastValue;
+        }
+
+        public int getNotificationCount() {
+            return notificationCount;
         }
     }
 
