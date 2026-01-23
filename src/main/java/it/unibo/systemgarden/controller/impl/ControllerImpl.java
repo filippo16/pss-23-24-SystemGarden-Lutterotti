@@ -67,11 +67,15 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void createGreenArea( final String name, final String city ) {
-        final GreenArea area = model.createGreenArea( name, city );
+        try {
+            final GreenArea area = model.createGreenArea( name, city );
 
-        if( area != null ) {
-            view.addAreaCard( area );
-            view.showToast( "Aggiunta nuova area verde " + name, ToastType.SUCCESS );
+            if( area != null ) {
+                view.addAreaCard( area );
+                view.showToast( "Aggiunta nuova area verde " + name, ToastType.SUCCESS );
+            }
+        } catch(RuntimeException e) {
+            view.showToast( e.getMessage(), ToastType.ERROR );
         }
     }
 

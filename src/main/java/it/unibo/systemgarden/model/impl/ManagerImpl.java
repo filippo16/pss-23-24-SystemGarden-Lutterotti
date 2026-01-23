@@ -25,17 +25,26 @@ public class ManagerImpl implements Manager {
 
     @Override
     public GreenArea createGreenArea( final String name, final String city ) {
-        final GreenArea area = new GreenAreaImpl( name, city );
-        greenAreas.put( area.getId(), (GreenAreaImpl) area );
+        try {
+            final GreenArea area = new GreenAreaImpl( name, city );
+            greenAreas.put( area.getId(), (GreenAreaImpl) area );
 
-        return area;
+            return area;
+        } catch(Exception e) {
+            throw new RuntimeException("Non è stato possibile creare l'area verde.");
+        }
     }
 
     @Override
     public boolean removeGreenArea( final String areaId ) {
-        GreenArea area = greenAreas.remove( areaId );
+        try {
+            GreenArea area = greenAreas.remove( areaId );
     
-        return area != null;
+            return area != null;
+        } catch(Exception e) {
+            throw new RuntimeException("Non è stato possibile rimuovere l'area verde.");
+        }
+        
     }
 
     @Override
@@ -67,7 +76,7 @@ public class ManagerImpl implements Manager {
             return sector;
         }
 
-        return null;
+        throw new RuntimeException("Non è stato possibile aggiungere il settore.");
     }
 
     @Override
@@ -82,7 +91,7 @@ public class ManagerImpl implements Manager {
             return true;
         }
 
-        return false;
+        throw new RuntimeException("Non è stato possibile rimuovere il settore.");
     }
 
     @Override
@@ -97,7 +106,7 @@ public class ManagerImpl implements Manager {
             return area.getSector( sectorId );
         }
 
-        return null;
+        throw new RuntimeException("Non è stato possibile irrigare il settore.");
     }
 
     @Override
@@ -111,7 +120,7 @@ public class ManagerImpl implements Manager {
             return area.getSector( sectorId );
         }
 
-        return null;
+        throw new RuntimeException("Non è stato possibile fermare il settore.");
     }
 
     @Override
@@ -128,7 +137,7 @@ public class ManagerImpl implements Manager {
             return area.getSector( sectorId );
         }
 
-        return null;
+        throw new RuntimeException("Non è stato possibile aggiornare il programma del settore.");
     }
 
     @Override
@@ -148,8 +157,8 @@ public class ManagerImpl implements Manager {
             area.addSensor( sensor );
             return area;
         }
-
-        return null;
+        throw new RuntimeException("Non è stato possibile aggiungere il sensore.");
+        
     }
 
     @Override
@@ -160,7 +169,7 @@ public class ManagerImpl implements Manager {
         return area.removeSensor(sensorId);
     }
     
-    return false;
+    throw new RuntimeException("Non è stato possibile rimuovere il sensore.");
 }
 
 }
