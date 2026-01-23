@@ -127,3 +127,35 @@
   -fx-font-size: 12px;
   -fx-text-fill: #666;
 }
+
+/* TOAST MESSAGES FEEDBACK */
+.toast-container {
+  -fx-background-color: transparent;
+}
+
+.toast-box {
+  -fx-background-radius: 8px;
+  -fx-spacing: 10;
+}
+
+.toast-message {
+  -fx-font-size: 14px;
+  -fx-text-fill: white;
+  -fx-font-weight: normal;
+}
+
+.toast-success {
+  -fx-background-color:#28a745;
+}
+
+.toast-error {
+  -fx-background-color:#dc3545;
+}
+
+.toast-warning {
+  -fx-background-color:#ffc107;
+}
+
+.toast-info {
+  -fx-background-color:#17a2b8;
+}
