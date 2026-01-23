@@ -9,6 +9,7 @@ import it.unibo.systemgarden.model.impl.ManagerImpl;
 import it.unibo.systemgarden.model.impl.sensor.AbstractSensor;
 import it.unibo.systemgarden.model.utils.SensorType;
 import it.unibo.systemgarden.view.api.View;
+import it.unibo.systemgarden.view.utils.ToastType;
 import javafx.application.Platform;
 
 import java.time.LocalTime;
@@ -70,6 +71,7 @@ public class ControllerImpl implements Controller {
 
         if( area != null ) {
             view.addAreaCard( area );
+            view.showToast( "Aggiunta nuova area verde " + name, ToastType.SUCCESS );
         }
     }
 
@@ -79,6 +81,7 @@ public class ControllerImpl implements Controller {
 
         if ( removed ) {
             view.removeAreaCard( areaId );
+            view.showToast( "Rimossa area verde con successo", ToastType.SUCCESS );
         }
     }
 
