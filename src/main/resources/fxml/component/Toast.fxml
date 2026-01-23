@@ -10,7 +10,7 @@
            fx:controller="it.unibo.systemgarden.view.component.ToastController"
            fx:id="toastRoot"
            styleClass="toast-container"
-           pickOnBounds="false">
+           stylesheets="@/css/style.css">
     
     <HBox fx:id="toastBox" styleClass="toast-box" alignment="CENTER">
         <padding>
