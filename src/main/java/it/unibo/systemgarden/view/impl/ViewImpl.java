@@ -5,6 +5,8 @@ import it.unibo.systemgarden.model.api.GreenArea;
 import it.unibo.systemgarden.model.api.Sector;
 import it.unibo.systemgarden.model.api.observer.SensorObserver;
 import it.unibo.systemgarden.view.api.View;
+import it.unibo.systemgarden.view.component.ToastController;
+import it.unibo.systemgarden.view.utils.ToastType;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -93,5 +95,10 @@ public class ViewImpl implements View, SensorObserver  {
     @Override
     public void onSensorUpdate( final String areaId, final String sensorId, final double newValue ) {
        Platform.runLater(() -> mainHandler.refreshSensorData( areaId, sensorId, newValue ));
+    }
+
+    @Override
+    public void showToast( String message, ToastType type ) {
+        Platform.runLater( () -> ToastController.show( primaryStage, message, type ) );
     }
 }

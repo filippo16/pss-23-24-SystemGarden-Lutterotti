@@ -2,6 +2,7 @@ package it.unibo.systemgarden.view.api;
 
 import it.unibo.systemgarden.model.api.GreenArea;
 import it.unibo.systemgarden.model.api.Sector;
+import it.unibo.systemgarden.view.utils.ToastType;
 
 import java.time.LocalTime;
 
@@ -40,4 +41,6 @@ public interface View {
     void removeSectorCard( String areaId, String sectorId );
 
     void refreshSectorCard( String areaId, Sector sector );
+
+    void showToast( String message, ToastType type );
 }

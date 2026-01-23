@@ -1,8 +1,11 @@
 package it.unibo.systemgarden.view.component;
 
+import java.io.IOException;
+
 import it.unibo.systemgarden.view.utils.ToastType;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -26,6 +29,21 @@ public class ToastController {
     private Label messageLabel;
 
     private Stage toastStage;
+
+    public static void show(Stage owner, String message, ToastType type) {
+        try {
+            FXMLLoader loader = new FXMLLoader( ClassLoader.getSystemResource(FXML_PATH) );
+            loader.load();
+            
+            ToastController controller = loader.getController();
+            controller.setup( owner, message, type );
+            controller.display();
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Failed to load Toast FXML.");
+        }
+    }
 
     private void setup(Stage owner, String message, ToastType type) {
 
