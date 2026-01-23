@@ -1,6 +1,6 @@
 package it.unibo.systemgarden.model.impl.advisor;
 
-import java.util.List;
+import java.util.Set;
 
 import it.unibo.systemgarden.model.api.SmartAdvisor;
 import it.unibo.systemgarden.model.api.strategy.AdvisorStrategy;
@@ -15,7 +15,7 @@ public class SmartAdvisorImpl implements SmartAdvisor {
     private double currentHumidity = 0; 
     private boolean active = false;
 
-    public SmartAdvisorImpl(AdvisorStrategy strategy) {
+    public SmartAdvisorImpl() {
         this.strategy = new SensorAdvisor();
     }
 
@@ -25,17 +25,15 @@ public class SmartAdvisorImpl implements SmartAdvisor {
     }
 
     @Override
-    public IrrigationAdvice getAdvice(List<SensorType> sensorTypes, double newValue, SensorType type) {
+    public IrrigationAdvice getAdvice(Set<SensorType> sensorTypes, double newValue, SensorType type) {
         final IrrigationAdvice newAdvice;
 
         if (strategy == null && active == false) {
             return null;
         }
 
-        final boolean hasTemp = sensorTypes.stream()
-            .anyMatch( s -> s == SensorType.TEMPERATURE );
-        final boolean hasHum = sensorTypes.stream()
-            .anyMatch( s -> s == SensorType.HUMIDITY );
+        final boolean hasTemp = sensorTypes.contains(SensorType.TEMPERATURE);
+        final boolean hasHum  = sensorTypes.contains(SensorType.HUMIDITY);
 
         if (!hasTemp || !hasHum) {
             newAdvice = IrrigationAdvice.INSUFFICIENT_DATA;

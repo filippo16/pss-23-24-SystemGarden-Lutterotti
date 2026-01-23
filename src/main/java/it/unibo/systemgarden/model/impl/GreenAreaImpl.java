@@ -5,21 +5,28 @@ import it.unibo.systemgarden.model.api.Location;
 import it.unibo.systemgarden.model.api.Schedule;
 import it.unibo.systemgarden.model.api.Sector;
 import it.unibo.systemgarden.model.api.Sensor;
+import it.unibo.systemgarden.model.api.observer.SensorObserver;
+import it.unibo.systemgarden.model.impl.advisor.SmartAdvisorImpl;
+import it.unibo.systemgarden.model.utils.IrrigationAdvice;
+import it.unibo.systemgarden.model.utils.SensorType;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Implementation of GreenArea interface.
  */
-public class GreenAreaImpl implements GreenArea {
+public class GreenAreaImpl implements GreenArea, SensorObserver {
 
     private final String id;
     private final String name;
     private final Location location;
     private final List<Sector> sectors;
     private final List<Sensor> sensors;
+    private final SmartAdvisorImpl advisor;
 
     /**
      * Creates a new green area.
@@ -33,6 +40,7 @@ public class GreenAreaImpl implements GreenArea {
         this.location = new LocationImpl(city);
         this.sectors = new ArrayList<>();
         this.sensors = new ArrayList<>();
+        this.advisor = new SmartAdvisorImpl();
     }
 
 
@@ -120,6 +128,18 @@ public class GreenAreaImpl implements GreenArea {
     @Override
     public boolean removeSensor( final String sensorId ) {
         return sensors.removeIf(sensor -> sensor.getId().equals(sensorId));
+    }
+
+
+    @Override
+    public void onSensorUpdate( String areaId, String sensorId, double newValue, SensorType type ) {
+        Set<SensorType> typeSet = sensors.stream()
+            .map(Sensor::getType)
+            .collect(Collectors.toSet());
+
+        IrrigationAdvice advice = advisor.getAdvice( typeSet, newValue, type );
+
+        // notify( areaId, advice.getTitle())
     }
 
 }

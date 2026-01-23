@@ -1,6 +1,6 @@
 package it.unibo.systemgarden.model.api;
 
-import java.util.List;
+import java.util.Set;
 
 import it.unibo.systemgarden.model.api.strategy.AdvisorStrategy;
 import it.unibo.systemgarden.model.utils.IrrigationAdvice;
@@ -10,6 +10,6 @@ public interface SmartAdvisor {
 
     void setStrategy(AdvisorStrategy strategy);
 
-    IrrigationAdvice getAdvice(List<SensorType> sensorTypes, double newValue, SensorType type);
+    IrrigationAdvice getAdvice(Set<SensorType> sensorTypes, double newValue, SensorType type);
     
 }
