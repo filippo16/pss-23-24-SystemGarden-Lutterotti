@@ -18,6 +18,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -45,6 +46,12 @@ public class AreaCardController {
 
     @FXML
     private HBox sensorsContainer;
+
+    @FXML
+    private CheckBox smartAdvisorActiveCheckbox;
+
+    @FXML
+    private Label smartAdvisorAdviceLabel;
 
     private Controller controller;
     private GreenArea area;
@@ -225,6 +232,17 @@ public class AreaCardController {
             ctrl.updateValue( newValue );
         }
         
+    }
+
+    @FXML
+    private void onCheckboxToggle() {
+        // funzione per disalibitare il smartadvisor
+    }
+
+    public void refreshSmartAdvisorAdvice( final String advice ) {
+        if (smartAdvisorActiveCheckbox.isSelected() && advice != null) {
+            //smartAdvisorAdviceLabel.setText( advice.getTitle() );
+        }
     }
 
 
