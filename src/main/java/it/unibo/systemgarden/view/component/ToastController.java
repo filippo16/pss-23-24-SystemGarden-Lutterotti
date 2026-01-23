@@ -58,6 +58,7 @@ public class ToastController {
         toastStage.initStyle(StageStyle.TRANSPARENT);
         
         Scene scene = new Scene(toastRoot);
+        scene.setFill(null);
 
         toastStage.setScene(scene);
         
