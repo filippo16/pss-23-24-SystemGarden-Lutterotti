@@ -3,6 +3,7 @@ package it.unibo.systemgarden.model. api;
 import java.time.LocalTime;
 import java. util.List;
 
+import it.unibo.systemgarden.model.api.exception.ActionMethodException;
 import it.unibo.systemgarden.model.utils.SensorType;
 
 /**
@@ -16,15 +17,16 @@ public interface Manager {
      * @param name the area name
      * @param city the city
      * @return the created green area
+     * @throws ActionMethodException 
      */
-    GreenArea createGreenArea(String name, String city);
+    GreenArea createGreenArea(String name, String city) throws ActionMethodException;
 
     /**
      * Removes a green area.
      * 
      * @param areaId the area ID to remove
      */
-    boolean removeGreenArea( String areaId );
+    boolean removeGreenArea( String areaId ) throws ActionMethodException;
 
     /**
      * Gets a green area by ID.
@@ -50,7 +52,7 @@ public interface Manager {
      * @param areaId     the area ID
      * @param sectorName the sector name
     */
-    Sector addSectorToArea( String areaId, String sectorName );
+    Sector addSectorToArea( String areaId, String sectorName ) throws ActionMethodException;
 
     /**
      * Removes a sector from an area.
@@ -58,7 +60,7 @@ public interface Manager {
      * @param areaId   the area ID
      * @param sectorId the sector ID
     */
-    boolean removeSectorFromArea( String areaId, String sectorId );
+    boolean removeSectorFromArea( String areaId, String sectorId ) throws ActionMethodException;
 
     /**
      * Starts irrigation for a specific sector.
@@ -66,7 +68,7 @@ public interface Manager {
      * @param areaId the area ID
      * @param sectorId the sector ID
     */
-    Sector irrigateSector( String areaId, String sectorId );
+    Sector irrigateSector( String areaId, String sectorId ) throws ActionMethodException;
 
     /**
      * Stops irrigation for a specific sector.
@@ -74,7 +76,7 @@ public interface Manager {
      * @param areaId the area ID
      * @param sectorId the sector ID
     */
-    Sector stopSector( String areaId, String sectorId );
+    Sector stopSector( String areaId, String sectorId ) throws ActionMethodException;
 
     /**
      * Updates the irrigation schedule for a specific sector.
@@ -87,11 +89,11 @@ public interface Manager {
     */
     Sector updateSectorSchedule( String areaId, String sectorId, 
         LocalTime startTime, int duration, List<Integer> activeDays 
-    );
+    ) throws ActionMethodException;
 
     void refreshSensorData();
 
-    GreenArea addSensorToArea( final String areaId, final String name, final SensorType type );
+    GreenArea addSensorToArea( final String areaId, final String name, final SensorType type ) throws ActionMethodException;
 
-    boolean removeSensorFromArea( final String areaId, final String sensorId );
+    boolean removeSensorFromArea( final String areaId, final String sensorId ) throws ActionMethodException;
 }

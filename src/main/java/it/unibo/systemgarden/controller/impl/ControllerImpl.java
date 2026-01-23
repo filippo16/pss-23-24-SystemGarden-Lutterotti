@@ -5,6 +5,7 @@ import it.unibo.systemgarden.model.api.GreenArea;
 import it.unibo.systemgarden.model.api.observer.SensorObserver;
 import it.unibo.systemgarden.model.api.Manager;
 import it.unibo.systemgarden.model.api.Sector;
+import it.unibo.systemgarden.model.api.exception.ActionMethodException;
 import it.unibo.systemgarden.model.impl.ManagerImpl;
 import it.unibo.systemgarden.model.impl.sensor.AbstractSensor;
 import it.unibo.systemgarden.model.utils.SensorType;
@@ -68,24 +69,32 @@ public class ControllerImpl implements Controller {
     @Override
     public void createGreenArea( final String name, final String city ) {
         try {
+
             final GreenArea area = model.createGreenArea( name, city );
 
             if( area != null ) {
                 view.addAreaCard( area );
                 view.showToast( "Aggiunta nuova area verde " + name, ToastType.SUCCESS );
             }
-        } catch(RuntimeException e) {
+
+        } catch(ActionMethodException e) {
             view.showToast( e.getMessage(), ToastType.ERROR );
         }
     }
 
     @Override
     public void removeGreenArea(final String areaId) {
-        final boolean removed = model.removeGreenArea( areaId );
+        try {
 
-        if ( removed ) {
-            view.removeAreaCard( areaId );
-            view.showToast( "Rimossa area verde con successo", ToastType.SUCCESS );
+            final boolean removed = model.removeGreenArea( areaId );
+
+            if ( removed ) {
+                view.removeAreaCard( areaId );
+                view.showToast( "Rimossa area verde con successo", ToastType.SUCCESS );
+            }
+
+        } catch(ActionMethodException e) {
+            view.showToast( e.getMessage(), ToastType.ERROR );
         }
     }
 
@@ -96,39 +105,63 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void addSectorToArea( final String areaId, final String sectorName ) {
+        try {
 
-        final Sector sector = model.addSectorToArea( areaId, sectorName );
+            final Sector sector = model.addSectorToArea( areaId, sectorName );
 
-        if ( sector != null ) {
-            view.addSectorCard(areaId, sector);
+            if ( sector != null ) {
+                view.addSectorCard( areaId, sector );
+                view.showToast( "Aggiunto nuovo settore " + sectorName, ToastType.SUCCESS );
+            }
 
+        } catch(ActionMethodException e) {
+            view.showToast( e.getMessage(), ToastType.ERROR );
         }
     }
 
     @Override
     public void removeSectorFromArea( final String areaId, final String sectorId ) {
-        final boolean removed = model.removeSectorFromArea( areaId, sectorId );
+        try {
 
-        if ( removed ) {
-            view.removeSectorCard(areaId, sectorId);
+            final boolean removed = model.removeSectorFromArea( areaId, sectorId );
+
+            if ( removed ) {
+                view.removeSectorCard(areaId, sectorId);
+                view.showToast( "Rimosso settore con successo", ToastType.SUCCESS );
+            }
+
+        } catch(ActionMethodException e) {
+            view.showToast( e.getMessage(), ToastType.ERROR );
         }
     }
 
     @Override
     public void irrigateSector( final String areaId, final String sectorId ) {
-        final Sector sector = model.irrigateSector( areaId, sectorId );
+        try {
 
-        if ( sector != null ) {
-            view.refreshSectorCard( areaId, sector );
+            final Sector sector = model.irrigateSector( areaId, sectorId );
+
+            if ( sector != null ) {
+                view.refreshSectorCard( areaId, sector );
+            }
+
+        } catch(ActionMethodException e) {
+            view.showToast( e.getMessage(), ToastType.ERROR );
         }
     }
 
     @Override
     public void stopSector( final String areaId, final String sectorId ) {
-        final Sector sector = model.stopSector( areaId, sectorId );
+        try {
 
-        if ( sector != null ) {
-            view.refreshSectorCard( areaId, sector );
+            final Sector sector = model.stopSector( areaId, sectorId );
+
+            if ( sector != null ) {
+                view.refreshSectorCard( areaId, sector );
+            }
+
+        } catch(ActionMethodException e) {
+            view.showToast( e.getMessage(), ToastType.ERROR );
         }
     }
 
@@ -146,13 +179,18 @@ public class ControllerImpl implements Controller {
     public void updateSectorSchedule( final String areaId, final String sectorId, 
         final LocalTime startTime, final int duration, final List<Integer> activeDays 
     ) {
-        final Sector sector = model.updateSectorSchedule(areaId, sectorId, 
-            startTime, duration, activeDays
-        );
+        try {
+            final Sector sector = model.updateSectorSchedule(areaId, sectorId, 
+                startTime, duration, activeDays
+            );
 
-        if ( sector != null ) {
-            view.refreshSectorCard( areaId, sector );
+            if ( sector != null ) {
+                view.refreshSectorCard( areaId, sector );
+            }
+        } catch(ActionMethodException e) {
+            view.showToast( e.getMessage(), ToastType.ERROR );
         }
+        
     }
 
     private void updateClocks() {
@@ -165,23 +203,35 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void addSensorToArea( String areaId, String name, SensorType type ) {
-       final GreenArea area = model.addSensorToArea( areaId, name, type );
+        try {
 
-       if( area != null ) {
-            model.getGreenArea( area.getId() ).getSensors().stream()
-                .forEach( s -> ( (AbstractSensor) s ).addObserver( (SensorObserver) view ) );
-            
-            view.refreshAreaCard(area);
-       }
+            final GreenArea area = model.addSensorToArea( areaId, name, type );
+
+            if( area != null ) {
+                    model.getGreenArea( area.getId() ).getSensors().stream()
+                        .forEach( s -> ( (AbstractSensor) s ).addObserver( (SensorObserver) view ) );
+                    
+                    view.refreshAreaCard(area);
+            }
+
+        } catch(ActionMethodException e) {
+            view.showToast( e.getMessage(), ToastType.ERROR );
+        }
     }
 
     @Override
     public void removeSensorFromArea( String areaId, String sensorId ) {
-        final boolean removed = model.removeSensorFromArea( areaId, sensorId );
+        try {
 
-        if ( removed ) {
-            final GreenArea area = model.getGreenArea( areaId );
-            view.refreshAreaCard( area );
+            final boolean removed = model.removeSensorFromArea( areaId, sensorId );
+
+            if ( removed ) {
+                final GreenArea area = model.getGreenArea( areaId );
+                view.refreshAreaCard( area );
+            }
+            
+        } catch(ActionMethodException e) {
+            view.showToast( e.getMessage(), ToastType.ERROR );
         }
     }
  

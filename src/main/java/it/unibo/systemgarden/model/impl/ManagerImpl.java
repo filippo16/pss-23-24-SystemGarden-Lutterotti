@@ -10,6 +10,7 @@ import it.unibo.systemgarden.model.api.GreenArea;
 import it.unibo.systemgarden.model.api.Manager;
 import it.unibo.systemgarden.model.api.Sector;
 import it.unibo.systemgarden.model.api.Sensor;
+import it.unibo.systemgarden.model.api.exception.ActionMethodException;
 import it.unibo.systemgarden.model.api.factory.SensorFactory;
 import it.unibo.systemgarden.model.impl.sensor.SensorFactoryImpl;
 import it.unibo.systemgarden.model.utils.SensorType;
@@ -24,25 +25,25 @@ public class ManagerImpl implements Manager {
     }
 
     @Override
-    public GreenArea createGreenArea( final String name, final String city ) {
+    public GreenArea createGreenArea( final String name, final String city ) throws ActionMethodException {
         try {
             final GreenArea area = new GreenAreaImpl( name, city );
             greenAreas.put( area.getId(), (GreenAreaImpl) area );
 
             return area;
         } catch(Exception e) {
-            throw new RuntimeException("Non è stato possibile creare l'area verde.");
+            throw new ActionMethodException("Non è stato possibile creare l'area verde.");
         }
     }
 
     @Override
-    public boolean removeGreenArea( final String areaId ) {
+    public boolean removeGreenArea( final String areaId ) throws ActionMethodException {
         try {
             GreenArea area = greenAreas.remove( areaId );
     
             return area != null;
         } catch(Exception e) {
-            throw new RuntimeException("Non è stato possibile rimuovere l'area verde.");
+            throw new ActionMethodException("Non è stato possibile rimuovere l'area verde.");
         }
         
     }
@@ -66,7 +67,7 @@ public class ManagerImpl implements Manager {
     }
 
     @Override
-    public Sector addSectorToArea( final String areaId, final String sectorName ) {
+    public Sector addSectorToArea( final String areaId, final String sectorName ) throws ActionMethodException {
         final GreenArea area = greenAreas.get( areaId );
 
         if ( area != null ) {
@@ -76,11 +77,11 @@ public class ManagerImpl implements Manager {
             return sector;
         }
 
-        throw new RuntimeException("Non è stato possibile aggiungere il settore.");
+        throw new ActionMethodException("Non è stato possibile aggiungere il settore.");
     }
 
     @Override
-    public boolean removeSectorFromArea( final String areaId, final String sectorId ) {
+    public boolean removeSectorFromArea( final String areaId, final String sectorId ) throws ActionMethodException {
         final GreenArea area = greenAreas.get( areaId );
 
         if ( area != null ) {
@@ -91,11 +92,11 @@ public class ManagerImpl implements Manager {
             return true;
         }
 
-        throw new RuntimeException("Non è stato possibile rimuovere il settore.");
+        throw new ActionMethodException("Non è stato possibile rimuovere il settore.");
     }
 
     @Override
-    public Sector irrigateSector( final String areaId, final String sectorId ) {
+    public Sector irrigateSector( final String areaId, final String sectorId ) throws ActionMethodException {
         final GreenArea area = greenAreas.get( areaId );
 
         if ( area != null ) {
@@ -106,11 +107,11 @@ public class ManagerImpl implements Manager {
             return area.getSector( sectorId );
         }
 
-        throw new RuntimeException("Non è stato possibile irrigare il settore.");
+        throw new ActionMethodException("Non è stato possibile irrigare il settore.");
     }
 
     @Override
-    public Sector stopSector( final String areaId, final String sectorId ) {
+    public Sector stopSector( final String areaId, final String sectorId ) throws ActionMethodException {
         final GreenArea area = greenAreas.get( areaId );
 
         if ( area != null ) {
@@ -120,13 +121,13 @@ public class ManagerImpl implements Manager {
             return area.getSector( sectorId );
         }
 
-        throw new RuntimeException("Non è stato possibile fermare il settore.");
+        throw new ActionMethodException("Non è stato possibile fermare il settore.");
     }
 
     @Override
     public Sector updateSectorSchedule( final String areaId, final String sectorId, 
         final java.time.LocalTime startTime, final int duration, final List<Integer> activeDays 
-    ) {
+    ) throws ActionMethodException {
         final GreenArea area = greenAreas.get( areaId );
 
         if ( area != null ) {
@@ -137,7 +138,7 @@ public class ManagerImpl implements Manager {
             return area.getSector( sectorId );
         }
 
-        throw new RuntimeException("Non è stato possibile aggiornare il programma del settore.");
+        throw new ActionMethodException("Non è stato possibile aggiornare il programma del settore.");
     }
 
     @Override
@@ -149,7 +150,7 @@ public class ManagerImpl implements Manager {
     }
 
     @Override
-    public GreenArea addSensorToArea( final String areaId, final String name, final SensorType type ) {
+    public GreenArea addSensorToArea( final String areaId, final String name, final SensorType type ) throws ActionMethodException {
         final GreenArea area = greenAreas.get( areaId );
 
         if ( area != null ) {
@@ -157,19 +158,19 @@ public class ManagerImpl implements Manager {
             area.addSensor( sensor );
             return area;
         }
-        throw new RuntimeException("Non è stato possibile aggiungere il sensore.");
+        throw new ActionMethodException("Non è stato possibile aggiungere il sensore.");
         
     }
 
     @Override
-    public boolean removeSensorFromArea(String areaId, String sensorId) {
+    public boolean removeSensorFromArea(String areaId, String sensorId) throws ActionMethodException {
     GreenArea area = greenAreas.get(areaId);
     
     if (area != null) {
         return area.removeSensor(sensorId);
     }
     
-    throw new RuntimeException("Non è stato possibile rimuovere il sensore.");
+    throw new ActionMethodException("Non è stato possibile rimuovere il sensore.");
 }
 
 }
