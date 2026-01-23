@@ -7,7 +7,7 @@ import it.unibo.systemgarden.model.utils.IrrigationAdvice;
  * Interface for irrigation advisors.
  * Implements a strategy pattern to provide irrigation advice based on environmental conditions.
 */
-public interface IrrigationStrategy {
+public interface AdvisorStrategy {
      /**
      * Analyzes the current conditions and returns an irrigation advice.
      * 
