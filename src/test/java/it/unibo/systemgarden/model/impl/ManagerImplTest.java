@@ -3,6 +3,7 @@ package it.unibo.systemgarden.model.impl;
 import it.unibo.systemgarden.model.api.GreenArea;
 import it.unibo.systemgarden.model.api.Manager;
 import it.unibo.systemgarden.model.api.Sector;
+import it.unibo.systemgarden.model.api.exception.ActionMethodException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +26,7 @@ class ManagerImplTest {
     }
 
     @Test
-    void testCreateGreenArea() {
+    void testCreateGreenArea() throws ActionMethodException {
         final GreenArea area = manager.createGreenArea( "Parco Centrale", "Roma" );
 
         assertNotNull( area );
@@ -35,7 +36,7 @@ class ManagerImplTest {
     }
 
     @Test
-    void testGetGreenArea() {
+    void testGetGreenArea() throws ActionMethodException {
         final GreenArea created = manager.createGreenArea( "Parco Centrale", "Roma" );
         final GreenArea retrieved = manager.getGreenArea( created.getId() );
 
@@ -52,7 +53,7 @@ class ManagerImplTest {
     }
 
     @Test
-    void testGetGreenAreas() {
+    void testGetGreenAreas() throws ActionMethodException {
         manager.createGreenArea( "Parco A", "Milano" );
         manager.createGreenArea( "Parco B", "Torino" );
 
@@ -69,7 +70,7 @@ class ManagerImplTest {
     }
 
     @Test
-    void testRemoveGreenArea() {
+    void testRemoveGreenArea()  throws ActionMethodException {
         final GreenArea area = manager.createGreenArea( "Parco Centrale", "Roma" );
         final String areaId = area.getId();
 
@@ -80,7 +81,7 @@ class ManagerImplTest {
     }
 
     @Test
-    void testRemoveGreenAreaNotFound() {
+    void testRemoveGreenAreaNotFound() throws ActionMethodException {
         final boolean removed = manager.removeGreenArea( "NON-EXISTENT-ID" );
 
         assertFalse( removed );
@@ -90,7 +91,7 @@ class ManagerImplTest {
 
     
     @Test
-    void testAddSectorToArea() {
+    void testAddSectorToArea() throws ActionMethodException {
         final GreenArea area = manager.createGreenArea( "Parco Centrale", "Roma" );
         final Sector sector = manager.addSectorToArea( area.getId(), "Prato Nord" );
 
@@ -100,14 +101,14 @@ class ManagerImplTest {
     }
 
     @Test
-    void testAddSectorToAreaNotFound() {
+    void testAddSectorToAreaNotFound() throws ActionMethodException {
         final Sector sector = manager.addSectorToArea( "NON-EXISTENT-ID", "Prato Nord" );
 
         assertNull( sector );
     }
 
     @Test
-    void testRemoveSectorFromArea() {
+    void testRemoveSectorFromArea() throws ActionMethodException {
         final GreenArea area = manager.createGreenArea( "Parco Centrale", "Roma" );
         final Sector sector = manager.addSectorToArea( area.getId(), "Prato Nord" );
 
@@ -118,7 +119,7 @@ class ManagerImplTest {
     }
 
     @Test
-    void testRemoveSectorFromAreaNotFound() {
+    void testRemoveSectorFromAreaNotFound() throws ActionMethodException {
         final boolean result = manager.removeSectorFromArea( "NON-EXISTENT-ID", "SECTOR-ID" );
 
         assertFalse( result );
@@ -129,7 +130,7 @@ class ManagerImplTest {
 
 
     @Test
-    void testIrrigateSector() {
+    void testIrrigateSector() throws Exception {
         final GreenArea area = manager.createGreenArea( "Parco Centrale", "Roma" );
         final Sector sector = manager.addSectorToArea( area.getId(), "Prato Nord" );
 
@@ -142,14 +143,14 @@ class ManagerImplTest {
     }
 
     @Test
-    void testIrrigateSectorAreaNotFound() {
+    void testIrrigateSectorAreaNotFound() throws Exception {
         final Sector result = manager.irrigateSector( "NON-EXISTENT-ID", "SECTOR-ID" );
 
         assertNull( result );
     }
 
     @Test
-    void testStopSector() {
+    void testStopSector() throws Exception {
         final GreenArea area = manager.createGreenArea( "Parco Centrale", "Roma" );
         final Sector sector = manager.addSectorToArea( area.getId(), "Prato Nord" );
 
@@ -163,7 +164,7 @@ class ManagerImplTest {
     }
 
     @Test
-    void testStopSectorAreaNotFound() {
+    void testStopSectorAreaNotFound() throws Exception {
         final Sector result = manager.stopSector( "NON-EXISTENT-ID", "SECTOR-ID" );
 
         assertNull( result );
@@ -176,7 +177,7 @@ class ManagerImplTest {
 
 
     @Test
-    void testUpdateSectorSchedule() {
+    void testUpdateSectorSchedule() throws ActionMethodException {
         final GreenArea area = manager.createGreenArea( "Parco Centrale", "Roma" );
         final Sector sector = manager.addSectorToArea( area.getId(), "Prato Nord" );
 
@@ -195,7 +196,7 @@ class ManagerImplTest {
     }
 
     @Test
-    void testUpdateSectorScheduleAreaNotFound() {
+    void testUpdateSectorScheduleAreaNotFound() throws ActionMethodException {
         final Sector result = manager.updateSectorSchedule( 
             "NOT_EXIST", "SECTOR-ID", LocalTime.of( 8, 0 ), 30, List.of( 1, 2 ) 
         );
