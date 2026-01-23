@@ -55,3 +55,5 @@ La progettazione mi ha permesso di avere un'idea chiara fin dall'inizio, ho avut
 
 **Difficoltà**
 - Non c'è ne sono state troppe, più che altro mi chiedo se view può effettivamente essere un observer e le varie metodologie per iscriverla in modo più pulito.
+
+9
