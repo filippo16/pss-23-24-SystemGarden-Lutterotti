@@ -1,7 +1,6 @@
 package it.unibo.systemgarden.model.impl;
 
 import it.unibo.systemgarden.model.api.GreenArea;
-import it.unibo.systemgarden.model.api.Sector;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -30,18 +29,16 @@ class GreenAreaImplTest {
 
     @Test
     void testAddSector() {
-        final Sector sector = new SectorImpl( "Prato Est" );
-        area.addSector( sector );
+        area.addSector( "Prato Est", "Fiori" );
 
         assertEquals( 1, area.getSectors().size() );
-        assertTrue( area.getSectors().contains( sector ) );
+        assertTrue( area.getSectors().stream().anyMatch(s -> s.getName().equals("Prato Est")) );
     }
 
     @Test
     void testRemoveSector() {
-        final Sector sector = new SectorImpl( "Prato Est" );
-        area.addSector( sector );
-        area.removeSector( sector );
+        area.addSector( "Prato Est", "Fiori" );
+        area.removeSector( "Prato Est" );
 
         assertTrue( area.getSectors().isEmpty() );
     }
