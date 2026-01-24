@@ -38,7 +38,6 @@
 
     <!-- SmartAdvisor -->
     <HBox fx:id="smartAdvisorContainer" spacing="10" alignment="CENTER_LEFT">
-        <CheckBox fx:id="smartAdvisorActiveCheckbox" text="Attivo" onAction="#onCheckboxToggle"/>
         <Label text="Smart Advisor" styleClass="section-label"/>
         <Label fx:id="smartAdvisorAdviceLabel" text="SmartAdvisor spento" />
     </HBox>
