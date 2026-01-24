@@ -43,6 +43,10 @@ class SmartAdvisorImplTest {
         assertEquals( IrrigationAdvice.INSUFFICIENT_DATA, advice );
     }
 
+
+    /**
+     * Test insufficient data if area don't have sensors.
+     */
     @Test
     void testInsufficientDataWithNullSensorSet() {
         IrrigationAdvice advice = advisor.getAdvice( null, 25.0, 
@@ -66,6 +70,10 @@ class SmartAdvisorImplTest {
         assertEquals( IrrigationAdvice.IRRIGATE_NOW, advice );
     }
 
+
+    /**
+     * Verify that setting a custom strategy works as expected.
+     */
     @Test
     void testSetCustomStrategy() {
         // Returns always IRRIGATE_NOW 
@@ -96,6 +104,9 @@ class SmartAdvisorImplTest {
         assertNull(advice);
     }
 
+    /**
+     * Test advice update after manual multiple sensor readings.
+     */
     @Test
     void testAdviceUpdateAfterMultipleSensorReadings() {
         Set<SensorType> sensors = EnumSet.of( SensorType.TEMPERATURE, SensorType.HUMIDITY );

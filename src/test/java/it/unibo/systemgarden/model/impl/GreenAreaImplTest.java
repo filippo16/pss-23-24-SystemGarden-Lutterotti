@@ -164,6 +164,10 @@ class GreenAreaImplTest {
         assertEquals( 1, mockAdvisorObserver.getNotificationCount() );
     }
     
+
+    /**
+     * Test observing multiple green areas with a single observer (like ViewImpl).
+     */
     @Test
     void testObserveMultipleAreas() {
         
