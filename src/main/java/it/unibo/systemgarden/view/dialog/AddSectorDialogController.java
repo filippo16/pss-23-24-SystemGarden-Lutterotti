@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 
 /**
  * Controller for AddSectorDialog.
- * Contains the methods of the dialog (Create Sector)
+ * Shows a dialog to get data name for a new sector.
  */
 public class AddSectorDialogController implements DialogController<String> {
 

@@ -23,6 +23,10 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+
+/**
+ * Controller for the Area Card component.
+*/
 public class AreaCardController {
 
     private static final String FXML_PATH_SECTOR_DIALOG = "fxml/dialog/AddSectorDialog.fxml";
@@ -53,9 +57,13 @@ public class AreaCardController {
     private Controller controller;
     private GreenArea area;
 
+    // Maps to keep track of sector and sensor controllers by their IDs
     private final Map<String, SectorCardController> sectorControllers = new HashMap<>();
     private final Map<String, SensorCardController> sensorControllers = new HashMap<>();
 
+    /**
+     * Initializes the area card with data.
+    */
     public void initialize( final Controller controller, final GreenArea area) {
         this.controller = controller;
         this.area = area;
@@ -66,7 +74,7 @@ public class AreaCardController {
         updateClock( area.getLocation().getLocalTime() );
         smartAdvisorAdviceLabel.setText( IrrigationAdvice.INSUFFICIENT_DATA.getTitle() );
 
-        // Populate sectors
+        
         for (final Sector sector : area.getSectors()) {
             addSectorCard( sector );
         }
@@ -76,6 +84,10 @@ public class AreaCardController {
         }
     }
 
+    /**
+     * Updates the clock label with the provided time.
+     * @param time current local time
+     */
     public void updateClock( LocalTime time ) {
         clockLabel.setText( time.format( DateTimeFormatter.ofPattern( "HH:mm" ) ) );
     }
@@ -108,7 +120,7 @@ public class AreaCardController {
      * Adds a new sector card.
      * @param sector sector to add
      */
-    public void addSectorCard(final Sector sector) {
+    public void addSectorCard( final Sector sector ) {
         final CardData<SectorCardController> sectorCardData = createSectorCard( sector );
         
         if (sectorCardData != null) {
@@ -129,6 +141,7 @@ public class AreaCardController {
 
     /**
      * Refreshes a specific sector card.
+     * Puts the updated card in place of the old one.
      * @param sector sector to refresh
      */
     public void refreshSectorCard( final Sector sector ) {
@@ -182,6 +195,11 @@ public class AreaCardController {
         }
     }
 
+    /**
+     * Creates a sensor card
+     * @param sensor sensor to create
+     * @return containing the sensor card and its controller
+    */
     private CardData<SensorCardController> createSensorCard( final Sensor sensor ) {
         try {
             final FXMLLoader loader = new FXMLLoader(
@@ -217,12 +235,21 @@ public class AreaCardController {
         }
     }
 
+    /**
+     * Removes a sensor card.
+     * @param sensorId sensor to remove
+    */
     public void removeSensorCard( final String sensorId ) {
         sensorsContainer.getChildren().removeIf( node -> 
             sensorId.equals( node.getId() ) );
         sensorControllers.remove( sensorId );
     }
 
+    /**
+     * Refreshes a specific sensor card.
+     * @param sensorId sensor to refresh
+     * @param newValue new value to set
+    */
     public void refreshSensorData( final String sensorId, final double newValue ) {
         SensorCardController ctrl = sensorControllers.get( sensorId );
 
@@ -232,12 +259,11 @@ public class AreaCardController {
         
     }
 
+    /**
+     * Update advice notification on the area card.
+     * @param advice advice to show
+    */
     public void showAdviceNotification( final String advice ) {
         smartAdvisorAdviceLabel.setText( advice );
-    }
-
-
-    public VBox getCard() {
-        return card;
     }
 }

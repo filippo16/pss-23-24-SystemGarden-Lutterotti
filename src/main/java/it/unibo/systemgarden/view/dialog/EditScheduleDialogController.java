@@ -15,9 +15,11 @@ import java.util.List;
 
 /**
  * Controller for EditScheduleDialog.
- * Allows editing schedule parameters (start time, duration, active days).
+ * Allows editing schedule parameters (start time, duration, active days) for updating an existing schedule.
  */
-public class EditScheduleDialogController implements InitializableDialogController<ScheduleData, Schedule> {
+public class EditScheduleDialogController implements 
+    InitializableDialogController<ScheduleData, Schedule> 
+{
 
     @FXML
     private Spinner<Integer> hourSpinner;

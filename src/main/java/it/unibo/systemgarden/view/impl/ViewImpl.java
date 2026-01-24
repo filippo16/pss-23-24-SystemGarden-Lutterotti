@@ -31,7 +31,8 @@ public class ViewImpl implements View, SensorObserver, AdvisorObserver  {
     public ViewImpl(final Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
-
+    
+    @Override
     public void setController(final Controller controller) {
         this.controller = controller;
     }

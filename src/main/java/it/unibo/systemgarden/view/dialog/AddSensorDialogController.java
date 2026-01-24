@@ -8,6 +8,10 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+/**
+ * Controller for the Add Sensor Dialog.
+ * Shows a dialog to get data name and type for a new sensor.
+*/
 public class AddSensorDialogController implements DialogController<SensorData> {
 
 	@FXML

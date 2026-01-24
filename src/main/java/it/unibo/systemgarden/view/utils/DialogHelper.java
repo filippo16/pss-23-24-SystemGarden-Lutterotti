@@ -51,6 +51,12 @@ public final class DialogHelper {
         }
     }
     
+    /**
+     * Creates and configures a dialog stage.
+     * @param title the title of the dialog
+     * @param root the root node of the dialog scene
+     * @return the configured Stage
+     */
     private static Stage createDialogStage( final String title, final Parent root ) {
         final Stage stage = new Stage();
         stage.setTitle( title );

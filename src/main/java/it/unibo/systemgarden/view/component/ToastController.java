@@ -14,6 +14,9 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
+/**
+ * Controller for the Toast component.
+*/
 public class ToastController {
     
     private static final String FXML_PATH = "fxml/component/Toast.fxml";
@@ -30,6 +33,12 @@ public class ToastController {
 
     private Stage toastStage;
 
+    /**
+     * Displays a toast notification.
+     * @param owner the owner stage
+     * @param message the message to display
+     * @param type the type of toast
+    */
     public static void show(Stage owner, String message, ToastType type) {
         try {
             FXMLLoader loader = new FXMLLoader( ClassLoader.getSystemResource(FXML_PATH) );
@@ -45,6 +54,12 @@ public class ToastController {
         }
     }
 
+    /**
+     * Sets up the toast with the given parameters.
+     * @param owner the owner stage
+     * @param message the message to display
+     * @param type the type of toast
+    */
     private void setup(Stage owner, String message, ToastType type) {
 
         messageLabel.setText(message);
@@ -69,6 +84,9 @@ public class ToastController {
         });
     }
 
+    /**
+     * Displays the toast for a predefined duration.
+    */
     private void display() {
         toastStage.show();
         

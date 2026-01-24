@@ -9,6 +9,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
+/**
+ * Controller for the Sector Card component.
+*/
 public class SectorCardController {
 
     private static final String FXML_PATH_SCHEDULE_DIALOG = 
@@ -24,7 +27,7 @@ public class SectorCardController {
 
     /**
      * Initializes the sector card with data.
-     */
+    */
     public void initialize(final Controller controller, final String areaId, 
         final Sector sector
     ) {
@@ -35,6 +38,9 @@ public class SectorCardController {
         updateLabels();
     }
 
+    /**
+     * Updates the labels on the sector card.
+    */
     private void updateLabels() {
         final String status = sector.isIrrigating() ? "[ON]" : "[--]";
         sectorLabel.setText(status + " " + sector.getName());
@@ -68,12 +74,5 @@ public class SectorCardController {
     @FXML
     private void onDelete() {
         controller.removeSectorFromArea(areaId, sector.getId());
-    }
-
-    /**
-     * Returns the root VBox of this sector card.
-     */
-    public VBox getCard() {
-        return sectorBox;
     }
 }
