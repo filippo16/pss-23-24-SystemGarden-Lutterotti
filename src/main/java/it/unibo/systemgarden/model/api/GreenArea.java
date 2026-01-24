@@ -57,6 +57,4 @@ public interface GreenArea extends AdvisorObservable {
     void addSensor( final Sensor sensor, final SensorObserver observer  );
 
     boolean removeSensor( final String sensorId, final SensorObserver observer  );
-
-    void toglgleSmartAdvisor( final boolean enabled );
 }

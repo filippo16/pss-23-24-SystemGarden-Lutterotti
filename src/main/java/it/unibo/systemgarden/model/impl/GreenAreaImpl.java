@@ -172,14 +172,6 @@ public class GreenAreaImpl implements GreenArea, SensorObserver {
         notifyAdvisorObservers( areaId, advice.getTitle());
     }
 
-    private void initSmartAdvisor() {
-       sensors.forEach( s -> onSensorUpdate(id, s.getId(), s.readData(), s.getType()) );
-
-       if(sensors.isEmpty()) {
-           notifyAdvisorObservers( id, IrrigationAdvice.INSUFFICIENT_DATA.getTitle() );
-       }
-    }
-
     @Override
     public void addAdvisorObserver( AdvisorObserver observer ) {
         if (!advisorObservers.contains( observer )) {
@@ -195,13 +187,5 @@ public class GreenAreaImpl implements GreenArea, SensorObserver {
     @Override
     public void notifyAdvisorObservers( String areaId, String adviceTitle ) {
         advisorObservers.forEach( obs -> obs.onAdviceReceived( areaId, adviceTitle ) );
-    }
-
-    @Override
-    public void toglgleSmartAdvisor( final boolean enabled ) {
-        if( enabled == true && !advisor.isActive() ) {
-            initSmartAdvisor();
-        }
-        advisor.toggleAdvisor( enabled );
     }
 }

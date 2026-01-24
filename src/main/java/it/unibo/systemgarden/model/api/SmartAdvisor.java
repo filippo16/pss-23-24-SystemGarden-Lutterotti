@@ -11,8 +11,5 @@ public interface SmartAdvisor {
     void setStrategy( AdvisorStrategy strategy );
 
     IrrigationAdvice getAdvice( Set<SensorType> sensorTypes, double newValue, SensorType type );
-
-    void toggleAdvisor( boolean enabled );
     
-    boolean isActive();
 }

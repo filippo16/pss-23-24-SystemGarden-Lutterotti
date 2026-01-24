@@ -13,7 +13,6 @@ public class SmartAdvisorImpl implements SmartAdvisor {
 
     private double currentTemperature = 0; 
     private double currentHumidity = 0; 
-    private boolean active = false;
 
     public SmartAdvisorImpl() {
         this.strategy = new SensorAdvisor();
@@ -25,15 +24,12 @@ public class SmartAdvisorImpl implements SmartAdvisor {
     }
 
     @Override
-    public boolean isActive() {
-        return active;
-    }
-
-    @Override
-    public IrrigationAdvice getAdvice(Set<SensorType> sensorTypes, double newValue, SensorType type) {
+    public IrrigationAdvice getAdvice(Set<SensorType> sensorTypes, 
+        double newValue, SensorType type
+    ) {
         final IrrigationAdvice newAdvice;
 
-        if (strategy == null && active == false) {
+        if ( strategy == null ) {
             return null;
         }
 
@@ -56,10 +52,5 @@ public class SmartAdvisorImpl implements SmartAdvisor {
         }
 
         return newAdvice;
-    }
-
-    @Override
-    public void toggleAdvisor( boolean enabled ) {
-        this.active = enabled;
     }
 }
