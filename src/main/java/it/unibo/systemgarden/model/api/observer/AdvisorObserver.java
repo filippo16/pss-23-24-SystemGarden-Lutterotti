@@ -2,6 +2,10 @@ package it.unibo.systemgarden.model.api.observer;
 
 import it.unibo.systemgarden.model.utils.IrrigationAdvice;
 
+/**
+ * Observer Interface for irrigation advisors.
+ * It is used to update advisor data in the view.
+*/
 public interface AdvisorObserver {
 
     /**

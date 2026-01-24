@@ -2,6 +2,10 @@ package it.unibo.systemgarden.model.api.observer;
 
 import it.unibo.systemgarden.model.utils.SensorType;
 
+/**
+ * Observer Interface for sensors.
+ * It is used to update sensor data in the view.
+*/
 public interface SensorObserver {
     
     /**

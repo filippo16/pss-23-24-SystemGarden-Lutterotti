@@ -2,6 +2,9 @@ package it.unibo.systemgarden.model.api.observer;
 
 import it.unibo.systemgarden.model.utils.IrrigationAdvice;
 
+/**
+ * Observable Interface for irrigation advisors.
+*/
 public interface AdvisorObservable {
 
     /**

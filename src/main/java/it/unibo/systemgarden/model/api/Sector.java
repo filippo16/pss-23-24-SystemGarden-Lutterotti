@@ -34,7 +34,16 @@ public interface Sector {
      */
     void stop();
 
+    /**
+     * @return the irrigation schedule of this sector
+    */
     Schedule getSchedule();
 
+    /**
+     * Updates the irrigation schedule of this sector.
+     * @param startTime the start time of the irrigation
+     * @param duration the duration of the irrigation
+     * @param activeDays the days on which the irrigation is active
+    */
     void updateSchedule( final LocalTime startTime, final int duration, final List<Integer> activeDays );
 }

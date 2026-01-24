@@ -2,6 +2,9 @@ package it.unibo.systemgarden.model.api.observer;
 
 import it.unibo.systemgarden.model.utils.SensorType;
 
+/**
+ * Observable Interface for sensors.
+*/
 public interface SensorObservable {
     
     /**
