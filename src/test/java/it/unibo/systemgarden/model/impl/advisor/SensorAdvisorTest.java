@@ -38,20 +38,20 @@ class SensorAdvisorTest {
     void testNoIrrigationNeeded() {
 
         IrrigationAdvice advice = strategy.getAdvice(45.0, 25.0);
-        assertEquals(IrrigationAdvice.NO_IRRIGATION_NEEDED, advice);
+        assertEquals( IrrigationAdvice.NO_IRRIGATION_NEEDED, advice );
     }
 
     @Test
     void testOptimalCondition() {
 
         IrrigationAdvice advice = strategy.getAdvice(70.0, 25.0);
-        assertEquals(IrrigationAdvice.OPTIMAL_CONDITIONS, advice);
+        assertEquals( IrrigationAdvice.OPTIMAL_CONDITIONS, advice );
     }
 
     @Test
     void testNegativeTemperature() {
 
         IrrigationAdvice advice = strategy.getAdvice(50.0, -5.0);
-        assertEquals(IrrigationAdvice.NO_IRRIGATION_NEEDED, advice);
+        assertEquals( IrrigationAdvice.NO_IRRIGATION_NEEDED, advice );
     }
 }
