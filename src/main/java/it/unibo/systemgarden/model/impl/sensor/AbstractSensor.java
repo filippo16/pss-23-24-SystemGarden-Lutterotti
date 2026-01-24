@@ -67,7 +67,7 @@ public abstract class AbstractSensor implements Sensor, SensorObservable {
 
     /**
      * Generates a new value for the sensor.
-     * Is a test method to simulate sensor data changes. 
+     * Is a test method to simulate sensor data. 
      * @return the new sensor value
      */
     protected abstract double generateNewValue();

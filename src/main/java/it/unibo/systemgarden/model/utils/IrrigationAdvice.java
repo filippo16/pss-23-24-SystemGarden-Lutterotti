@@ -2,7 +2,7 @@ package it.unibo.systemgarden.model.utils;
 
 /**
  * Enum representing different irrigation advice types.
- * Each type has an associated message for display in JavaFX.
+ * Each type has an associated message for display in view.
  */
 public enum IrrigationAdvice {
 
