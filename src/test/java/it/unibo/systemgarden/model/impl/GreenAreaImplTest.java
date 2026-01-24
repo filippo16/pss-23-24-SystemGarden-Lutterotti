@@ -1,7 +1,15 @@
 package it.unibo.systemgarden.model.impl;
 
+import it.unibo.systemgarden.mock.TestAdvisorObserver;
+import it.unibo.systemgarden.mock.TestSensorObserver;
 import it.unibo.systemgarden.model.api.GreenArea;
 import it.unibo.systemgarden.model.api.Sector;
+import it.unibo.systemgarden.model.api.Sensor;
+import it.unibo.systemgarden.model.api.exception.ActionMethodException;
+import it.unibo.systemgarden.model.api.observer.SensorObserver;
+import it.unibo.systemgarden.model.impl.sensor.HumiditySensor;
+import it.unibo.systemgarden.model.impl.sensor.TemperatureSensor;
+import it.unibo.systemgarden.model.utils.SensorType;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +25,8 @@ import java.util.List;
 class GreenAreaImplTest {
     
     private GreenArea area;
+    private TestSensorObserver mockSensorObserver = new TestSensorObserver();
+    private TestAdvisorObserver mockAdvisorObserver = new TestAdvisorObserver();
 
     @BeforeEach
     void setUp() {
@@ -85,6 +95,39 @@ class GreenAreaImplTest {
 
         assertNotNull( updated );
         assertNotNull( updated.getSchedule() );
+    }
+
+    @Test
+    void testAddSensor() throws ActionMethodException {
+        Sensor sensor = new HumiditySensor( "Umidità Giardino" );
+        area.addSensor( sensor, mockSensorObserver );
+
+        assertEquals( 1, area.getSensors().size() );
+    }
+
+    @Test
+    void testAddSensorMaxLimit() throws ActionMethodException {
+        Sensor sensor1 = new HumiditySensor( "Umidità 1" );
+        Sensor sensor2 = new TemperatureSensor( "Temperatura 1" );
+        Sensor sensor3 = new HumiditySensor( "Umidità 2" );
+
+        area.addSensor( sensor1, mockSensorObserver );
+        area.addSensor( sensor2, mockSensorObserver );
+
+        assertThrows(ActionMethodException.class, () -> {
+            area.addSensor( sensor3, mockSensorObserver );
+        });
+    }
+
+    @Test
+    void testRemoveSensor() throws ActionMethodException {
+        Sensor sensor = new HumiditySensor( "Umidità" );
+        area.addSensor( sensor, mockSensorObserver );
+
+        boolean removed = area.removeSensor( sensor.getId(), mockSensorObserver );
+
+        assertTrue( removed );
+        assertTrue( area.getSensors().isEmpty() );
     }
 
 }

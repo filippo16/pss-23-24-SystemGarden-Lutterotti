@@ -1,6 +1,6 @@
 package it.unibo.systemgarden.model.impl.sensor;
 
-import it.unibo.systemgarden.model.api.observer.SensorObserver;
+import it.unibo.systemgarden.mock.TestSensorObserver;
 import it.unibo.systemgarden.model.utils.SensorType;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -14,12 +14,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class SensorObserverTest {
 
     private AbstractSensor sensor;
-    private TestObserver observer;
+    private TestSensorObserver observer;
 
     @BeforeEach
     void setUp() {
         sensor = new HumiditySensor("Test Sensor");
-        observer = new TestObserver();
+        observer = new TestSensorObserver();
     }
 
     @Test
@@ -55,7 +55,7 @@ class SensorObserverTest {
 
     @Test
     void testMultipleObservers() {
-        final TestObserver observer2 = new TestObserver();
+        final TestSensorObserver observer2 = new TestSensorObserver();
 
         sensor.addObserver(observer);
         sensor.addObserver(observer2);
@@ -77,52 +77,4 @@ class SensorObserverTest {
 
         assertEquals(1, observer.getNotificationCount());
     }
-
-    /**
-     * Helper class to mock observer notifications.
-     */
-    private static class TestObserver implements SensorObserver {
-
-        private boolean notified = false;
-        private String lastAreaId;
-        private String lastSensorId;
-        private double lastValue;
-        private int notificationCount = 0;
-        private SensorType lastSensorType;
-
-        @Override
-        public void onSensorUpdate(String areaId, String sensorId, double newValue, SensorType sensorType) {
-            this.notified = true;
-            this.lastAreaId = areaId;
-            this.lastSensorId = sensorId;
-            this.lastValue = newValue;
-            this.notificationCount++;
-            this.lastSensorType = sensorType;
-        }
-
-        public boolean wasNotified() {
-            return notified;
-        }
-
-        public String getLastAreaId() {
-            return lastAreaId;
-        }
-
-        public String getLastSensorId() {
-            return lastSensorId;
-        }
-
-        public double getLastValue() {
-            return lastValue;
-        }
-
-        public int getNotificationCount() {
-            return notificationCount;
-        }
-
-        public SensorType getLastSensorType() {
-            return lastSensorType;
-        }
-    }
-
 }
