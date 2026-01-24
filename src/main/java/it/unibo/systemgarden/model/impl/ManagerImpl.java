@@ -172,4 +172,25 @@ public class ManagerImpl implements Manager {
         throw new ActionMethodException("Non è stato possibile rimuovere il sensore.");
     }
 
+
+    @Override
+    public GreenArea createDemo(final AdvisorObserver observer, final SensorObserver sensorObserver)
+        throws ActionMethodException 
+    {
+
+
+        final GreenArea demoArea = createGreenArea( "Giardino Demo", "Bologna", observer );
+
+        addSectorToArea( demoArea.getId(), "Prato Principale" );
+
+
+        addSensorToArea( demoArea.getId(), "Sensore Umidità", 
+        SensorType.HUMIDITY, sensorObserver );
+        addSensorToArea( demoArea.getId(), "Sensore Temperatura", 
+        SensorType.TEMPERATURE, sensorObserver );
+
+
+        return demoArea;
+    }
+
 }

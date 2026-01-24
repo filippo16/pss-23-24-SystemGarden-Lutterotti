@@ -54,7 +54,10 @@ public class ControllerImpl implements Controller {
             model.refreshSensorData(); 
 
         }, delayToNextMinute, 60000, TimeUnit.MILLISECONDS);
+
         view.show();
+
+        createDemo();
     }
 
     @Override
@@ -222,6 +225,16 @@ public class ControllerImpl implements Controller {
             }
             
         } catch(ActionMethodException e) {
+            view.showToast( e.getMessage(), ToastType.ERROR );
+        }
+    }
+
+
+    private void createDemo() {
+        try {
+            final GreenArea area = model.createDemo( (AdvisorObserver) view, (SensorObserver) view );
+            view.addAreaCard( area );
+        } catch (ActionMethodException e) {
             view.showToast( e.getMessage(), ToastType.ERROR );
         }
     }

@@ -126,4 +126,17 @@ public interface Manager {
      * @throws ActionMethodException
     */
     boolean removeSensorFromArea(  String areaId, String sensorId, SensorObserver observer ) throws ActionMethodException;
+
+    /**
+     * Creates a demo green area with 2 sensors (humidity and temperature) and 1
+     * sector.
+     * Useful for testing and demonstration purposes.
+     * 
+     * @param observer       the observer to notify for advisor updates (can be
+     *                       null)
+     * @param sensorObserver the observer to notify for sensor updates (can be null)
+     * @return the created demo GreenArea
+     * @throws ActionMethodException if the demo area cannot be created
+     */
+    GreenArea createDemo( AdvisorObserver observer, SensorObserver sensorObserver ) throws ActionMethodException;
 }

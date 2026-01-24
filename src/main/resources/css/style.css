@@ -96,6 +96,7 @@
   -fx-border-color: #16213e;
   -fx-border-radius: 8px;
   -fx-border-width: 1px;
+  -fx-padding: 10px;
 }
 
 .schedule-label {
