@@ -16,6 +16,7 @@ import javafx.util.Duration;
 
 /**
  * Controller for the Toast component.
+ * Show message feedback to the user.
 */
 public class ToastController {
     
