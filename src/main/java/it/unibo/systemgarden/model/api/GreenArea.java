@@ -3,6 +3,7 @@ package it.unibo.systemgarden.model.api;
 import java.util.List;
 
 import it.unibo.systemgarden.model.api.observer.AdvisorObservable;
+import it.unibo.systemgarden.model.api.observer.SensorObserver;
 
 /**
  * Interface for a green area (garden or plant group).
@@ -53,9 +54,9 @@ public interface GreenArea extends AdvisorObservable {
 
     List<Sensor> getSensors();
 
-    void addSensor( final Sensor sensor );
+    void addSensor( final Sensor sensor, final SensorObserver observer  );
 
-    boolean removeSensor( final String sensorId  );
+    boolean removeSensor( final String sensorId, final SensorObserver observer  );
 
     void toglgleSmartAdvisor( final boolean enabled );
 }

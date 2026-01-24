@@ -92,5 +92,4 @@ public interface Controller {
 
     void removeSensorFromArea( String areaId, String sensorId );
 
-    void toggleSmartAdvisor( String areaId, boolean enabled );
 }

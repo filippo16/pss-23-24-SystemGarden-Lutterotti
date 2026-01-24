@@ -5,6 +5,7 @@ import java. util.List;
 
 import it.unibo.systemgarden.model.api.exception.ActionMethodException;
 import it.unibo.systemgarden.model.api.observer.AdvisorObserver;
+import it.unibo.systemgarden.model.api.observer.SensorObserver;
 import it.unibo.systemgarden.model.utils.SensorType;
 
 /**
@@ -17,10 +18,11 @@ public interface Manager {
      * 
      * @param name the area name
      * @param city the city
+     * @param observer the advisor observer (view)
      * @return the created green area
      * @throws ActionMethodException 
      */
-    GreenArea createGreenArea(String name, String city) throws ActionMethodException;
+    GreenArea createGreenArea(String name, String city, AdvisorObserver observer) throws ActionMethodException;
 
     /**
      * Removes a green area.
@@ -94,9 +96,7 @@ public interface Manager {
 
     void refreshSensorData();
 
-    GreenArea addSensorToArea( String areaId,  String name,  SensorType type ) throws ActionMethodException;
+    GreenArea addSensorToArea( String areaId,  String name,  SensorType type, SensorObserver observer ) throws ActionMethodException;
 
-    boolean removeSensorFromArea(  String areaId, String sensorId ) throws ActionMethodException;
-
-    void toggleSmartAdvisor(  String areaId,  boolean enabled, AdvisorObserver observer );
+    boolean removeSensorFromArea(  String areaId, String sensorId, SensorObserver observer ) throws ActionMethodException;
 }

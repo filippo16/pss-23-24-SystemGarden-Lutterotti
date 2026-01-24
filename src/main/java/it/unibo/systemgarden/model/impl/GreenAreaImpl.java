@@ -8,6 +8,7 @@ import it.unibo.systemgarden.model.api.Sensor;
 import it.unibo.systemgarden.model.api.observer.AdvisorObserver;
 import it.unibo.systemgarden.model.api.observer.SensorObserver;
 import it.unibo.systemgarden.model.impl.advisor.SmartAdvisorImpl;
+import it.unibo.systemgarden.model.impl.sensor.AbstractSensor;
 import it.unibo.systemgarden.model.utils.IrrigationAdvice;
 import it.unibo.systemgarden.model.utils.SensorType;
 
@@ -123,15 +124,35 @@ public class GreenAreaImpl implements GreenArea, SensorObserver {
     }
 
     @Override
-    public void addSensor( final Sensor sensor ) {
+    public void addSensor( final Sensor sensor, final SensorObserver observer  ) {
         if ( !sensors.contains( sensor ) ) {
+            if (sensor instanceof AbstractSensor) {
+                ((AbstractSensor) sensor).addObserver(this);
+                ((AbstractSensor) sensor).addObserver( (SensorObserver) observer );
+            }
             sensors.add( sensor );
         }
     }
 
     @Override
-    public boolean removeSensor( final String sensorId ) {
-        return sensors.removeIf(sensor -> sensor.getId().equals(sensorId));
+    public boolean removeSensor( final String sensorId, final SensorObserver observer  ) {
+        final Sensor sensor = sensors.stream()
+            .filter( s -> s.getId().equals( sensorId ) )
+            .findFirst()
+            .orElse( null );
+
+        if (sensor == null) {
+            return false;
+        }
+        if (sensor instanceof AbstractSensor) {
+            final AbstractSensor abs = (AbstractSensor) sensor;
+            abs.removeObserver(this);
+            if (observer != null) {
+                abs.removeObserver(observer);
+            }
+            
+        }
+        return sensors.remove(sensor);
     }
 
 

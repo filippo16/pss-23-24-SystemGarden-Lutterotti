@@ -13,6 +13,7 @@ import it.unibo.systemgarden.model.api.Sensor;
 import it.unibo.systemgarden.model.api.exception.ActionMethodException;
 import it.unibo.systemgarden.model.api.factory.SensorFactory;
 import it.unibo.systemgarden.model.api.observer.AdvisorObserver;
+import it.unibo.systemgarden.model.api.observer.SensorObserver;
 import it.unibo.systemgarden.model.impl.sensor.SensorFactoryImpl;
 import it.unibo.systemgarden.model.utils.SensorType;
 
@@ -26,10 +27,11 @@ public class ManagerImpl implements Manager {
     }
 
     @Override
-    public GreenArea createGreenArea( final String name, final String city ) throws ActionMethodException {
+    public GreenArea createGreenArea( final String name, final String city, final AdvisorObserver observer ) throws ActionMethodException {
         try {
             final GreenArea area = new GreenAreaImpl( name, city );
             greenAreas.put( area.getId(), (GreenAreaImpl) area );
+            area.addAdvisorObserver( observer );
 
             return area;
         } catch(Exception e) {
@@ -151,12 +153,14 @@ public class ManagerImpl implements Manager {
     }
 
     @Override
-    public GreenArea addSensorToArea( final String areaId, final String name, final SensorType type ) throws ActionMethodException {
+    public GreenArea addSensorToArea( final String areaId, final String name, 
+        final SensorType type, final SensorObserver observer 
+    ) throws ActionMethodException {
         final GreenArea area = greenAreas.get( areaId );
 
         if ( area != null ) {
             Sensor sensor = factory.createSensor(name, type);
-            area.addSensor( sensor );
+            area.addSensor( sensor, observer );
             return area;
         }
         throw new ActionMethodException("Non è stato possibile aggiungere il sensore.");
@@ -164,29 +168,14 @@ public class ManagerImpl implements Manager {
     }
 
     @Override
-    public boolean removeSensorFromArea(String areaId, String sensorId) throws ActionMethodException {
+    public boolean removeSensorFromArea(String areaId, String sensorId, SensorObserver observer) throws ActionMethodException {
         GreenArea area = greenAreas.get(areaId);
         
         if (area != null) {
-            return area.removeSensor(sensorId);
+            return area.removeSensor(sensorId, observer);
         }
         
         throw new ActionMethodException("Non è stato possibile rimuovere il sensore.");
-    }
-
-    @Override
-    public void toggleSmartAdvisor( final String areaId, final boolean enabled, final AdvisorObserver observer ) {
-        GreenArea area = greenAreas.get(areaId);
-        
-        if (area != null) {
-            if (enabled) {
-                area.addAdvisorObserver( observer );
-            } else {
-                area.removeAdvisorObserver( observer );
-            }
-
-            area.toglgleSmartAdvisor( enabled );
-        }
     }
 
 }

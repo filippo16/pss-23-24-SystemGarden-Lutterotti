@@ -39,7 +39,7 @@
     <!-- SmartAdvisor -->
     <HBox fx:id="smartAdvisorContainer" spacing="10" alignment="CENTER_LEFT">
         <Label text="Smart Advisor" styleClass="section-label"/>
-        <Label fx:id="smartAdvisorAdviceLabel" text="SmartAdvisor spento" />
+        <Label fx:id="smartAdvisorAdviceLabel" text="" />
     </HBox>
 
 

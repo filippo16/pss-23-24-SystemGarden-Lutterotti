@@ -28,7 +28,7 @@ class ManagerImplTest {
 
     @Test
     void testCreateGreenArea() throws ActionMethodException {
-        final GreenArea area = manager.createGreenArea( "Parco Centrale", "Roma" );
+        final GreenArea area = manager.createGreenArea( "Parco Centrale", "Roma", null );
 
         assertNotNull( area );
         assertNotNull( area.getId() );
@@ -38,7 +38,7 @@ class ManagerImplTest {
 
     @Test
     void testGetGreenArea() throws ActionMethodException {
-        final GreenArea created = manager.createGreenArea( "Parco Centrale", "Roma" );
+        final GreenArea created = manager.createGreenArea( "Parco Centrale", "Roma", null );
         final GreenArea retrieved = manager.getGreenArea( created.getId() );
 
         assertNotNull( retrieved );
@@ -55,8 +55,8 @@ class ManagerImplTest {
 
     @Test
     void testGetGreenAreas() throws ActionMethodException {
-        manager.createGreenArea( "Parco A", "Milano" );
-        manager.createGreenArea( "Parco B", "Torino" );
+        manager.createGreenArea( "Parco A", "Milano", null );
+        manager.createGreenArea( "Parco B", "Torino", null );
 
         final List<GreenArea> areas = manager.getGreenAreas();
 
@@ -72,7 +72,7 @@ class ManagerImplTest {
 
     @Test
     void testRemoveGreenArea()  throws ActionMethodException {
-        final GreenArea area = manager.createGreenArea( "Parco Centrale", "Roma" );
+        final GreenArea area = manager.createGreenArea( "Parco Centrale", "Roma", null );
         final String areaId = area.getId();
 
         final boolean removed = manager.removeGreenArea( areaId );
@@ -93,7 +93,7 @@ class ManagerImplTest {
     
     @Test
     void testAddSectorToArea() throws ActionMethodException {
-        final GreenArea area = manager.createGreenArea( "Parco Centrale", "Roma" );
+        final GreenArea area = manager.createGreenArea( "Parco Centrale", "Roma", null );
         final Sector sector = manager.addSectorToArea( area.getId(), "Prato Nord" );
 
         assertNotNull( sector );
@@ -103,7 +103,7 @@ class ManagerImplTest {
 
     @Test
     void testRemoveSectorFromArea() throws ActionMethodException {
-        final GreenArea area = manager.createGreenArea( "Parco Centrale", "Roma" );
+        final GreenArea area = manager.createGreenArea( "Parco Centrale", "Roma", null );
         final Sector sector = manager.addSectorToArea( area.getId(), "Prato Nord" );
 
         final boolean result = manager.removeSectorFromArea( area.getId(), sector.getId() );
@@ -118,7 +118,7 @@ class ManagerImplTest {
 
     @Test
     void testIrrigateSector() throws Exception {
-        final GreenArea area = manager.createGreenArea( "Parco Centrale", "Roma" );
+        final GreenArea area = manager.createGreenArea( "Parco Centrale", "Roma", null );
         final Sector sector = manager.addSectorToArea( area.getId(), "Prato Nord" );
 
         assertFalse( sector.isIrrigating() );
@@ -131,7 +131,7 @@ class ManagerImplTest {
 
     @Test
     void testStopSector() throws Exception {
-        final GreenArea area = manager.createGreenArea( "Parco Centrale", "Roma" );
+        final GreenArea area = manager.createGreenArea( "Parco Centrale", "Roma", null );
         final Sector sector = manager.addSectorToArea( area.getId(), "Prato Nord" );
 
         manager.irrigateSector( area.getId(), sector.getId() );
@@ -151,7 +151,7 @@ class ManagerImplTest {
 
     @Test
     void testUpdateSectorSchedule() throws ActionMethodException {
-        final GreenArea area = manager.createGreenArea( "Parco Centrale", "Roma" );
+        final GreenArea area = manager.createGreenArea( "Parco Centrale", "Roma", null );
         final Sector sector = manager.addSectorToArea( area.getId(), "Prato Nord" );
 
         final LocalTime startTime = LocalTime.of( 6, 30 );
@@ -170,10 +170,10 @@ class ManagerImplTest {
 
     @Test
     void testAddSensorToArea() throws ActionMethodException {
-        final GreenArea area = manager.createGreenArea("Parco Centrale", "Roma");
+        final GreenArea area = manager.createGreenArea("Parco Centrale", "Roma", null);
 
         final GreenArea updatedArea = manager.addSensorToArea(
-                area.getId(), "Sensore Umidità", SensorType.HUMIDITY);
+                area.getId(), "Sensore Umidità", SensorType.HUMIDITY, null);
 
         assertNotNull( updatedArea );
         assertEquals( 1, updatedArea.getSensors().size() );
@@ -185,13 +185,13 @@ class ManagerImplTest {
 
     @Test
     void testRemoveSensorFromArea() throws ActionMethodException {
-        final GreenArea area = manager.createGreenArea("Parco Centrale", "Roma");
+        final GreenArea area = manager.createGreenArea("Parco Centrale", "Roma", null);
         manager.addSensorToArea( area.getId(), "Sensore Test", 
-            SensorType.HUMIDITY 
+            SensorType.HUMIDITY, null 
         );
 
         final String sensorId = area.getSensors().get(0).getId();
-        final boolean removed = manager.removeSensorFromArea( area.getId(), sensorId );
+        final boolean removed = manager.removeSensorFromArea( area.getId(), sensorId, null );
 
         assertTrue(removed);
         assertTrue(area.getSensors().isEmpty());

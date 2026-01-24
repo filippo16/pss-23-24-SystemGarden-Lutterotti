@@ -9,6 +9,7 @@ import it.unibo.systemgarden.controller.api.Controller;
 import it.unibo.systemgarden.model.api.GreenArea;
 import it.unibo.systemgarden.model.api.Sector;
 import it.unibo.systemgarden.model.api.Sensor;
+import it.unibo.systemgarden.model.utils.IrrigationAdvice;
 import it.unibo.systemgarden.view.dialog.AddSectorDialogController;
 import it.unibo.systemgarden.view.dialog.AddSensorDialogController;
 import it.unibo.systemgarden.view.dto.CardData;
@@ -63,6 +64,7 @@ public class AreaCardController {
         nameLabel.setText( area.getName() );
         cityLabel.setText( "(" + area.getLocation().getCity() + ")" );
         updateClock( area.getLocation().getLocalTime() );
+        smartAdvisorAdviceLabel.setText( IrrigationAdvice.INSUFFICIENT_DATA.getTitle() );
 
         // Populate sectors
         for (final Sector sector : area.getSectors()) {

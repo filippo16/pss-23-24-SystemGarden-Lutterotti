@@ -45,7 +45,6 @@ public class ControllerImpl implements Controller {
     public void start() {
         scheduler = Executors.newSingleThreadScheduledExecutor();
         
-        // Calculate initial delay to align with the start of the next minute
         long now = System.currentTimeMillis();
         long delayToNextMinute = 60000 - ( now % 60000 );
         
@@ -71,7 +70,7 @@ public class ControllerImpl implements Controller {
     public void createGreenArea( final String name, final String city ) {
         try {
 
-            final GreenArea area = model.createGreenArea( name, city );
+            final GreenArea area = model.createGreenArea( name, city, (AdvisorObserver) view );
 
             if( area != null ) {
                 view.addAreaCard( area );
@@ -206,7 +205,7 @@ public class ControllerImpl implements Controller {
     public void addSensorToArea( final String areaId, final String name, final SensorType type ) {
         try {
 
-            final GreenArea area = model.addSensorToArea( areaId, name, type );
+            final GreenArea area = model.addSensorToArea( areaId, name, type, (SensorObserver) view );
 
             if( area != null ) {
                     model.getGreenArea( area.getId() ).getSensors().stream()
@@ -224,7 +223,7 @@ public class ControllerImpl implements Controller {
     public void removeSensorFromArea( final String areaId, final String sensorId ) {
         try {
 
-            final boolean removed = model.removeSensorFromArea( areaId, sensorId );
+            final boolean removed = model.removeSensorFromArea( areaId, sensorId, (SensorObserver) view );
 
             if ( removed ) {
                 final GreenArea area = model.getGreenArea( areaId );
@@ -234,11 +233,6 @@ public class ControllerImpl implements Controller {
         } catch(ActionMethodException e) {
             view.showToast( e.getMessage(), ToastType.ERROR );
         }
-    }
-
-    @Override
-    public void toggleSmartAdvisor( final String areaId, final boolean enabled) {
-        model.toggleSmartAdvisor( areaId, enabled, (AdvisorObserver) view );
     }
  
 }
