@@ -206,10 +206,6 @@ public class GreenAreaImpl implements GreenArea, SensorObserver, AdvisorObservab
 
     @Override
     public void onSensorUpdate( String areaId, String sensorId, double newValue, SensorType type ) {
-        
-        if (!this.id.equals(areaId)) {
-            return; 
-        }
 
         Set<SensorType> typeSet = sensors.stream()
             .map(Sensor::getType)
@@ -217,7 +213,7 @@ public class GreenAreaImpl implements GreenArea, SensorObserver, AdvisorObservab
 
         IrrigationAdvice advice = advisor.getAdvice( typeSet, newValue, type );
 
-        notifyAdvisorObservers( areaId, advice.getTitle());
+        notifyAdvisorObservers( id, advice.getTitle());
     }
 
     @Override
