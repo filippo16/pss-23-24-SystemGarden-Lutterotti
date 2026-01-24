@@ -197,4 +197,40 @@ class GreenAreaImplTest {
     }
 
 
+    /**
+     * Test that a sensor update in one area does not notify observers of other areas.
+     * For the verification i used the two observers to check 
+     * which onSensorUpdate in the specific area was called
+     */
+    @Test
+    void testSensorUpdateDoesNotAffectOtherAreas() throws ActionMethodException {
+
+        GreenArea area1 = new GreenAreaImpl("Giardino Nord", "Bologna");
+        GreenArea area2 = new GreenAreaImpl("Giardino Sud", "Roma");
+        
+
+        TestAdvisorObserver observer1 = new TestAdvisorObserver();
+        TestAdvisorObserver observer2 = new TestAdvisorObserver();
+        
+        ((AdvisorObservable) area1).addAdvisorObserver( observer1 );
+        ((AdvisorObservable) area2).addAdvisorObserver( observer2 );
+        
+
+        Sensor humidity1 = new HumiditySensor("Umidità Area 1");
+        Sensor temperature1 = new TemperatureSensor("Temperatura Area 1");
+        area1.addSensor( humidity1, mockSensorObserver );
+        area1.addSensor( temperature1, mockSensorObserver );
+        
+        Sensor humidity2 = new HumiditySensor("Umidità Area 2");
+        Sensor temperature2 = new TemperatureSensor("Temperatura Area 2");
+        area2.addSensor( humidity2, mockSensorObserver );
+        area2.addSensor( temperature2, mockSensorObserver );
+        
+        temperature1.refresh( area1.getId(), temperature1.getType() );
+        
+        assertTrue(observer1.wasNotified());
+        assertFalse(observer2.wasNotified());
+    }
+
+
 }
