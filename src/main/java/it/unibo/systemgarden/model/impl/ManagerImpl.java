@@ -3,6 +3,7 @@ package it.unibo.systemgarden.model.impl;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +33,7 @@ public class ManagerImpl implements Manager {
         try {
             final GreenArea area = new GreenAreaImpl( name, city );
             greenAreas.put( area.getId(), (GreenAreaImpl) area );
+
             if (observer != null && area instanceof AdvisorObservable) {
                 ((AdvisorObservable) area).addAdvisorObserver(observer);
             }
@@ -81,10 +83,7 @@ public class ManagerImpl implements Manager {
         final GreenArea area = greenAreas.get( areaId );
 
         if ( area != null ) {
-            final Sector sector = new SectorImpl( sectorName );
-            area.addSector( sector ); 
-
-            return sector;
+            return area.addSector( areaId, sectorName );
         }
 
         throw new ActionMethodException("Non è stato possibile aggiungere il settore.");
@@ -95,11 +94,7 @@ public class ManagerImpl implements Manager {
         final GreenArea area = greenAreas.get( areaId );
 
         if ( area != null ) {
-            area.getSectors().stream()
-                .filter( s -> s.getId().equals( sectorId ) ).findFirst()
-                .ifPresent( area::removeSector );
-
-            return true;
+            return area.removeSector( sectorId );
         }
 
         throw new ActionMethodException("Non è stato possibile rimuovere il settore.");
@@ -109,12 +104,8 @@ public class ManagerImpl implements Manager {
     public Sector irrigateSector( final String areaId, final String sectorId ) throws ActionMethodException {
         final GreenArea area = greenAreas.get( areaId );
 
-        if ( area != null ) {
-            area.getSectors().stream()
-                .filter( s -> s.getId().equals( sectorId ) ).findFirst()
-                .ifPresent( Sector::irrigate );
-            
-            return area.getSector( sectorId );
+        if ( area != null ) {  
+            return area.irrigateSector( sectorId );
         }
 
         throw new ActionMethodException("Non è stato possibile irrigare il settore.");
@@ -125,10 +116,7 @@ public class ManagerImpl implements Manager {
         final GreenArea area = greenAreas.get( areaId );
 
         if ( area != null ) {
-            area.getSectors().stream()
-                .filter( s -> s.getId().equals( sectorId ) ).findFirst()
-                .ifPresent( Sector::stop );
-            return area.getSector( sectorId );
+            return area.stopSector( sectorId );
         }
 
         throw new ActionMethodException("Non è stato possibile fermare il settore.");
@@ -136,16 +124,15 @@ public class ManagerImpl implements Manager {
 
     @Override
     public Sector updateSectorSchedule( final String areaId, final String sectorId, 
-        final java.time.LocalTime startTime, final int duration, final List<Integer> activeDays 
+        final LocalTime startTime, final int duration, final List<Integer> activeDays 
     ) throws ActionMethodException {
         final GreenArea area = greenAreas.get( areaId );
 
         if ( area != null ) {
-            area.getSectors().stream()
-                .filter( s -> s.getId().equals( sectorId ) ).findFirst()
-                .ifPresent( s -> s.getSchedule().update( startTime, duration, activeDays ) );
-
-            return area.getSector( sectorId );
+            final Sector sector = area.updateSectorSchedule( sectorId, startTime, duration, activeDays );
+            if( sector != null ) {
+                return sector;
+            }
         }
 
         throw new ActionMethodException("Non è stato possibile aggiornare il programma del settore.");

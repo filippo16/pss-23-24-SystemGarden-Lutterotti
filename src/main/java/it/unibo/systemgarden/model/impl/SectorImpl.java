@@ -58,4 +58,9 @@ public class SectorImpl implements Sector {
     public Schedule getSchedule() {
         return this.schedule;
     }
+
+    @Override
+    public void updateSchedule( final LocalTime startTime, final int duration, final List<Integer> activeDays ) {
+        this.schedule.update(startTime, duration, activeDays);;
+    }
 }

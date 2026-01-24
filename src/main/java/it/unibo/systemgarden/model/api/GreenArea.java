@@ -1,5 +1,6 @@
 package it.unibo.systemgarden.model.api;
 
+import java.time.LocalTime;
 import java.util.List;
 
 import it.unibo.systemgarden.model.api.exception.ActionMethodException;
@@ -38,19 +39,27 @@ public interface GreenArea {
      * 
      * @param sector the sector to add
      */
-    void addSector( Sector sector );
+    Sector addSector( final String areaId, final String sectorName );
 
     /**
      * Removes a sector from this area.
      * 
      * @param sector the sector to remove
      */
-    void removeSector( Sector sector );
+    boolean removeSector( String sectorId );
 
     /**
      * Checks all sector schedules and starts/stops irrigation as needed.
      */
     boolean checkSchedules();
+
+    Sector irrigateSector( String sectorId );
+
+    Sector stopSector( String sectorId );
+
+    Sector updateSectorSchedule( final String sectorId, 
+        final LocalTime startTime, final int duration, final List<Integer> activeDays 
+    );
 
     List<Sensor> getSensors();
 

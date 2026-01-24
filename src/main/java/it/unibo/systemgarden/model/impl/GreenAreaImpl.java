@@ -78,16 +78,24 @@ public class GreenAreaImpl implements GreenArea, SensorObserver, AdvisorObservab
     }
 
     @Override
-    public void addSector( final Sector sector ) {
+    public Sector addSector( final String areaId, final String sectorName ) {
+        final Sector sector = new SectorImpl( sectorName );
         if ( !sectors.contains( sector ) ) {
             sectors.add( sector );
+            return sector;
         }
+        return null;
     }
 
     @Override
-    public void removeSector( final Sector sector ) {
-        sector.stop();
-        sectors.remove( sector );
+    public boolean removeSector( final String sectorId ) {
+        Sector sector = getSector(sectorId);
+        if (sector != null) {
+            sector.stop();
+            sectors.remove( sector );
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -121,6 +129,37 @@ public class GreenAreaImpl implements GreenArea, SensorObserver, AdvisorObservab
             }
         }
         return changed;
+    }
+
+
+    @Override
+    public Sector irrigateSector( final String sectorId ) {
+        Sector sector = getSector( sectorId );
+        if (sector != null) {
+            sector.irrigate();
+        }
+        return sector;
+    }
+
+    @Override
+    public Sector stopSector( final String sectorId ) {
+        Sector sector = getSector( sectorId );
+        if (sector != null) {
+            sector.stop();
+        }
+        return sector;
+    }
+
+    public Sector updateSectorSchedule( final String sectorId, final java.time.LocalTime startTime,
+        final int duration, final List<Integer> activeDays 
+    )  {
+        final Sector sector = getSector( sectorId );
+
+        if ( sector != null ) {
+            sector.updateSchedule(startTime, duration, activeDays);
+            return sector;
+        }
+        return null;
     }
 
 
