@@ -1,10 +1,15 @@
 package it.unibo.systemgarden.model.impl;
 
 import it.unibo.systemgarden.model.api.GreenArea;
+import it.unibo.systemgarden.model.api.Sector;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.time.LocalTime;
+import java.util.List;
 
 /**
  * Test class for GreenAreaImpl.
@@ -29,17 +34,57 @@ class GreenAreaImplTest {
 
     @Test
     void testAddSector() {
-        area.addSector( "Prato Est", "Fiori" );
+        Sector sector = area.addSector( "AREA-1", "Prato Est" );
 
+        assertNotNull( sector );
         assertEquals( 1, area.getSectors().size() );
-        assertTrue( area.getSectors().stream().anyMatch(s -> s.getName().equals("Prato Est")) );
+        assertTrue( area.getSectors().stream().anyMatch( s -> s.getName().equals("Prato Est") ) ); 
     }
 
     @Test
     void testRemoveSector() {
-        area.addSector( "Prato Est", "Fiori" );
-        area.removeSector( "Prato Est" );
+        Sector sector = area.addSector( "AREA-1", "Prato Est" );
+        boolean removed = area.removeSector( sector.getId() );
 
+        assertTrue( removed );
         assertTrue( area.getSectors().isEmpty() );
     }
+
+    @Test
+    void testRemoveSectorNotFound() {
+        boolean removed = area.removeSector( "NOT_EXIST_ID" );
+        assertFalse( removed );
+    }
+
+    @Test
+    void testIrrigateSector() {
+        Sector sector = area.addSector( "AREA-1", "Prato Est" );
+        Sector irrigated = area.irrigateSector( sector.getId() );
+
+        assertNotNull( irrigated );
+        assertTrue( irrigated.isIrrigating() );
+    }
+
+    @Test
+    void testStopSector() {
+        Sector sector = area.addSector( "AREA-1", "Prato Est" );
+        area.irrigateSector( sector.getId() );
+        Sector stopped = area.stopSector( sector.getId() );
+
+        assertNotNull( stopped );
+        assertFalse( stopped.isIrrigating() );
+    }
+
+    @Test
+    void testUpdateSectorSchedule() {
+        Sector sector = area.addSector( "AREA-1", "Prato Est" );
+        List<Integer> days = List.of(1, 3, 5);
+        LocalTime startTime = LocalTime.of(8, 0);
+
+        Sector updated = area.updateSectorSchedule( sector.getId(), startTime, 30, days );
+
+        assertNotNull( updated );
+        assertNotNull( updated.getSchedule() );
+    }
+
 }
