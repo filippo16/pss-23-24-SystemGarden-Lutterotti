@@ -32,11 +32,4 @@ public class TestAdvisorObserver implements AdvisorObserver {
     public int getNotificationCount() {
         return notificationCount;
     }
-
-    public void reset() {
-        this.notified = false;
-        this.lastAreaId = null;
-        this.lastAdviceTitle = null;
-        this.notificationCount = 0;
-    }
 }

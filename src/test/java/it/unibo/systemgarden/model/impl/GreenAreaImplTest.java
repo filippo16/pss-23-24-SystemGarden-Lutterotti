@@ -6,10 +6,9 @@ import it.unibo.systemgarden.model.api.GreenArea;
 import it.unibo.systemgarden.model.api.Sector;
 import it.unibo.systemgarden.model.api.Sensor;
 import it.unibo.systemgarden.model.api.exception.ActionMethodException;
-import it.unibo.systemgarden.model.api.observer.SensorObserver;
+import it.unibo.systemgarden.model.api.observer.AdvisorObservable;
 import it.unibo.systemgarden.model.impl.sensor.HumiditySensor;
 import it.unibo.systemgarden.model.impl.sensor.TemperatureSensor;
-import it.unibo.systemgarden.model.utils.SensorType;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,12 +24,14 @@ import java.util.List;
 class GreenAreaImplTest {
     
     private GreenArea area;
-    private TestSensorObserver mockSensorObserver = new TestSensorObserver();
-    private TestAdvisorObserver mockAdvisorObserver = new TestAdvisorObserver();
+    private TestSensorObserver mockSensorObserver;
+    private TestAdvisorObserver mockAdvisorObserver;
 
     @BeforeEach
     void setUp() {
         area = new GreenAreaImpl( "Giardino Nord", "Bologna" );
+        mockSensorObserver = new TestSensorObserver();
+        mockAdvisorObserver = new TestAdvisorObserver();
     }
 
     @Test
@@ -129,5 +130,67 @@ class GreenAreaImplTest {
         assertTrue( removed );
         assertTrue( area.getSensors().isEmpty() );
     }
+
+
+
+
+    @Test
+    void testAddAdvisorObserver() {
+        
+        ((AdvisorObservable) area).addAdvisorObserver( mockAdvisorObserver );
+        ((AdvisorObservable) area).notifyAdvisorObservers( area.getId(), "Test Advice" );
+
+        assertTrue( mockAdvisorObserver.wasNotified() );
+        assertEquals( "Test Advice", mockAdvisorObserver.getLastAdviceTitle() );
+    }
+
+    @Test
+    void testRemoveAdvisorObserver() {
+
+        ((AdvisorObservable) area).addAdvisorObserver( mockAdvisorObserver );
+        ((AdvisorObservable) area).removeAdvisorObserver( mockAdvisorObserver );
+        ((AdvisorObservable) area).notifyAdvisorObservers( area.getId(), "Test Advice" );
+
+        assertFalse( mockAdvisorObserver.wasNotified() );
+    }
+
+    @Test
+    void testObserverNotAddedTwice() {
+
+        ((AdvisorObservable) area).addAdvisorObserver( mockAdvisorObserver );
+        ((AdvisorObservable) area).addAdvisorObserver( mockAdvisorObserver ); 
+        ((AdvisorObservable) area).notifyAdvisorObservers( area.getId(), "Test" );
+
+        assertEquals( 1, mockAdvisorObserver.getNotificationCount() );
+    }
+    
+    @Test
+    void testObserveMultipleAreas() {
+        
+        GreenArea area1 = new GreenAreaImpl("Giardino Nord", "Bologna");
+        GreenArea area2 = new GreenAreaImpl("Giardino Sud", "Roma");
+        GreenArea area3 = new GreenAreaImpl("Parco Est", "Milano");
+        
+
+        ((AdvisorObservable) area1).addAdvisorObserver( mockAdvisorObserver );
+        ((AdvisorObservable) area2).addAdvisorObserver( mockAdvisorObserver );
+        ((AdvisorObservable) area3).addAdvisorObserver( mockAdvisorObserver );
+        
+
+        ((AdvisorObservable) area1).notifyAdvisorObservers( area1.getId(), 
+        "Consiglio Area 1");
+        ((AdvisorObservable) area2).notifyAdvisorObservers( area2.getId(), 
+        "Consiglio Area 2");
+        ((AdvisorObservable) area3).notifyAdvisorObservers( area3.getId(), 
+        "Consiglio Area 3");
+        
+
+        assertEquals( 3, mockAdvisorObserver.getNotificationCount() );
+        
+
+        assertEquals( area3.getId(), mockAdvisorObserver.getLastAreaId() );
+        assertEquals( "Consiglio Area 3", mockAdvisorObserver.getLastAdviceTitle() );
+    }
+
 
 }
