@@ -19,6 +19,9 @@ public enum IrrigationAdvice {
         this.title = title;
     }
 
+    /**
+     * @return the title associated with irrigation advice
+    */
     public String getTitle() {
         return title;
     }

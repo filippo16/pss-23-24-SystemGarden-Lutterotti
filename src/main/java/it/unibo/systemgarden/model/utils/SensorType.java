@@ -1,5 +1,8 @@
 package it.unibo.systemgarden.model.utils;
 
+/**
+ * Enum representing different types of sensors.
+*/
 public enum SensorType {
     TEMPERATURE("temperature"),
     HUMIDITY("humidity");
@@ -14,6 +17,9 @@ public enum SensorType {
         return label;
     }
 
+    /**
+     * @return the unit of measurement associated with this sensor type
+    */
     public String getUnit() {
         switch (this) {
             case TEMPERATURE:
