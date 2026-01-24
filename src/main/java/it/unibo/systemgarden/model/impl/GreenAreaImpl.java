@@ -5,6 +5,7 @@ import it.unibo.systemgarden.model.api.Location;
 import it.unibo.systemgarden.model.api.Schedule;
 import it.unibo.systemgarden.model.api.Sector;
 import it.unibo.systemgarden.model.api.Sensor;
+import it.unibo.systemgarden.model.api.observer.AdvisorObservable;
 import it.unibo.systemgarden.model.api.observer.AdvisorObserver;
 import it.unibo.systemgarden.model.api.observer.SensorObserver;
 import it.unibo.systemgarden.model.impl.advisor.SmartAdvisorImpl;
@@ -21,7 +22,7 @@ import java.util.stream.Collectors;
 /**
  * Implementation of GreenArea interface.
  */
-public class GreenAreaImpl implements GreenArea, SensorObserver {
+public class GreenAreaImpl implements GreenArea, SensorObserver, AdvisorObservable {
 
     private final String id;
     private final String name;

@@ -12,6 +12,7 @@ import it.unibo.systemgarden.model.api.Sector;
 import it.unibo.systemgarden.model.api.Sensor;
 import it.unibo.systemgarden.model.api.exception.ActionMethodException;
 import it.unibo.systemgarden.model.api.factory.SensorFactory;
+import it.unibo.systemgarden.model.api.observer.AdvisorObservable;
 import it.unibo.systemgarden.model.api.observer.AdvisorObserver;
 import it.unibo.systemgarden.model.api.observer.SensorObserver;
 import it.unibo.systemgarden.model.impl.sensor.SensorFactoryImpl;
@@ -31,7 +32,9 @@ public class ManagerImpl implements Manager {
         try {
             final GreenArea area = new GreenAreaImpl( name, city );
             greenAreas.put( area.getId(), (GreenAreaImpl) area );
-            area.addAdvisorObserver( observer );
+            if (observer != null && area instanceof AdvisorObservable) {
+                ((AdvisorObservable) area).addAdvisorObserver(observer);
+            }
 
             return area;
         } catch(Exception e) {
@@ -40,10 +43,14 @@ public class ManagerImpl implements Manager {
     }
 
     @Override
-    public boolean removeGreenArea( final String areaId ) throws ActionMethodException {
+    public boolean removeGreenArea( final String areaId, final AdvisorObserver observer ) throws ActionMethodException {
         try {
             GreenArea area = greenAreas.remove( areaId );
-    
+            
+            if (area != null && observer != null && area instanceof AdvisorObservable) {
+                ((AdvisorObservable) area).removeAdvisorObserver(observer);
+            }
+
             return area != null;
         } catch(Exception e) {
             throw new ActionMethodException("Non è stato possibile rimuovere l'area verde.");

@@ -2,14 +2,13 @@ package it.unibo.systemgarden.model.api;
 
 import java.util.List;
 
-import it.unibo.systemgarden.model.api.observer.AdvisorObservable;
 import it.unibo.systemgarden.model.api.observer.SensorObserver;
 
 /**
  * Interface for a green area (garden or plant group).
  * A green area represents a single irrigation system with multiple sectors.
  */
-public interface GreenArea extends AdvisorObservable {
+public interface GreenArea {
 
     /**
      * @return the unique identifier of this area

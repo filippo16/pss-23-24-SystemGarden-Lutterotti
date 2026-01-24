@@ -29,7 +29,7 @@ public interface Manager {
      * 
      * @param areaId the area ID to remove
      */
-    boolean removeGreenArea( String areaId ) throws ActionMethodException;
+    boolean removeGreenArea( String areaId, AdvisorObserver observer ) throws ActionMethodException;
 
     /**
      * Gets a green area by ID.

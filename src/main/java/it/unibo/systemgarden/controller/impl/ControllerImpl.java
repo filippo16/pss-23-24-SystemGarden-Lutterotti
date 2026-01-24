@@ -86,7 +86,7 @@ public class ControllerImpl implements Controller {
     public void removeGreenArea(final String areaId) {
         try {
 
-            final boolean removed = model.removeGreenArea( areaId );
+            final boolean removed = model.removeGreenArea( areaId, (AdvisorObserver) view );
 
             if ( removed ) {
                 view.removeAreaCard( areaId );
