@@ -98,11 +98,6 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public GreenArea getGreenArea( final String areaId ) {
-        return model.getGreenArea( areaId );
-    }
-
-    @Override
     public void addSectorToArea( final String areaId, final String sectorName ) {
         try {
 
