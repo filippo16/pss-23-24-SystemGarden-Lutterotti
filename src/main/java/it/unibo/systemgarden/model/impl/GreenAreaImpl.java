@@ -5,6 +5,7 @@ import it.unibo.systemgarden.model.api.Location;
 import it.unibo.systemgarden.model.api.Schedule;
 import it.unibo.systemgarden.model.api.Sector;
 import it.unibo.systemgarden.model.api.Sensor;
+import it.unibo.systemgarden.model.api.exception.ActionMethodException;
 import it.unibo.systemgarden.model.api.observer.AdvisorObservable;
 import it.unibo.systemgarden.model.api.observer.AdvisorObserver;
 import it.unibo.systemgarden.model.api.observer.SensorObserver;
@@ -23,6 +24,9 @@ import java.util.stream.Collectors;
  * Implementation of GreenArea interface.
  */
 public class GreenAreaImpl implements GreenArea, SensorObserver, AdvisorObservable {
+
+    private static final int MAX_SENSORS = 2;
+
 
     private final String id;
     private final String name;
@@ -125,7 +129,11 @@ public class GreenAreaImpl implements GreenArea, SensorObserver, AdvisorObservab
     }
 
     @Override
-    public void addSensor( final Sensor sensor, final SensorObserver observer  ) {
+    public void addSensor( final Sensor sensor, final SensorObserver observer  ) throws ActionMethodException {
+        if (sensors.size() >= MAX_SENSORS) {
+            throw new ActionMethodException("Numero massimo di sensori raggiunto (2).");
+        }
+
         if ( !sensors.contains( sensor ) ) {
             if (sensor instanceof AbstractSensor) {
                 ((AbstractSensor) sensor).addObserver(this);

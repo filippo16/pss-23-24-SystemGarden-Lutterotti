@@ -2,6 +2,7 @@ package it.unibo.systemgarden.model.api;
 
 import java.util.List;
 
+import it.unibo.systemgarden.model.api.exception.ActionMethodException;
 import it.unibo.systemgarden.model.api.observer.SensorObserver;
 
 /**
@@ -53,7 +54,7 @@ public interface GreenArea {
 
     List<Sensor> getSensors();
 
-    void addSensor( final Sensor sensor, final SensorObserver observer  );
+    void addSensor( final Sensor sensor, final SensorObserver observer  ) throws ActionMethodException;
 
     boolean removeSensor( final String sensorId, final SensorObserver observer  );
 }
