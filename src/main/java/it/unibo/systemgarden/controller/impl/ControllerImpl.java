@@ -8,7 +8,6 @@ import it.unibo.systemgarden.model.api.Manager;
 import it.unibo.systemgarden.model.api.Sector;
 import it.unibo.systemgarden.model.api.exception.ActionMethodException;
 import it.unibo.systemgarden.model.impl.ManagerImpl;
-import it.unibo.systemgarden.model.impl.sensor.AbstractSensor;
 import it.unibo.systemgarden.model.utils.SensorType;
 import it.unibo.systemgarden.view.api.View;
 import it.unibo.systemgarden.view.utils.ToastType;
@@ -208,9 +207,6 @@ public class ControllerImpl implements Controller {
             final GreenArea area = model.addSensorToArea( areaId, name, type, (SensorObserver) view );
 
             if( area != null ) {
-                    model.getGreenArea( area.getId() ).getSensors().stream()
-                        .forEach( s -> ( (AbstractSensor) s ).addObserver( (SensorObserver) view ) );
-                    
                     view.refreshAreaCard(area);
             }
 
