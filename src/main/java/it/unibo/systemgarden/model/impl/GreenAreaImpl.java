@@ -6,11 +6,13 @@ import it.unibo.systemgarden.model.api.Schedule;
 import it.unibo.systemgarden.model.api.Sector;
 import it.unibo.systemgarden.model.api.Sensor;
 import it.unibo.systemgarden.model.api.exception.ActionMethodException;
+import it.unibo.systemgarden.model.api.factory.SensorFactory;
 import it.unibo.systemgarden.model.api.observer.AdvisorObservable;
 import it.unibo.systemgarden.model.api.observer.AdvisorObserver;
 import it.unibo.systemgarden.model.api.observer.SensorObserver;
 import it.unibo.systemgarden.model.impl.advisor.SmartAdvisorImpl;
 import it.unibo.systemgarden.model.impl.sensor.AbstractSensor;
+import it.unibo.systemgarden.model.impl.sensor.SensorFactoryImpl;
 import it.unibo.systemgarden.model.utils.IrrigationAdvice;
 import it.unibo.systemgarden.model.utils.SensorType;
 
@@ -27,6 +29,7 @@ public class GreenAreaImpl implements GreenArea, SensorObserver, AdvisorObservab
 
     private static final int MAX_SENSORS = 2;
 
+    final SensorFactory factory = new SensorFactoryImpl();
 
     private final String id;
     private final String name;
@@ -168,10 +171,13 @@ public class GreenAreaImpl implements GreenArea, SensorObserver, AdvisorObservab
     }
 
     @Override
-    public void addSensor( final Sensor sensor, final SensorObserver observer  ) throws ActionMethodException {
+    public boolean addSensor( String areaId, String name, SensorType type, 
+        final SensorObserver observer  ) throws ActionMethodException {
         if (sensors.size() >= MAX_SENSORS) {
             throw new ActionMethodException("Numero massimo di sensori raggiunto (2).");
         }
+
+        final Sensor sensor = factory.createSensor(name, type);
 
         if ( !sensors.contains( sensor ) ) {
             if (sensor instanceof AbstractSensor) {
@@ -179,7 +185,9 @@ public class GreenAreaImpl implements GreenArea, SensorObserver, AdvisorObservab
                 ((AbstractSensor) sensor).addObserver( (SensorObserver) observer );
             }
             sensors.add( sensor );
+            return true;
         }
+        return false;
     }
 
     @Override

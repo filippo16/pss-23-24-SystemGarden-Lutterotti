@@ -12,17 +12,14 @@ import it.unibo.systemgarden.model.api.Manager;
 import it.unibo.systemgarden.model.api.Sector;
 import it.unibo.systemgarden.model.api.Sensor;
 import it.unibo.systemgarden.model.api.exception.ActionMethodException;
-import it.unibo.systemgarden.model.api.factory.SensorFactory;
 import it.unibo.systemgarden.model.api.observer.AdvisorObservable;
 import it.unibo.systemgarden.model.api.observer.AdvisorObserver;
 import it.unibo.systemgarden.model.api.observer.SensorObserver;
-import it.unibo.systemgarden.model.impl.sensor.SensorFactoryImpl;
 import it.unibo.systemgarden.model.utils.SensorType;
 
 public class ManagerImpl implements Manager {
 
     private final Map<String, GreenArea> greenAreas;
-    SensorFactory factory = new SensorFactoryImpl();
 
     public ManagerImpl() {
         this.greenAreas = new ConcurrentHashMap<>();
@@ -153,9 +150,11 @@ public class ManagerImpl implements Manager {
         final GreenArea area = greenAreas.get( areaId );
 
         if ( area != null ) {
-            Sensor sensor = factory.createSensor(name, type);
-            area.addSensor( sensor, observer );
-            return area;
+
+            final boolean added = area.addSensor( areaId, name, type, observer );
+            if (added) {
+                return area;
+            }
         }
         throw new ActionMethodException("Non è stato possibile aggiungere il sensore.");
         

@@ -5,6 +5,7 @@ import java.util.List;
 
 import it.unibo.systemgarden.model.api.exception.ActionMethodException;
 import it.unibo.systemgarden.model.api.observer.SensorObserver;
+import it.unibo.systemgarden.model.utils.SensorType;
 
 /**
  * Interface for a green area (garden or plant group).
@@ -47,7 +48,7 @@ public interface GreenArea {
      * @param sectorName the name of the sector to add
      * @return the added sector
     */
-    Sector addSector( final String areaId, final String sectorName );
+    Sector addSector( String areaId, String sectorName );
 
     /**
      * Removes a sector from this area.
@@ -82,8 +83,8 @@ public interface GreenArea {
      * @param activeDays the days of the week when irrigation is active
      * @return the updated sector
     */
-    Sector updateSectorSchedule( final String sectorId, 
-        final LocalTime startTime, final int duration, final List<Integer> activeDays 
+    Sector updateSectorSchedule(  String sectorId, 
+         LocalTime startTime,  int duration,  List<Integer> activeDays 
     );
 
     /**
@@ -98,7 +99,7 @@ public interface GreenArea {
      * @param observer the observer to register
      * @throws ActionMethodException if an error occurs during the addition
     */
-    void addSensor( final Sensor sensor, final SensorObserver observer  ) throws ActionMethodException;
+    boolean addSensor( String areaId,  String name,  SensorType type, SensorObserver observer  ) throws ActionMethodException;
 
     /**
      * Removes a sensor from this area and unregisters view observer for it.
