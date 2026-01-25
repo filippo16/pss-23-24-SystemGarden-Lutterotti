@@ -295,12 +295,13 @@ Rappresentazione UML del pattern **Observer** per la notifica dei dati sensori.
 ```
 
 #### Problema
-Il problema riscontrato è stato quello di notificare alla view quando un sensore ha un nuovo valore. In questo modo la view può visualizzare le informazioni aggiornate per avvisare l'utente.
+I problemi riscontrati sono stati quelli di: 
+- Notificare alla view quando un sensore ha un nuovo valore. In questo modo la view può visualizzare le informazioni aggiornate per avvisare l'utente.
+- Avvisare GreenArea di nuovi dati in modo che possa produrre un advice per l'utente, tramite SmartAdvisor.
 
 #### Soluzione
 La soluzione adottata è il pattern **Observer**: l'interfaccia `SensorObserver` definisce il metodo di callback `onSensorUpdate`. L'interfaccia `SensorObservable` definisce i metodi per gestire gli observer.
-In questo scenario, `AbstractSensor` implementa la logica dell'observable come template e notifica alla `View` (observer) quando ha un nuovo valore.
-
+In questo scenario, `AbstractSensor` implementa la logica dell'observable come template e notifica alla `View` e  `GreenAreaImpl` (observer) quando ha un nuovo valore.
 
 ### Strategia per consigli irrigazione
 Rappresentazione UML del pattern **Strategy** per i consigli di irrigazione.
@@ -332,7 +333,7 @@ Il sistema deve analizzare i dati dei sensori (temperatura e umidità) per forni
 La soluzione adottata è il pattern **Strategy**: l'interfaccia `AdvisorStrategy` definisce il contratto per gli algoritmi di analisi. `SmartAdvisorImpl` è il "context" che utilizza una strategia configurabile.
 Attualmente l'implementazione `SensorAdvisor` analizza umidità e temperatura per determinare se è necessario irrigare. Il pattern permette di aggiungere nuove strategie (es. `WeatherAdvisor`) senza modificare il codice esistente.
 
-Inoltre in futuro si potrebbe anche aggiungere la possbilità di scegliere in autonomia la scelto della strategia (es. se non ho sensori utilizza `WeatherAdvisor`).
+Inoltre in futuro si potrebbe anche aggiungere la possbilità di scegliere in modo automatico quale della strategia (es. se non ho sensori utilizza `WeatherAdvisor`).
 
 
 ### Notifica consigli irrigazione
@@ -383,15 +384,15 @@ In alcuni i test, sono state utilizzate delle classi **mock** per rendere i test
 
 #### Componenti sottoposti ai test
 - **GreenAreaImplTest**: verifica la corretta gestione di settori, sensori, notifiche observer e programmazione dell'irrigazione.
-- **ManagerImplTest**: verifica la creazione e rimozione delle aree verdi, la gestione dei limiti massimi e il refresh dei dati dei sensori.
-- **SectorImplTest**: verifica il corretto funzionamento dell'irrigazione manuale, lo stato della valvola e la gestione della programmazione.
-- **ScheduleImplTest**: verifica il controllo degli orari di inizio e fine irrigazione, i giorni attivi e l'aggiornamento dei parametri.
-- **LocationImplTest**: verifica il corretto calcolo del fuso orario e dell'ora locale.
-- **SensorFactoryImplTest**: verifica la corretta creazione dei sensori (HumiditySensor e TemperatureSensor) in base al tipo richiesto.
-- **SensorImplTest**: verifica la lettura dei dati e la generazione dei valori simulati.
-- **SensorObserverTest**: verifica il pattern Observer per i sensori, inclusa la registrazione, notifica e rimozione degli observer.
-- **SmartAdvisorImplTest**: verifica la corretta generazione dei consigli di irrigazione in base ai valori di temperatura e umidità.
-- **SensorAdvisorTest**: verifica la logica della strategia di analisi dei dati ambientali.
+- **ManagerImpl**: verifica la creazione e rimozione delle aree verdi, la gestione dei limiti massimi e il refresh dei dati dei sensori.
+- **SectorImpl**: verifica il corretto funzionamento dell'irrigazione manuale, lo stato della valvola e la gestione della programmazione.
+- **ScheduleImpl**: verifica il controllo degli orari di inizio e fine irrigazione, i giorni attivi e l'aggiornamento dei parametri.
+- **LocationImpl**: verifica il corretto calcolo del fuso orario e dell'ora locale.
+- **SensorFactoryImpl**: verifica la corretta creazione dei sensori (HumiditySensor e TemperatureSensor) in base al tipo richiesto.
+- **SensorImpl**: verifica la lettura dei dati e la generazione dei valori simulati.
+- **SensorObserver**: verifica il pattern Observer per i sensori, inclusa la registrazione, notifica e rimozione degli observer.
+- **SmartAdvisorImpl**: verifica la corretta generazione dei consigli di irrigazione in base ai valori di temperatura e umidità.
+- **SensorAdvisor**: verifica la logica della strategia di analisi dei dati ambientali.
 
 
 
