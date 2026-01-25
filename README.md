@@ -215,26 +215,36 @@ Rappresentazione UML del pattern **Factory Method** per la creazione dei sensori
 
 ```mermaid
 classDiagram
-    class Sensor {
-        +readData(): double
-        +getType(): String
-    }
-    <<interface>> Sensor
 
-    class HumiditySensor
-    class TemperatureSensor 
+    class Sensor {
+        <<interface>>
+        +getType(): SensorType
+    }
+
+    class AbstractSensor {
+        <<abstract>>
+    }
+    
+    class HumiditySensor {
+
+    }
+
+    class TemperatureSensor {
+
+    }
 
     class SensorFactory {
-        +createSensor(String type, String name): Sensor
+        <<interface>>
+        +createSensor(): Sensor
     }
-    <<interface>> SensorFactory
 
     class SensorFactoryImpl {
-        +createSensor(String type, String name): Sensor
+        +createSensor(): Sensor
     }
 
-    Sensor <|-- HumiditySensor
-    Sensor <|-- TemperatureSensor
+    Sensor <|.. AbstractSensor
+    AbstractSensor <|-- HumiditySensor
+    AbstractSensor <|-- TemperatureSensor
     SensorFactory <|.. SensorFactoryImpl
     SensorFactory -- Sensor
 ```
@@ -257,21 +267,31 @@ Rappresentazione UML del pattern **Observer** per la notifica dei dati sensori.
         class SensorObservable {
         +addObserver( SensorObserver )
         +removeObserver( SensorObserver )
-        +notifyObservers( String, double )
+        +notifyObservers()
     }
     <<interface>> SensorObservable
 
     class SensorObserver {
-        +onSensorUpdate( String areaId, String sensorId, double value )
+        +onSensorUpdate()
     }
     <<interface>> SensorObserver
 
-    class AbstractSensor
-    class ViewImpl
+    class AbstractSensor {
 
-    SensorObservable --> SensorObserver
+    }
+
+    class ViewImpl {
+
+    }
+
+    class GreenAreaImpl {
+
+    }
+
+    SensorObservable *-- SensorObserver
     SensorObservable <|.. AbstractSensor
     SensorObserver <|.. ViewImpl
+    SensorObserver <|.. GreenAreaImpl
 ```
 
 #### Problema
@@ -296,12 +316,6 @@ classDiagram
         +getAdvice( humidity, temperature ): IrrigationAdvice
     }
 
-    class SmartAdvisor {
-        <<interface>>
-        +setStrategy( AdvisorStrategy )
-        +getAdvice(): IrrigationAdvice
-    }
-
     class SmartAdvisorImpl {
         -strategy: AdvisorStrategy
         +setStrategy( AdvisorStrategy )
@@ -309,8 +323,7 @@ classDiagram
     }
 
     AdvisorStrategy <|.. SensorAdvisor
-    SmartAdvisor <|.. SmartAdvisorImpl
-    SmartAdvisorImpl --> AdvisorStrategy
+    SmartAdvisorImpl *-- AdvisorStrategy
 ```
 
 #### Problema
@@ -332,26 +345,25 @@ classDiagram
         <<interface>>
         +addAdvisorObserver( AdvisorObserver )
         +removeAdvisorObserver( AdvisorObserver )
-        +notifyAdvisorObservers( String, String  )
+        +notifyAdvisorObservers()
     }
 
     class AdvisorObserver {
         <<interface>>
-        +onAdviceReceived( String, String )
+        +onAdviceReceived()
     }
 
     class GreenAreaImpl {
-        -advisorObservers: List
-        +onSensorUpdate()
+
     }
 
     class ViewImpl {
-        +onAdviceReceived()
+
     }
 
     AdvisorObservable <|.. GreenAreaImpl
     AdvisorObserver <|.. ViewImpl
-    AdvisorObservable --> AdvisorObserver : notifica
+    AdvisorObservable *-- AdvisorObserver
 ```
 
 #### Problema
