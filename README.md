@@ -99,6 +99,8 @@ Sector *-- Schedule
 - **Aggiornamento reattivo dei dati**: notificare la view in tempo reale quando i sensori rilevano nuovi valori (simulati) e per la ricezioni di un nuovo consiglio.
 
 
+Purtroppo la parte delle telecamere non si è deciso di implementarla poiché si rischiava di implementare qualcosa che sarebbe risultato simile alle altre componenti se avessi usato un telecamera mock di esempio. Al suo posto però è subentrato lo SmartAdvisor, la parte opzionale, che è riuscito a dare, secondo me, un carico maggiore rispetto alle telecamere. Purtroppo la parte collegata al Meteo non è stata implementata poiché si è superato il monte ore.
+
 # Design
 ## Architettura
 
@@ -190,11 +192,11 @@ classDiagram
 
 
 
-    ManagerImpl ..|> Manager
+    ManagerImpl --|> Manager
     
     Controller --> View
     Controller --> Manager
-    ViewImpl ..|> View
+    ViewImpl --|> View
 
 
     ViewImpl *-- MainViewHandler
@@ -242,10 +244,10 @@ classDiagram
         +createSensor(): Sensor
     }
 
-    Sensor <|.. AbstractSensor
+    Sensor <|-- AbstractSensor
     AbstractSensor <|-- HumiditySensor
     AbstractSensor <|-- TemperatureSensor
-    SensorFactory <|.. SensorFactoryImpl
+    SensorFactory <|-- SensorFactoryImpl
     SensorFactory -- Sensor
 ```
 
@@ -289,9 +291,9 @@ Rappresentazione UML del pattern **Observer** per la notifica dei dati sensori.
     }
 
     SensorObservable *-- SensorObserver
-    SensorObservable <|.. AbstractSensor
-    SensorObserver <|.. ViewImpl
-    SensorObserver <|.. GreenAreaImpl
+    SensorObservable <|-- AbstractSensor
+    SensorObserver <|-- ViewImpl
+    SensorObserver <|-- GreenAreaImpl
 ```
 
 #### Problema
@@ -322,7 +324,7 @@ classDiagram
         +setStrategy( AdvisorStrategy )
     }
 
-    AdvisorStrategy <|.. SensorAdvisor
+    AdvisorStrategy <|-- SensorAdvisor
     SmartAdvisorImpl *-- AdvisorStrategy
 ```
 
@@ -361,8 +363,8 @@ classDiagram
 
     }
 
-    AdvisorObservable <|.. GreenAreaImpl
-    AdvisorObserver <|.. ViewImpl
+    AdvisorObservable <|-- GreenAreaImpl
+    AdvisorObserver <|-- ViewImpl
     AdvisorObservable *-- AdvisorObserver
 ```
 
