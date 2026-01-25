@@ -26,6 +26,7 @@
         </HBox>
        
     </HBox>
+    <Separator orientation="HORIZONTAL"/>
 
     <!-- Sectors Section -->
     <VBox fx:id="sectorsContainer" spacing="5">
@@ -35,4 +36,13 @@
         </HBox>
         
     </VBox>
+    <Separator orientation="HORIZONTAL"/>
+
+    <!-- SmartAdvisor -->
+    <HBox fx:id="smartAdvisorContainer" spacing="10" alignment="CENTER_LEFT">
+        <Label text="Smart Advisor" styleClass="section-label"/>
+        <Label fx:id="smartAdvisorAdviceLabel" text="" />
+    </HBox>
+
+
 </VBox>

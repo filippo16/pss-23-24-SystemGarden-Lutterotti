@@ -3,7 +3,9 @@ package it.unibo.systemgarden.model.api;
 import java.time.LocalTime;
 import java.time.ZoneId;
 
-
+/**
+ * Interface representing a geographical location.
+*/
 public interface Location {
 
     /**

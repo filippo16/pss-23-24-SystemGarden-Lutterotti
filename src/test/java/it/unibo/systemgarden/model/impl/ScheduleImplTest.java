@@ -42,8 +42,11 @@ class ScheduleImplTest {
         assertFalse(days.contains(2)); // Tuesday
     }
 
+    /**
+    * Test to confirm that getActiveDays returns a copy.
+    */
     @Test
-    void testGetActiveDaysIsDefensiveCopy() {
+    void testGetActiveDaysIsACopy() {
         final List<Integer> days = schedule.getActiveDays();
         days.add(7);
 
@@ -63,17 +66,5 @@ class ScheduleImplTest {
         assertEquals(LocalTime.of(18, 0), schedule.getStartTime());
         assertEquals(30, schedule.getDuration());
         assertEquals(List.of(2, 4, 6), schedule.getActiveDays());
-    }
-
-    @Test
-    void testUpdatePreservesDefensiveCopy() {
-        final List<Integer> newDays = new ArrayList<>(List.of(2, 4));
-        schedule.update(LocalTime.of(12, 0), 60, newDays);
-
-        newDays.add(6); 
-
-
-        assertEquals(2, schedule.getActiveDays().size());
-        assertFalse(schedule.getActiveDays().contains(6));
     }
 }

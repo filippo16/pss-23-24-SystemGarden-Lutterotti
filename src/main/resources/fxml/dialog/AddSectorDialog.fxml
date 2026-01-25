@@ -5,9 +5,11 @@
 <?import javafx.scene.layout.*?>
 
 <VBox xmlns="http://javafx.com/javafx/17" 
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="it.unibo.systemgarden.view.dialog.AddSectorDialogController"
-      spacing="10" prefWidth="280" styleClass="dialog-root">
+    xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="it.unibo.systemgarden.view.dialog.AddSectorDialogController"
+    spacing="10" prefWidth="280" 
+    styleClass="dialog-root"
+    stylesheets="@/css/style.css">
     
     <padding><Insets topRightBottomLeft="20"/></padding>
 

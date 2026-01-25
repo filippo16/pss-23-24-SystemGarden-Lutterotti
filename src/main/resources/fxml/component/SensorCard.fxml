@@ -8,13 +8,21 @@
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="it.unibo.systemgarden.view.component.SensorCardController"
       styleClass="sensor-card" spacing="2" minWidth="100">
-    <padding><Insets topRightBottomLeft="10"/></padding>
-    <HBox alignment="TOP_LEFT">
+
+  <padding><Insets topRightBottomLeft="8"/></padding>
+    
+  <Label fx:id="nameLabel" text="Nome sensore" styleClass="sensor-name"/>
+    
+  
+  <HBox alignment="CENTER_LEFT" spacing="8">
+      <Label fx:id="valueLabel" text="--" styleClass="sensor-value"/>
+      <Label fx:id="typeValueLabel" text="" styleClass="sensor-type-value"/>
+      
+    
+      <Region HBox.hgrow="ALWAYS"/>
+      
       <Button fx:id="deleteBtn" text="X" styleClass="danger-button" onAction="#onDelete"/>
-    </HBox>
+  </HBox>
 
-    <Label fx:id="nameLabel" text="Nome sensore" styleClass="sensor-name"/>
-    <Label fx:id="valueLabel" text="--" styleClass="sensor-value"/>
-    <Label fx:id="typeValueLabel" text="Unità" styleClass="sensor-type-value"/>
-
-  </VBox>
+  
+</VBox>

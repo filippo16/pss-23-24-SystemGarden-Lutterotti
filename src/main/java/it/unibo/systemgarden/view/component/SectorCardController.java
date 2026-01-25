@@ -9,6 +9,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
+/**
+ * Controller for the Sector Card component.
+*/
 public class SectorCardController {
 
     private static final String FXML_PATH_SCHEDULE_DIALOG = 
@@ -21,22 +24,23 @@ public class SectorCardController {
     private Controller controller;
     private String areaId;
     private Sector sector;
-    private String css;
 
     /**
      * Initializes the sector card with data.
-     */
+    */
     public void initialize(final Controller controller, final String areaId, 
-        final Sector sector, final String css
+        final Sector sector
     ) {
         this.controller = controller;
         this.areaId = areaId;
         this.sector = sector;
-        this.css = css;
 
         updateLabels();
     }
 
+    /**
+     * Updates the labels on the sector card.
+    */
     private void updateLabels() {
         final String status = sector.isIrrigating() ? "[ON]" : "[--]";
         sectorLabel.setText(status + " " + sector.getName());
@@ -56,7 +60,7 @@ public class SectorCardController {
     @FXML
     private void onSchedule() {
         final ScheduleData result = DialogHelper.<ScheduleData, EditScheduleDialogController>showDialog(
-            FXML_PATH_SCHEDULE_DIALOG, "Modifica Programmazione", css, controllerInit -> {
+            FXML_PATH_SCHEDULE_DIALOG, "Modifica Programmazione", controllerInit -> {
                 controllerInit.initData(sector.getSchedule());
             }
         );
@@ -70,12 +74,5 @@ public class SectorCardController {
     @FXML
     private void onDelete() {
         controller.removeSectorFromArea(areaId, sector.getId());
-    }
-
-    /**
-     * Returns the root VBox of this sector card.
-     */
-    public VBox getCard() {
-        return sectorBox;
     }
 }

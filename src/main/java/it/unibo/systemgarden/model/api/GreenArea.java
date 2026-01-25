@@ -1,57 +1,118 @@
 package it.unibo.systemgarden.model.api;
 
+import java.time.LocalTime;
 import java.util.List;
+
+import it.unibo.systemgarden.model.api.exception.ActionMethodException;
+import it.unibo.systemgarden.model.api.observer.SensorObserver;
+import it.unibo.systemgarden.model.utils.SensorType;
 
 /**
  * Interface for a green area (garden or plant group).
- * A green area represents a single irrigation system with multiple sectors.
- */
+ * A green area represents a single irrigation system with multiple sectors, location, sensors and smart advisor.
+*/
 public interface GreenArea {
 
     /**
      * @return the unique identifier of this area
-     */
+    */
     String getId();
 
     /**
      * @return the name of this area
-     */
+    */
     String getName();
 
     /**
-     * @return the location of this area
-     */
+     * Gets the location of this area. 
+     * @return the location of this area {@link Location}
+    */
     Location getLocation();
 
     /**
+     * Gets the list of sectors in this area.
      * @return list of sectors in this area
-     */
+    */
     List<Sector> getSectors();
 
+    /**
+     * Gets a sector by its unique identifier.
+     * @param sectorId the unique identifier of the sector
+     * @return the sector with the given id
+    */
     Sector getSector( String sectorId );
 
     /**
      * Adds a sector to this area.
-     * 
-     * @param sector the sector to add
-     */
-    void addSector( Sector sector );
+     * @param areaId the id of the area
+     * @param sectorName the name of the sector to add
+     * @return the added sector
+    */
+    Sector addSector( String areaId, String sectorName );
 
     /**
      * Removes a sector from this area.
-     * 
-     * @param sector the sector to remove
-     */
-    void removeSector( Sector sector );
+     * @param sectorId the id of the sector to remove
+    */
+    boolean removeSector( String sectorId );
 
     /**
      * Checks all sector schedules and starts/stops irrigation as needed.
-     */
+    */
     boolean checkSchedules();
 
+    /**
+     * Irrigates a sector immediately.
+     * @param sectorId the id of the sector to irrigate
+     * @return the irrigated sector
+    */
+    Sector irrigateSector( String sectorId );
+
+    /**
+     * Stops irrigation of a sector immediately.
+     * @param sectorId the id of the sector to stop
+     * @return the stopped sector
+    */
+    Sector stopSector( String sectorId );
+
+    /**
+     * Updates the schedule of a sector.
+     * @param sectorId the id of the sector to update
+     * @param startTime the new start time for irrigation
+     * @param duration the duration of irrigation in minutes
+     * @param activeDays the days of the week when irrigation is active
+     * @return the updated sector
+    */
+    Sector updateSectorSchedule(  String sectorId, 
+         LocalTime startTime,  int duration,  List<Integer> activeDays 
+    );
+
+    /**
+     * Gets the list of sensors in this area.
+     * @return list of sensors in this area
+    */
     List<Sensor> getSensors();
 
-    void addSensor( final Sensor sensor );
+    /**
+     * Adds a sensor to this area and registers view observer for it.
+     * @param sensor the sensor to add
+     * @param observer the observer to register
+     * @throws ActionMethodException if an error occurs during the addition
+    */
+    boolean addSensor( String areaId,  String name,  SensorType type, SensorObserver observer  ) throws ActionMethodException;
 
-    boolean removeSensor( final String sensorId  );
+    /**
+     * Removes a sensor from this area and unregisters view observer for it.
+     * @param sensorId the id of the sensor to remove
+     * @param observer the observer to unregister
+     * @return true if the sensor was removed, false otherwise
+    */
+    boolean removeSensor( String sensorId, SensorObserver observer  );
+
+    /**
+     * Gets a sensor by its unique identifier.
+     * @param sensorId the unique identifier of the sensor
+     * @return the sensor with the given id
+    */
+    Sensor getSensor( String sensorId );
 }
