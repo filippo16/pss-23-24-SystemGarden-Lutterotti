@@ -38,6 +38,8 @@ Il software, denominato **SystemGarden**, mira alla realizzazione di un sistema 
 
 Il sistema SystemGarden si basa su un modello del dominio che riflette la struttura reale di un impianto di irrigazione. L'entità centrale è Manager che gestisce l'Area-Verde, che a sua volta rappresenta uno spazio fisico da irrigare. Ogni area può contenere: più Settori, che  possono essere attivati manualmente o automaticamente secondo una Programmazione (Schedule), più sensori, che permettono di monitorare le condizioni ambientali, e un SmartAdvisor, che analizza i dati meteo per dare dei consigli di irrigazione.
 
+Inoltre per quanto riguarda alla programmazione oraria si farà riferimento al fuso orario di quell'Area-Verde, quindi ad una Location.
+
 
 ```mermaid
 classDiagram
@@ -98,25 +100,22 @@ Sector *-- Schedule
 
 
 # Design
-
-In questo capitolo si descrivono le strategie messe in campo per soddisfare i requisiti identificati nell'analisi.
-
 ## Architettura
 
 L'architettura adottata segue le regole del pattern **MVC** (Model-View-Controller). In questo caso il modello si sviluppa partendo da `Manager` che funge da entry point per tutto lo stato applicativo del modello.
 
-`Manager` è un'interfaccia che viene implementata da `ManagerImpl`. In questo modo si può astrarre dall'implementazione del gestore e lavorare solo con il contratto d'uso definito.
-
-`GreenArea` è un'interfaccia che viene implementata da `GreenAreaImpl`. In questo modo si può astrarre dall'implementazione dell'area verde e lavorare solo con il contratto d'uso definito.
+`GreenArea` è un'interfaccia che viene implementata da `GreenAreaImpl`. In questo modo si può astrarre dall'implementazione dell'Area-Verde e lavorare solo con il contratto d'uso definito, perciò in futuro si potrà implementare diverse versioni di GreenArea.
 
 Sono state modellate diverse entità associate a GreenArea:
 - **Sector**: rappresenta una zona irrigabile con propria valvola e programmazione
 - **Schedule**: gestice la programmazione di avvio e spegnimento impianto automatico
-- **Sensor**: dispositivo per la lettura di dati ambientali (temperatura, umidità)
+- **Sensor**: dispositivo per la lettura di dati ambientali
 - **SmartAdvisor**: analizza i dati dei sensori e fornisce consigli intelligenti sull'irrigazione
 - **Location**: informazioni sulla località per il calcolo del fuso orario
 
-L'interfaccia grafica viene gestita nella parte della "view". Seguendo i principi del pattern MVC, la "view", a seguito di input dell'utente, contatterà il "controller" per ottenere in risposta informazioni generate dal modello.
+Tutte le entità elencate implementano una propria interfaccia in modo che in futuro si possano implementare versioni differenti.
+
+L'interfaccia grafica viene gestita principalmente della View e dal `MainViewHandler`. Il `MainViewHandler` si occupa di gestire e mostrare le Aree-Verdi visivamente. Seguendo i principi del pattern MVC, la parte "View", a seguito di input dell'utente, contatterà il Controller che poi aggiornerà le varie informazioni, generate o modificate dal Model, tramite i metodi della View.
 
 ```mermaid
 classDiagram
