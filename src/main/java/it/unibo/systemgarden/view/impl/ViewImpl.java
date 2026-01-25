@@ -3,7 +3,13 @@ package it.unibo.systemgarden.view.impl;
 import it.unibo.systemgarden.controller.api.Controller;
 import it.unibo.systemgarden.model.api.GreenArea;
 import it.unibo.systemgarden.model.api.Sector;
+import it.unibo.systemgarden.model.api.observer.AdvisorObserver;
+import it.unibo.systemgarden.model.api.observer.SensorObserver;
+import it.unibo.systemgarden.model.utils.SensorType;
 import it.unibo.systemgarden.view.api.View;
+import it.unibo.systemgarden.view.component.ToastController;
+import it.unibo.systemgarden.view.utils.ToastType;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -12,10 +18,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.time.LocalTime;
 
-public class ViewImpl implements View {
+public class ViewImpl implements View, SensorObserver, AdvisorObserver  {
 
     private static final String FXML_PATH = "fxml/MainView.fxml";
-    private static final String CSS_PATH = "css/style.css";
     private static final int WINDOW_WIDTH = 900;
     private static final int WINDOW_HEIGHT = 700;
 
@@ -26,7 +31,8 @@ public class ViewImpl implements View {
     public ViewImpl(final Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
-
+    
+    @Override
     public void setController(final Controller controller) {
         this.controller = controller;
     }
@@ -37,15 +43,10 @@ public class ViewImpl implements View {
             final FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemResource(FXML_PATH));
             final Parent root = loader.load();
             final Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-            final String css = ClassLoader.getSystemResource(CSS_PATH).toExternalForm();
             
             this.mainHandler = loader.getController();
-            this.mainHandler.setCssStylesheet(css);
             this.mainHandler.setController(controller);
 
-            if (css != null) {
-                scene.getStylesheets().add(css);
-            }
 
             primaryStage.setTitle("SystemGarden - Gestione Aree Verdi");
             primaryStage.setScene(scene);
@@ -63,8 +64,8 @@ public class ViewImpl implements View {
     }
 
     @Override
-    public void removeAreaCard( final GreenArea area ) {
-        mainHandler.removeAreaCard( area );
+    public void removeAreaCard( final String areaId ) {
+        mainHandler.removeAreaCard( areaId );
     }
 
     @Override
@@ -92,5 +93,22 @@ public class ViewImpl implements View {
     @Override
     public void refreshSectorCard( final String areaId, final Sector sector ) {
         mainHandler.refreshSectorCard( areaId, sector );
+    }
+
+    @Override
+    public void onSensorUpdate( final String areaId, final String sensorId, 
+        final double newValue, final SensorType type 
+    ) {
+       Platform.runLater(() -> mainHandler.refreshSensorData( areaId, sensorId, newValue ));
+    }
+
+    @Override
+    public void showToast( String message, ToastType type ) {
+        Platform.runLater( () -> ToastController.show( primaryStage, message, type ) );
+    }
+
+    @Override
+    public void onAdviceReceived( final String areaId, final String advice ) {
+        Platform.runLater( () -> mainHandler.showAdviceNotification( areaId, advice ) );
     }
 }

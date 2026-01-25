@@ -6,6 +6,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.time.LocalTime;
+import java.util.List;
+
 /**
  * Test class for SectorImpl.
  */
@@ -39,5 +42,15 @@ class SectorImplTest {
         sector.stop();
 
         assertFalse( sector.isIrrigating() );
+    }
+
+
+    @Test
+    void testUpdateSchedule() {
+        sector.updateSchedule( LocalTime.of(7, 0), 30, List.of(1, 3, 5) );
+
+        assertNotNull( sector.getSchedule() );
+        assertEquals( LocalTime.of(7, 0), sector.getSchedule().getStartTime() );
+        assertEquals (30, sector.getSchedule().getDuration() );
     }
 }

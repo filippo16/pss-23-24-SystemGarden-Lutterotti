@@ -18,6 +18,16 @@
         <Button fx:id="deleteBtn" text="X" styleClass="danger-button" onAction="#onDeleteArea"/>
     </HBox>
     
+    <!-- Sensors Section -->
+    <HBox fx:id="sensorsContainer" spacing="8" alignment="CENTER_LEFT" styleClass="sensors-container">
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Label text="Sensori" styleClass="section-label"/> 
+            <Button fx:id="addSensorBtn" text="Aggiungi Sensore" styleClass="btn-primary" onAction="#onAddSensor"/>
+        </HBox>
+       
+    </HBox>
+    <Separator orientation="HORIZONTAL"/>
+
     <!-- Sectors Section -->
     <VBox fx:id="sectorsContainer" spacing="5">
         <HBox spacing="10" alignment="CENTER_LEFT">
@@ -26,4 +36,13 @@
         </HBox>
         
     </VBox>
+    <Separator orientation="HORIZONTAL"/>
+
+    <!-- SmartAdvisor -->
+    <HBox fx:id="smartAdvisorContainer" spacing="10" alignment="CENTER_LEFT">
+        <Label text="Smart Advisor" styleClass="section-label"/>
+        <Label fx:id="smartAdvisorAdviceLabel" text="" />
+    </HBox>
+
+
 </VBox>

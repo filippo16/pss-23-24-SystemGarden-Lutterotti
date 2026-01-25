@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17" 
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="it.unibo.systemgarden.view.component.SensorCardController"
+      styleClass="sensor-card" spacing="2" minWidth="100">
+
+  <padding><Insets topRightBottomLeft="8"/></padding>
+    
+  <Label fx:id="nameLabel" text="Nome sensore" styleClass="sensor-name"/>
+    
+  
+  <HBox alignment="CENTER_LEFT" spacing="8">
+      <Label fx:id="valueLabel" text="--" styleClass="sensor-value"/>
+      <Label fx:id="typeValueLabel" text="" styleClass="sensor-type-value"/>
+      
+    
+      <Region HBox.hgrow="ALWAYS"/>
+      
+      <Button fx:id="deleteBtn" text="X" styleClass="danger-button" onAction="#onDelete"/>
+  </HBox>
+
+  
+</VBox>

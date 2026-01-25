@@ -3,12 +3,19 @@ package it.unibo.systemgarden.model.impl;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import it.unibo.systemgarden.model.api.GreenArea;
 import it.unibo.systemgarden.model.api.Manager;
 import it.unibo.systemgarden.model.api.Sector;
+import it.unibo.systemgarden.model.api.Sensor;
+import it.unibo.systemgarden.model.api.exception.ActionMethodException;
+import it.unibo.systemgarden.model.api.observer.AdvisorObservable;
+import it.unibo.systemgarden.model.api.observer.AdvisorObserver;
+import it.unibo.systemgarden.model.api.observer.SensorObserver;
+import it.unibo.systemgarden.model.utils.SensorType;
 
 public class ManagerImpl implements Manager {
 
@@ -19,18 +26,35 @@ public class ManagerImpl implements Manager {
     }
 
     @Override
-    public GreenArea createGreenArea( final String name, final String city ) {
-        final GreenArea area = new GreenAreaImpl( name, city );
-        greenAreas.put( area.getId(), (GreenAreaImpl) area );
+    public GreenArea createGreenArea( final String name, final String city, final AdvisorObserver observer ) throws ActionMethodException {
+        try {
+            final GreenArea area = new GreenAreaImpl( name, city );
+            greenAreas.put( area.getId(), (GreenAreaImpl) area );
 
-        return area;
+            if (observer != null && area instanceof AdvisorObservable) {
+                ((AdvisorObservable) area).addAdvisorObserver(observer);
+            }
+
+            return area;
+        } catch(Exception e) {
+            throw new ActionMethodException("Non è stato possibile creare l'area verde.");
+        }
     }
 
     @Override
-    public GreenArea removeGreenArea( final String areaId ) {
-        GreenArea area = greenAreas.remove( areaId );
-    
-        return area;
+    public boolean removeGreenArea( final String areaId, final AdvisorObserver observer ) throws ActionMethodException {
+        try {
+            GreenArea area = greenAreas.remove( areaId );
+            
+            if (area != null && observer != null && area instanceof AdvisorObservable) {
+                ((AdvisorObservable) area).removeAdvisorObserver(observer);
+            }
+
+            return area != null;
+        } catch(Exception e) {
+            throw new ActionMethodException("Non è stato possibile rimuovere l'area verde.");
+        }
+        
     }
 
     @Override
@@ -52,76 +76,120 @@ public class ManagerImpl implements Manager {
     }
 
     @Override
-    public GreenArea addSectorToArea( final String areaId, final String sectorName ) {
+    public Sector addSectorToArea( final String areaId, final String sectorName ) throws ActionMethodException {
         final GreenArea area = greenAreas.get( areaId );
 
         if ( area != null ) {
-            final Sector sector = new SectorImpl( sectorName );
-            area.addSector( sector ); 
-
-            return area;
+            return area.addSector( areaId, sectorName );
         }
 
-        return null;
+        throw new ActionMethodException("Non è stato possibile aggiungere il settore.");
     }
 
     @Override
-    public GreenArea removeSectorFromArea( final String areaId, final String sectorId ) {
+    public boolean removeSectorFromArea( final String areaId, final String sectorId ) throws ActionMethodException {
         final GreenArea area = greenAreas.get( areaId );
 
         if ( area != null ) {
-            area.getSectors().stream()
-                .filter(s -> s.getId().equals( sectorId )).findFirst()
-                .ifPresent( area::removeSector );
-
-            return area;
+            return area.removeSector( sectorId );
         }
 
-        return null;
+        throw new ActionMethodException("Non è stato possibile rimuovere il settore.");
     }
 
     @Override
-    public GreenArea irrigateSector( final String areaId, final String sectorId ) {
+    public Sector irrigateSector( final String areaId, final String sectorId ) throws ActionMethodException {
         final GreenArea area = greenAreas.get( areaId );
 
-        if ( area != null ) {
-            area.getSectors().stream()
-                .filter(s -> s.getId().equals( sectorId )).findFirst()
-                .ifPresent( Sector::irrigate );
-            return area;
+        if ( area != null ) {  
+            return area.irrigateSector( sectorId );
         }
 
-        return null;
+        throw new ActionMethodException("Non è stato possibile irrigare il settore.");
     }
 
     @Override
-    public GreenArea stopSector( final String areaId, final String sectorId ) {
+    public Sector stopSector( final String areaId, final String sectorId ) throws ActionMethodException {
         final GreenArea area = greenAreas.get( areaId );
 
         if ( area != null ) {
-            area.getSectors().stream()
-                .filter(s -> s.getId().equals( sectorId )).findFirst()
-                .ifPresent( Sector::stop );
-            return area;
+            return area.stopSector( sectorId );
         }
 
-        return null;
+        throw new ActionMethodException("Non è stato possibile fermare il settore.");
     }
 
     @Override
-    public GreenArea updateSectorSchedule( final String areaId, final String sectorId, 
-        final java.time.LocalTime startTime, final int duration, final List<Integer> activeDays 
-    ) {
+    public Sector updateSectorSchedule( final String areaId, final String sectorId, 
+        final LocalTime startTime, final int duration, final List<Integer> activeDays 
+    ) throws ActionMethodException {
         final GreenArea area = greenAreas.get( areaId );
 
         if ( area != null ) {
-            area.getSectors().stream()
-                .filter(s -> s.getId().equals( sectorId )).findFirst()
-                .ifPresent( s -> s.getSchedule().update( startTime, duration, activeDays ) );
-            return area;
+            final Sector sector = area.updateSectorSchedule( sectorId, startTime, duration, activeDays );
+            if( sector != null ) {
+                return sector;
+            }
         }
 
-        return null;
+        throw new ActionMethodException("Non è stato possibile aggiornare il programma del settore.");
+    }
+
+    @Override
+    public void refreshSensorData() {
+        for ( GreenArea area : greenAreas.values() ) {
+            final List<Sensor> s = area.getSensors();
+            s.forEach( sensor -> sensor.refresh( area.getId(), sensor.getType() ) );
+        }
+    }
+
+    @Override
+    public GreenArea addSensorToArea( final String areaId, final String name, 
+        final SensorType type, final SensorObserver observer 
+    ) throws ActionMethodException {
+        final GreenArea area = greenAreas.get( areaId );
+
+        if ( area != null ) {
+
+            final boolean added = area.addSensor( areaId, name, type, observer );
+            if (added) {
+                return area;
+            }
+        }
+        throw new ActionMethodException("Non è stato possibile aggiungere il sensore.");
+        
+    }
+
+    @Override
+    public boolean removeSensorFromArea(String areaId, String sensorId, SensorObserver observer) throws ActionMethodException {
+        GreenArea area = greenAreas.get(areaId);
+        
+        if (area != null) {
+            return area.removeSensor(sensorId, observer);
+        }
+        
+        throw new ActionMethodException("Non è stato possibile rimuovere il sensore.");
+    }
+
+
+    @Override
+    public GreenArea createDemo(final AdvisorObserver observer, final SensorObserver sensorObserver)
+        throws ActionMethodException 
+    {
+
+
+        final GreenArea demoArea = createGreenArea( "Giardino Demo", "Bologna", observer );
+
+        addSectorToArea( demoArea.getId(), "Prato Principale" );
+
+
+        addSensorToArea( demoArea.getId(), "Sensore Umidità", 
+        SensorType.HUMIDITY, sensorObserver );
+        addSensorToArea( demoArea.getId(), "Sensore Temperatura", 
+        SensorType.TEMPERATURE, sensorObserver );
+
+
+        return demoArea;
     }
 
 }

@@ -5,10 +5,10 @@
 
 <VBox xmlns:fx="http://javafx.com/fxml/1" 
       fx:controller="it.unibo.systemgarden.view.component.SectorCardController"
-      fx:id="sectorBox" spacing="3" styleClass="sector-item">
+      fx:id="sectorBox" spacing="8" styleClass="sector-item">
     
     <!-- Row with buttons -->
-    <HBox spacing="10" alignment="CENTER_LEFT">
+    <HBox spacing="12" alignment="CENTER_LEFT">
         <Label fx:id="sectorLabel" prefWidth="150"/>
         <Button fx:id="startBtn" text="Avvia" styleClass="btn-secondary" onAction="#onStart"/>
         <Button fx:id="stopBtn" text="Ferma" styleClass="btn-secondary" onAction="#onStop"/>

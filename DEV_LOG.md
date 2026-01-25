@@ -23,7 +23,7 @@
 La progettazione mi ha permesso di avere un'idea chiara fin dall'inizio, ho avuto comnuque qualche piccola difficoltà a capire come procedere con la struttura del progetto. 
 
 
-## 14.01.2026 – 17.01.2026 (ca. 23 ORE) forse meno
+## 14.01.2026 – 17.01.2026 (ca. 22 ORE)
 **Attività**
 - Sviluppo della view mediante utilizzo di FXML e JavaFX.
 - Sviluppo schedule con controllo del fuso orario
@@ -42,8 +42,21 @@ La progettazione mi ha permesso di avere un'idea chiara fin dall'inizio, ho avut
 - Implementare Card Component con view fxml.
 
 
-## 20.01.2026 - xx.01.2026 (ca. 4 ORE)
+## 20.01.2026 - 21.01.2026 (ca. 5 ORE)
 **Attività**
 - Aggiunto un manager di tutte le aree verdi (migliore separazione dei concetti e così il controller non conosce tutte le greenaree)
 - Aggiunto clock interno con visualizzazione.
 - Aggiunti metodi crud per sector (come per green area).
+
+## 21.01.2026 - 22.01.2026 (ca. 11 ORE)
+**Attività**
+- Implementazione pattern observer per i sensori
+- Implementazione pattern facotry per la creazione dei sensori
+
+**Difficoltà**
+- Non c'è ne sono state troppe, più che altro mi chiedo se view può effettivamente essere un observer e le varie metodologie per iscriverla in modo più pulito.
+
+## 22.01.2026 - 24.01.2026 (ca. 9 ore)
+**Attività**
+- Implementazione Messaggi feedback
+- Implementazione SmartAdvisor

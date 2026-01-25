@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17" 
+    xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="it.unibo.systemgarden.view.dialog.AddSensorDialogController"
+    spacing="15" prefWidth="300" prefHeight="150" 
+    styleClass="dialog-root"
+    stylesheets="@/css/style.css">
+
+    <padding><Insets topRightBottomLeft="20"/></padding>
+
+    <Label text="Crea un nuovo Sensore" styleClass="dialog-title" />
+
+    <Label text="Nome Sensore:" />
+    <TextField fx:id="nameField" promptText="Es: Sensore Umidità"/>
+    
+    <Label text="Tipo sensore:" />
+    <ComboBox fx:id="sensorTypeCombo" prefWidth="200"></ComboBox>
+    
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Annulla" onAction="#onCancel" styleClass="btn-secondary"/>
+        <Button text="Aggiungi" onAction="#onCreate" styleClass="btn-primary"/>
+    </HBox>
+    
+</VBox>

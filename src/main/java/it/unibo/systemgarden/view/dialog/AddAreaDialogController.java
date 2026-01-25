@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 
 /**
  * Controller for AddAreaDialog.
- * Contains the methods of the dialog (Create GreenArea)
+ * Shows a dialog to get data name and city for a new area.
  */
 public class AddAreaDialogController implements DialogController<String[]> {
 

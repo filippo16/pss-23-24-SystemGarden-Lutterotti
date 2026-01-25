@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.geometry.Insets?>
+
+<StackPane xmlns="http://javafx.com/javafx/21" 
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="it.unibo.systemgarden.view.component.ToastController"
+           fx:id="toastRoot"
+           styleClass="toast-container"
+           stylesheets="@/css/style.css">
+    
+    <HBox fx:id="toastBox" styleClass="toast-box" alignment="CENTER">
+        <padding>
+            <Insets top="12" right="20" bottom="12" left="20"/>
+        </padding>
+        
+        <Label fx:id="messageLabel" styleClass="toast-message"/>
+    </HBox>
+    
+</StackPane>
