@@ -37,15 +37,6 @@ Il software, denominato **SystemGarden**, mira alla realizzazione di un sistema 
 # Analisi e modello del dominio
 
 Il sistema SystemGarden si basa su un modello del dominio che riflette la struttura reale di un impianto di irrigazione. L'entità centrale è Manager che gestisce l'Area-Verde, che a sua volta rappresenta uno spazio fisico da irrigare. Ogni area può contenere: più Settori, che  possono essere attivati manualmente o automaticamente secondo una Programmazione (Schedule), più sensori, che permettono di monitorare le condizioni ambientali, e un SmartAdvisor, che analizza i dati meteo per dare dei consigli di irrigazione.
- 
-
-### Principali sfide
-
-- **Creare un'interfaccia semplice e intuitiva**: garantire all'utente un'esperienza chiara e immediata nella gestione dei sistemi.
-- **Gestire correttamente le entità legate ai sistemi di irrigazione**: considerando anche località e fuso orario per la programmazione.
-- **Sistema di messaggistica**: garantire un buona comprensione del messaggio.
-- **Sistema di advisor**: garantire un consiglio efficace per l'utente.
-- **Aggiornamento reattivo dei dati**: notificare la view in tempo reale quando i sensori rilevano nuovi valori (simulati) e per la ricezioni di un nuovo consiglio.
 
 
 ```mermaid
@@ -97,6 +88,14 @@ Sector *-- Schedule
 
 ```
 
+### Principali sfide
+
+- **Creare un'interfaccia semplice e intuitiva**: garantire all'utente un'esperienza chiara e immediata nella gestione dei sistemi.
+- **Gestire correttamente le entità legate ai sistemi di irrigazione**: considerando anche località e fuso orario per la programmazione.
+- **Sistema di messaggistica**: garantire un buona comprensione del messaggio.
+- **Sistema di advisor**: garantire un consiglio efficace per l'utente.
+- **Aggiornamento reattivo dei dati**: notificare la view in tempo reale quando i sensori rilevano nuovi valori (simulati) e per la ricezioni di un nuovo consiglio.
+
 
 # Design
 
@@ -119,7 +118,7 @@ Sono state modellate diverse entità associate a GreenArea:
 
 L'interfaccia grafica viene gestita nella parte della "view". Seguendo i principi del pattern MVC, la "view", a seguito di input dell'utente, contatterà il "controller" per ottenere in risposta informazioni generate dal modello.
 
-```
+```mermaid
 classDiagram
 
     class Controller {
@@ -128,63 +127,83 @@ classDiagram
 
     class View {
         <<interface>>
+        +show()
+        +showToast()
+    }
+
+    class ViewImpl {
+        - MainViewHandler mainHandler
+    }
+    
+
+    class MainViewHandler {
+
+    }
+
+    class Manager {
+        <<interface>>
+        +createGreenArea() : GreenArea
+        +removeGreenArea() : boolean
+    }
+
+    class ManagerImpl {
+        - Map greenAreas
     }
 
     class GreenArea {
         <<interface>>
-        +addSensor(Sensor)
-        +addSector(Sector)
-        +addCamera(Camera)
-    }
-
-    class GreenAreaManagerImpl {
-    }
-
-    class GreenAreaManager {
-        <<interface>>
-    }
-
-    class Sector {
-        <<interface>>
-        +irrigate(double)
-        +stop()
+        +addSector() : Sector
+        +addSensor() : boolean
+        +checkSchedule() : boolean
+        +irrigateSector() : Sector
     }
 
     class Sensor {
         <<interface>>
-        +readData(): double
+        +readData() : double
+    }
+
+    class Sector {
+        <<interface>>
+        +irrigate()
+        +stop()
+        +updateSchedule()
     }
 
     class Schedule {
         <<interface>>
-        +getNextRunTime(): LocalDateTime
-        +getDuration(): int
+        +shouldStartNow() : boolean
+        +shouldStopNow() : boolean
+        +getDuration() : int
     }
 
-    class Camera {
+    class SmartAdvisor {
         <<interface>>
-        +view()
-        +getName(): String
-        +getLocation(): String
+        +getAdvice() : IrrigationAdvice
     }
 
     class Location {
         <<interface>>
         +getCity(): String
-        +getCountry(): String
+        +getTimezone(): ZoneId
         +getLocalTime(): LocalTime
     }
 
 
-    GreenAreaManagerImpl --|> GreenAreaManager
-    Controller *-- View
-    Controller *-- GreenAreaManager
-    
 
-    GreenAreaManagerImpl *-- GreenArea
+    ManagerImpl ..|> Manager
+    
+    Controller --> View
+    Controller --> Manager
+    ViewImpl ..|> View
+
+
+    ViewImpl *-- MainViewHandler
+
+    ManagerImpl *-- GreenArea
     GreenArea *-- Sensor
     GreenArea *-- Sector
-    GreenArea *-- Camera
+    GreenArea *-- SmartAdvisor
     GreenArea *-- Location
     
     Sector *-- Schedule
