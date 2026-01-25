@@ -6,54 +6,55 @@ Questo documento è una relazione di meta-livelo che descrive tutti i passaggi l
 # Analisi
 ## Requisiti
 
-Il software, denominato **SystemGarden**, mira alla realizzazione di un sistema gestionale per impianti di irrigazione domestici o professionali. L'obiettivo principale è fornire all'utente uno strumento completo per monitorare e controllare l'irrigazione della propria area verde, integrando funzionalità di automazione.
+Il software, denominato **SystemGarden**, mira alla realizzazione di un sistema gestionale per impianti di irrigazione domestici. L'obiettivo principale è fornire all'utente uno strumento completo per monitorare e controllare l'irrigazione della propria area verde, integrando funzionalità di automazione.
 
 
 ### Requisiti funzionali
 
-- L'utente deve poter creare e gestire **multiple aree verdi** (giardini, gruppi di piante), ciascuna associata ad una città/località.
+- L'utente deve poter creare e gestire **multiple aree verdi**, ciascuna associata ad una città/località.
 - Ogni area verde può contenere **settori di irrigazione** (valvole), gestibili singolarmente con funzionalità di avvio/arresto manuale.
 - Deve essere possibile **programmare l'irrigazione automatica** per ogni settore, specificando orario di inizio, durata e giorni della settimana.
 - L'utente deve poter aggiungere **sensori** (umidità, temperatura) per monitorare le condizioni ambientali dell'area.
-- Deve essere presente un **sistema di notifiche** per informare l'utente su eventi significativi (avvio irrigazione, errori, consigli).
-- L'utente deve poter navigare e visionare le sue Aree-Verdi con un **interfaccia semplice ed intuitiva**. 
+- Deve essere presente un **sistema di notifiche** per informare l'utente su eventi significativi di input.
+- L'utente deve poter navigare e visionare le sue Aree-Verdi con un interfaccia semplice ed intuitiva. 
 
 ### Requisiti non funzionali
 
-- L'applicazione deve essere semplice, senza la necessità di **elementi grafici complessi o design avanzato**.
+- L'applicazione deve essere semplice, senza la necessità di design avanzato.
 - Il sistema deve permettere l'aggiunta di nuovi tipi di sensori.
-- Il sistema deve gestire un numero **limitato di risorse** per ciascuna area verde, consentendo l’associazione di un massimo di 2 sensori e 6 settori di irrigazione per ogni area verde.
-- Il sistema deve fornire **raccomandazioni intelligenti** sull'irrigazione basate sui dati dei sensori o, in loro assenza, su dati meteo simulati.
+- Il sistema deve differenziare l'area verde tra un giardino o gruppo di piante.
 
 ### Definizione dei termini
 
-- **Area-Verde (GreenArea)**: rappresenta un giardino o un gruppo di piante da irrigare. Ad ogni area sono associabili settori e sensori.
-- **Settore (Sector)**: zona di irrigazione controllata da una valvola, con possibilità di programmazione temporale.
-- **Sensore (Sensor)**: dispositivo (simulato) che rileva dati ambientali come temperatura o umidità.
+- **Area-Verde**: rappresenta un giardino o un gruppo di piante da irrigare. Ad ogni area sono associabili settori e sensori.
+- **Settore**: zona di irrigazione controllata da una valvola, con possibilità di programmazione temporale.
+- **Sensore**: dispositivo (simulato) che rileva dati ambientali come temperatura o umidità.
 - **Schedule**: programmazione oraria per l'irrigazione automatica di un settore.
 - **SmartAdvisor**: componente opzionale che analizza i dati e fornisce raccomandazioni sulla necessità di irrigazione.
-- **WeatherService**: servizio che fornisce dati meteo simulati quando non sono disponibili sensori fisici.
+- **Location**: componente che rappresenta la località dell'area verde, utilizzata per il calcolo del fuso orario.
 
 
 # Analisi e modello del dominio
 
-Il sistema SystemGarden si basa su un modello del dominio che riflette la struttura reale di un impianto di irrigazione. L'entità centrale è l'**Area Verde**, che rappresenta uno spazio fisico da irrigare (un giardino o un gruppo di piante). Ogni area può contenere più **Settori**, ciascuno corrisponde ad una zona controllata da una valvola. I settori possono essere attivati manualmente o automaticamente secondo una **Programmazione** (Schedule).
-
-Per il monitoraggio delle condizioni ambientali, ogni area può essere dotata di **Sensori** che rilevano temperatura e umidità. 
+Il sistema SystemGarden si basa su un modello del dominio che riflette la struttura reale di un impianto di irrigazione. L'entità centrale è Manager che gestisce l'Area-Verde, che a sua volta rappresenta uno spazio fisico da irrigare. Ogni area può contenere: più Settori, che  possono essere attivati manualmente o automaticamente secondo una Programmazione (Schedule), più sensori, che permettono di monitorare le condizioni ambientali, e un SmartAdvisor, che analizza i dati meteo per dare dei consigli di irrigazione.
+ 
 
 ### Principali sfide
 
 - **Creare un'interfaccia semplice e intuitiva**: garantire all'utente un'esperienza chiara e immediata nella gestione dei sistemi.
 - **Gestire correttamente le entità legate ai sistemi di irrigazione**: considerando anche località e fuso orario per la programmazione.
 - **Sistema di messaggistica**: garantire un buona comprensione del messaggio.
+- **Sistema di advisor**: garantire un consiglio efficace per l'utente.
+- **Aggiornamento reattivo dei dati**: notificare la view in tempo reale quando i sensori rilevano nuovi valori (simulati) e per la ricezioni di un nuovo consiglio.
 
 
 ```mermaid
 classDiagram
 
-class GreenAreaManager {
-    <<interface>>
+class Manager {
+    
 }
+<<interface>> Manager
 
 class GreenArea {
 
@@ -68,8 +69,6 @@ class Sector {
 
 class Schedule {
     +getNextRunTime()
-    +getStartTime()
-    +getDuration() 
 }
 <<interface>> Schedule
 
@@ -78,24 +77,21 @@ class Sensor {
 }
 <<interface>> Sensor
 
-class Camera {
-    +view()
-    +isActive()
+class SmartAdvisor {
+    +getAdvice()
 }
-<<interface>> Camera
+<<interface>> SmartAdvisor
 
 class Location {
     +getCity()
-    +getCountry()
-    +getTimezone()
     +getLocalTime()
 }
 <<interface>> Location
 
-GreenAreaManager *-- GreenArea
+Manager *-- GreenArea
 GreenArea *-- Sector
 GreenArea *-- Sensor
-GreenArea *-- Camera
+GreenArea *-- SmartAdvisor
 GreenArea *-- Location
 Sector *-- Schedule
 
@@ -118,7 +114,7 @@ Sono state modellate diverse entità associate a GreenArea:
 - **Sector**: rappresenta una zona irrigabile con propria valvola e programmazione
 - **Schedule**: gestice la programmazione di avvio e spegnimento impianto automatico
 - **Sensor**: dispositivo per la lettura di dati ambientali (temperatura, umidità)
-- **Camera**: telecamera per il monitoraggio visivo dell'area
+- **SmartAdvisor**: analizza i dati dei sensori e fornisce consigli intelligenti sull'irrigazione
 - **Location**: informazioni sulla località per il calcolo del fuso orario
 
 L'interfaccia grafica viene gestita nella parte della "view". Seguendo i principi del pattern MVC, la "view", a seguito di input dell'utente, contatterà il "controller" per ottenere in risposta informazioni generate dal modello.
