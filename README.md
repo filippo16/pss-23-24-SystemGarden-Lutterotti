@@ -113,7 +113,7 @@ Sono state modellate diverse entità associate a GreenArea:
 - **SmartAdvisor**: analizza i dati dei sensori e fornisce consigli intelligenti sull'irrigazione
 - **Location**: informazioni sulla località per il calcolo del fuso orario
 
-Tutte le entità elencate implementano una propria interfaccia in modo che in futuro si possano implementare versioni differenti.
+Tutte le entità elencate implementano una propria interfaccia in modo che in futuro, per alcune di esse, si possano implementare versioni differenti.
 
 L'interfaccia grafica viene gestita principalmente della View e dal `MainViewHandler`. Il `MainViewHandler` si occupa di gestire e mostrare le Aree-Verdi visivamente. Seguendo i principi del pattern MVC, la parte "View", a seguito di input dell'utente, contatterà il Controller che poi aggiornerà le varie informazioni, generate o modificate dal Model, tramite i metodi della View.
 
@@ -279,25 +279,108 @@ Il problema riscontrato è stato quello di notificare alla view quando un sensor
 
 #### Soluzione
 La soluzione adottata è il pattern **Observer**: l'interfaccia `SensorObserver` definisce il metodo di callback `onSensorUpdate`. L'interfaccia `SensorObservable` definisce i metodi per gestire gli observer.
-In questo scenario, `AbstractSensor` implementa la logica dell'observable e notifica alla `view` (observer) quando ha un nuovo valore.
+In questo scenario, `AbstractSensor` implementa la logica dell'observable come template e notifica alla `View` (observer) quando ha un nuovo valore.
+
+
+### Strategia per consigli irrigazione
+Rappresentazione UML del pattern **Strategy** per i consigli di irrigazione.
+
+```mermaid
+classDiagram
+    class AdvisorStrategy {
+        <<interface>>
+        +getAdvice( humidity, temperature ): IrrigationAdvice
+    }
+
+    class SensorAdvisor {
+        +getAdvice( humidity, temperature ): IrrigationAdvice
+    }
+
+    class SmartAdvisor {
+        <<interface>>
+        +setStrategy( AdvisorStrategy )
+        +getAdvice(): IrrigationAdvice
+    }
+
+    class SmartAdvisorImpl {
+        -strategy: AdvisorStrategy
+        +setStrategy( AdvisorStrategy )
+        +getAdvice(): IrrigationAdvice
+    }
+
+    AdvisorStrategy <|.. SensorAdvisor
+    SmartAdvisor <|.. SmartAdvisorImpl
+    SmartAdvisorImpl --> AdvisorStrategy
+```
+
+#### Problema
+Il sistema deve analizzare i dati dei sensori (temperatura e umidità) per fornire consigli intelligenti sull'irrigazione. In futuro potrebbe essere necessario cambiare l'algoritmo di analisi (ad esempio basandosi su dati meteo invece che sui sensori locali).
+
+#### Soluzione
+La soluzione adottata è il pattern **Strategy**: l'interfaccia `AdvisorStrategy` definisce il contratto per gli algoritmi di analisi. `SmartAdvisorImpl` è il "context" che utilizza una strategia configurabile.
+Attualmente l'implementazione `SensorAdvisor` analizza umidità e temperatura per determinare se è necessario irrigare. Il pattern permette di aggiungere nuove strategie (es. `WeatherAdvisor`) senza modificare il codice esistente.
+
+Inoltre in futuro si potrebbe anche aggiungere la possbilità di scegliere in autonomia la scelto della strategia (es. se non ho sensori utilizza `WeatherAdvisor`).
+
+
+### Notifica consigli irrigazione
+Rappresentazione UML del pattern **Observer** per la notifica dei consigli dell'Advisor.
+
+```mermaid
+classDiagram
+    class AdvisorObservable {
+        <<interface>>
+        +addAdvisorObserver( AdvisorObserver )
+        +removeAdvisorObserver( AdvisorObserver )
+        +notifyAdvisorObservers( String, String  )
+    }
+
+    class AdvisorObserver {
+        <<interface>>
+        +onAdviceReceived( String, String )
+    }
+
+    class GreenAreaImpl {
+        -advisorObservers: List
+        +onSensorUpdate()
+    }
+
+    class ViewImpl {
+        +onAdviceReceived()
+    }
+
+    AdvisorObservable <|.. GreenAreaImpl
+    AdvisorObserver <|.. ViewImpl
+    AdvisorObservable --> AdvisorObserver : notifica
+```
+
+#### Problema
+Quando lo `SmartAdvisor` genera un nuovo consiglio di irrigazione (basato sui dati dei sensori), la view deve essere notificata per mostrare il consiglio all'utente in tempo reale.
+
+#### Soluzione
+La soluzione adottata è nuovamente il pattern **Observer**: l'interfaccia `AdvisorObserver` definisce il metodo di callback `onAdviceReceived`. L'interfaccia `AdvisorObservable` definisce i metodi per gestire gli observer.
+In questo scenario, `GreenAreaImpl` implementa `AdvisorObservable` e, quando riceve un aggiornamento dai sensori (`onSensorUpdate`), interroga lo `SmartAdvisor` per ottenere un consiglio e notifica tutti gli observer (in questo caso `ViewImpl`).
 
 
 
+## Note di sviluppo
 
-
-
-
-### Note di sviluppo
-
-#### Utilizzo di Stream per filtrare e operare su collezioni
-Dove: `it.unibo.systemgarden.controller.impl`
+### Utilizzo di Stream per filtrare collezioni
+Dove: `it.unibo.systemgarden.model.impl.GreenAreaImpl`
 
 ```java
+@Override
+public Sector getSector( final String sectorId ) {
+    return this.sectors.stream()
+        .filter( s -> s.getId().equals( sectorId ) )
+        .findFirst()
+        .orElse( null );
+}
 
 ```
 
 
-#### Utilizzo di metodi Generci e Lambda function (Consumer)
+#### Utilizzo di metodi Generci e Consumer per lambda function
 Dove: `it.unibo.systemgarden.view.utils.DialogHelper`
 
 ```java
@@ -326,6 +409,27 @@ public static<R, C extends DialogController<R>> R showDialog(
     } catch (Exception e) {
         throw new RuntimeException( "Error showing dialog: " + e.getMessage(), e );
     }
+}
+```
+
+### Utilizzo di ScheduledExecutorService per task periodici
+Dove: `it.unibo.systemgarden.controller.impl.ControllerImpl`
+
+```java
+@Override
+public void start() {
+    scheduler = Executors.newSingleThreadScheduledExecutor();
+    
+    long now = System.currentTimeMillis();
+    long delayToNextMinute = 60000 - ( now % 60000 );
+    
+    scheduler.scheduleAtFixedRate(() -> {
+        checkAllSchedules();  
+        updateClocks();       
+        model.refreshSensorData();  
+    }, delayToNextMinute, 60000, TimeUnit.MILLISECONDS);
+    
+    view.show();
 }
 ```
 
@@ -362,5 +466,38 @@ public enum SensorType {
     public String toString() {
         return label.substring( 0, 1 ).toUpperCase() + label.substring( 1 );
     }
+}
+```
+
+### Utilizzo di Platform.runLater per thread-safety JavaFX
+Dove: `it.unibo.systemgarden.view.impl.ViewImpl`
+
+```java
+@Override
+public void onSensorUpdate( final String areaId, final String sensorId, 
+    final double newValue, final SensorType type 
+) {
+    Platform.runLater(() -> mainHandler.refreshSensorData( areaId, sensorId, newValue ));
+}
+```
+
+### Utilizzo di classi astratte per Template
+Dove: `it.unibo.systemgarden.model.impl.sensor.AbstractSensor`
+
+```java
+public abstract class AbstractSensor implements Sensor, SensorObservable {
+
+    private final String id;
+    private final String name;
+    private final List<SensorObserver> observers;
+    protected double currentValue;
+
+    @Override
+    public void refresh( final String areaId, final SensorType type ) {
+        this.currentValue = generateNewValue();  
+        notifyObservers(areaId, this.id, this.currentValue, type);
+    }
+
+    protected abstract double generateNewValue();
 }
 ```
