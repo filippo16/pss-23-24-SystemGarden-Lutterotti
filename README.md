@@ -362,6 +362,27 @@ La soluzione adottata è nuovamente il pattern **Observer**: l'interfaccia `Advi
 In questo scenario, `GreenAreaImpl` implementa `AdvisorObservable` e, quando riceve un aggiornamento dai sensori (`onSensorUpdate`), interroga lo `SmartAdvisor` per ottenere un consiglio e notifica tutti gli observer (in questo caso `ViewImpl`).
 
 
+## Sviluppo
+### Testing automatizzato
+Il progetto è stato integrato con un sistema di testing completamente automatizzato grazie all'ausilio di JUnit.
+
+#### Premessa
+In alcuni i test, sono state utilizzate delle classi **mock** per rendere i test il più possibile isolati. In questo modo si evita l'utilizzo di codice esterno da quello della classe da testare.
+
+
+#### Componenti sottoposti ai test
+- **GreenAreaImplTest**: verifica la corretta gestione di settori, sensori, notifiche observer e programmazione dell'irrigazione.
+- **ManagerImplTest**: verifica la creazione e rimozione delle aree verdi, la gestione dei limiti massimi e il refresh dei dati dei sensori.
+- **SectorImplTest**: verifica il corretto funzionamento dell'irrigazione manuale, lo stato della valvola e la gestione della programmazione.
+- **ScheduleImplTest**: verifica il controllo degli orari di inizio e fine irrigazione, i giorni attivi e l'aggiornamento dei parametri.
+- **LocationImplTest**: verifica il corretto calcolo del fuso orario e dell'ora locale.
+- **SensorFactoryImplTest**: verifica la corretta creazione dei sensori (HumiditySensor e TemperatureSensor) in base al tipo richiesto.
+- **SensorImplTest**: verifica la lettura dei dati e la generazione dei valori simulati.
+- **SensorObserverTest**: verifica il pattern Observer per i sensori, inclusa la registrazione, notifica e rimozione degli observer.
+- **SmartAdvisorImplTest**: verifica la corretta generazione dei consigli di irrigazione in base ai valori di temperatura e umidità.
+- **SensorAdvisorTest**: verifica la logica della strategia di analisi dei dati ambientali.
+
+
 
 ## Note di sviluppo
 
@@ -481,23 +502,38 @@ public void onSensorUpdate( final String areaId, final String sensorId,
 }
 ```
 
-### Utilizzo di classi astratte per Template
-Dove: `it.unibo.systemgarden.model.impl.sensor.AbstractSensor`
+## Commenti finali
 
-```java
-public abstract class AbstractSensor implements Sensor, SensorObservable {
+### Autovalutazione
 
-    private final String id;
-    private final String name;
-    private final List<SensorObserver> observers;
-    protected double currentValue;
+**Punti di forza:**
+- Buona fase di analisi e progettazione.
+- Applicazione di diversi design pattern (Factory Method, Strategy, Observer).
+- Isolamento dei componenti tramite interfacce.
+- Buona suddivizione del codice lato view, con utilizzo di controller, fxml e metodi generici.
 
-    @Override
-    public void refresh( final String areaId, final SensorType type ) {
-        this.currentValue = generateNewValue();  
-        notifyObservers(areaId, this.id, this.currentValue, type);
-    }
 
-    protected abstract double generateNewValue();
-}
-```
+**Punti di debolezza:**
+- Mancanza di persistenza dei dati.
+- Non tutte le classi rispettano il single responsability principle.
+- Per i metodi crud creare un unico metodo di interfacciamento, magari basato su un type Action.
+- Migliorabile l'utilizzo dell'observer pattern lato Advisor, magari implementarne uno generico per modifica di settori, sensori e advice. (GreenAreaObservable)
+
+
+### Difficoltà riscontrate
+
+- **Modellazione**: è stato complesso comprendere quale sia la migliore modellazione da adottare per un aspetto specifico del dominio analisi. All’inizio è stato complesso mantenere una netta separazione tra progettazione e sviluppo, avevo la tendenza ad anticipare decisioni implementative.
+- **Gestione dell'entità**: gestire in modo corretto le relazioni tra le entità del dominio.
+- **Mancanza di un secondo parere**: la mancanza di un secondo parere di un collega non mi ha fatto aiutato nella costruzione generale e mi è mancata.
+
+
+### Guida utente
+Per utilizzare l'applicativo:
+1. Creare una nuova Area Verde (pulsante in alto a destra) specificando nome e città (es. New York, Cesena, Arco).
+2. Aggiungere settori all'area per definire le zone irrigabili, tramite l'apposito bottone.
+3. Aggiungere sensori per monitorare temperatura e umidità, tramite l'apposito bottone.
+4. Configurare la programmazione per ogni settore, tramite il pulsante "Orari" verrà aperto un dialog di configurazione.
+5. Utilizzare i pulsanti Play/Stop per l'irrigazione manuale, tramite i pulsanti "Avvia" "Ferma".
+6. Visualizzare i consigli dello SmartAdvisor, previa inserimento dei due sensori di Temperatura e Umidità.
+
+All'avvio verrà creata una Area-Verde di esempio.
