@@ -309,17 +309,16 @@ Rappresentazione UML del pattern **Strategy** per i consigli di irrigazione.
 classDiagram
     class AdvisorStrategy {
         <<interface>>
-        +getAdvice( humidity, temperature ): IrrigationAdvice
+        +getAdvice(): IrrigationAdvice
     }
 
     class SensorAdvisor {
-        +getAdvice( humidity, temperature ): IrrigationAdvice
+        +getAdvice(): IrrigationAdvice
     }
 
     class SmartAdvisorImpl {
-        -strategy: AdvisorStrategy
+        -AdvisorStrategy advisor
         +setStrategy( AdvisorStrategy )
-        +getAdvice(): IrrigationAdvice
     }
 
     AdvisorStrategy <|.. SensorAdvisor
