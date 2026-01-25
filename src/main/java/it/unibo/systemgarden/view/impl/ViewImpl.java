@@ -35,6 +35,7 @@ public class ViewImpl implements View, SensorObserver, AdvisorObserver  {
     @Override
     public void setController(final Controller controller) {
         this.controller = controller;
+        this.mainHandler = new MainViewHandler();
     }
 
     @Override
