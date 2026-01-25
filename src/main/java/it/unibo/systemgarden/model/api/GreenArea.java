@@ -107,5 +107,12 @@ public interface GreenArea {
      * @param observer the observer to unregister
      * @return true if the sensor was removed, false otherwise
     */
-    boolean removeSensor( final String sensorId, final SensorObserver observer  );
+    boolean removeSensor( String sensorId, SensorObserver observer  );
+
+    /**
+     * Gets a sensor by its unique identifier.
+     * @param sensorId the unique identifier of the sensor
+     * @return the sensor with the given id
+    */
+    Sensor getSensor( String sensorId );
 }

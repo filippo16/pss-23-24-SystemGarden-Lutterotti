@@ -7,8 +7,7 @@ import it.unibo.systemgarden.model.api.Sector;
 import it.unibo.systemgarden.model.api.Sensor;
 import it.unibo.systemgarden.model.api.exception.ActionMethodException;
 import it.unibo.systemgarden.model.api.observer.AdvisorObservable;
-import it.unibo.systemgarden.model.impl.sensor.HumiditySensor;
-import it.unibo.systemgarden.model.impl.sensor.TemperatureSensor;
+import it.unibo.systemgarden.model.utils.SensorType;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -100,31 +99,32 @@ class GreenAreaImplTest {
 
     @Test
     void testAddSensor() throws ActionMethodException {
-        Sensor sensor = new HumiditySensor( "Umidità Giardino" );
-        area.addSensor( sensor, mockSensorObserver );
+        area.addSensor( "AREA-1","Temperatura", 
+            SensorType.TEMPERATURE, mockSensorObserver );
 
         assertEquals( 1, area.getSensors().size() );
     }
 
     @Test
     void testAddSensorMaxLimit() throws ActionMethodException {
-        Sensor sensor1 = new HumiditySensor( "Umidità 1" );
-        Sensor sensor2 = new TemperatureSensor( "Temperatura 1" );
-        Sensor sensor3 = new HumiditySensor( "Umidità 2" );
 
-        area.addSensor( sensor1, mockSensorObserver );
-        area.addSensor( sensor2, mockSensorObserver );
+        area.addSensor( "AREA-1","Temperatura", 
+            SensorType.TEMPERATURE, mockSensorObserver );
+        area.addSensor( "AREA-1","Umiditià", 
+            SensorType.HUMIDITY, mockSensorObserver );
 
         assertThrows(ActionMethodException.class, () -> {
-            area.addSensor( sensor3, mockSensorObserver );
+            area.addSensor( "AREA-1","Temperatura", 
+            SensorType.TEMPERATURE, mockSensorObserver );
         });
     }
 
     @Test
     void testRemoveSensor() throws ActionMethodException {
-        Sensor sensor = new HumiditySensor( "Umidità" );
-        area.addSensor( sensor, mockSensorObserver );
-
+        area.addSensor( area.getId(),"Temperatura", 
+            SensorType.TEMPERATURE, mockSensorObserver );
+        
+        Sensor sensor = area.getSensors().get(0);
         boolean removed = area.removeSensor( sensor.getId(), mockSensorObserver );
 
         assertTrue( removed );
@@ -216,15 +216,18 @@ class GreenAreaImplTest {
         ((AdvisorObservable) area2).addAdvisorObserver( observer2 );
         
 
-        Sensor humidity1 = new HumiditySensor("Umidità Area 1");
-        Sensor temperature1 = new TemperatureSensor("Temperatura Area 1");
-        area1.addSensor( humidity1, mockSensorObserver );
-        area1.addSensor( temperature1, mockSensorObserver );
+
+        area1.addSensor( area1.getId(), "Temperature", SensorType.TEMPERATURE, mockSensorObserver );
+        area1.addSensor( area1.getId(), "Humidity", SensorType.HUMIDITY, mockSensorObserver );
         
-        Sensor humidity2 = new HumiditySensor("Umidità Area 2");
-        Sensor temperature2 = new TemperatureSensor("Temperatura Area 2");
-        area2.addSensor( humidity2, mockSensorObserver );
-        area2.addSensor( temperature2, mockSensorObserver );
+
+        area2.addSensor( area2.getId(), "Temperature", SensorType.TEMPERATURE, mockSensorObserver );
+        area2.addSensor( area2.getId(), "Humidity", SensorType.HUMIDITY, mockSensorObserver );
+
+        Sensor temperature1 = area1.getSensors().stream()
+            .filter(s -> s.getType() == SensorType.TEMPERATURE)
+            .findFirst()
+            .orElseThrow();
         
         temperature1.refresh( area1.getId(), temperature1.getType() );
         

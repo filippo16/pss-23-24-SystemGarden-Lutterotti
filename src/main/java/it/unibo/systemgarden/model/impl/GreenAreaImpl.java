@@ -211,6 +211,14 @@ public class GreenAreaImpl implements GreenArea, SensorObserver, AdvisorObservab
         return sensors.remove(sensor);
     }
 
+    @Override
+    public Sensor getSensor( String sensorId ) {
+        return sensors.stream()
+            .filter( s -> s.getId().equals( sensorId ) )
+            .findFirst()
+            .orElse( null );
+    }
+
 
     @Override
     public void onSensorUpdate( String areaId, String sensorId, double newValue, SensorType type ) {
