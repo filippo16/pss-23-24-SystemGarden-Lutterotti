@@ -81,10 +81,10 @@ class Location {
 }
 <<interface>> Location
 
-Manager *-- GreenArea
-GreenArea *-- Sector
-GreenArea *-- Sensor
-GreenArea *-- SmartAdvisor
+Manager *-- "0..N" GreenArea
+GreenArea *-- "0..N" Sector
+GreenArea *-- "0..N" Sensor
+GreenArea *-- "0..1" SmartAdvisor
 GreenArea *-- Location
 Sector *-- Schedule
 
@@ -199,9 +199,9 @@ classDiagram
 
     ViewImpl *-- MainViewHandler
 
-    ManagerImpl *-- GreenArea
-    GreenArea *-- Sensor
-    GreenArea *-- Sector
+    ManagerImpl *-- "0..N" GreenArea
+    GreenArea *-- "0..2" Sensor
+    GreenArea *-- "0..N" Sector
     GreenArea *-- SmartAdvisor
     GreenArea *-- Location
     
